@@ -74,6 +74,7 @@ void mainmenu()
     printf("8. Close Account\n");
     printf("9. ATM/Branch Locations\n");
     printf("10. Customer Support\n");
+    printf("11. open account\n");
 }
 
 int loginverify(char *userid, char *pass)
