@@ -11,6 +11,7 @@ void mainmenu();
 
 int main()
 {
+    printf("Hello World");
     int flag, signinoption;
     char username[20], password[30];
     printf("Welcome to My Bank\n");
