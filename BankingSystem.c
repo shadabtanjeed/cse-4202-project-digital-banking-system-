@@ -11,7 +11,6 @@ void mainmenu();
 
 int main()
 {
-    printf("Hello World");
     int flag, signinoption;
     char username[20], password[30];
     printf("Welcome to My Bank\n");
@@ -75,7 +74,6 @@ void mainmenu()
     printf("8. Close Account\n");
     printf("9. ATM/Branch Locations\n");
     printf("10. Customer Support\n");
-    printf("11. open account\n");
 }
 
 int loginverify(char *userid, char *pass)
