@@ -6,14 +6,14 @@
 #define USER_PASS "./username.txt"
 #define ACCOUNT_DATA "./AccountInfo.txt"
 
-typedef struct _accountInfo
+typedef struct
 {
     char Name[30];
     char AccountType[20];
-    int AccountNo;
-    int Balance;
-    int Phone;
-    int NID;
+    long long AccountNo;
+    long long Balance;
+    long long Phone;
+    long NID;
     char Username[30];
 } AccountInfo;
 
@@ -22,7 +22,7 @@ void createaccount();
 void mainmenu(char *usernm);
 int ReadAccountInfo();
 void ViewAccounts(char *usrnm, int sumaccounts);
-char SearchAndPrint(char *username);
+void SearchAndPrint(char *username);
 
 int main()
 {
@@ -43,9 +43,9 @@ int main()
             while (1)
             {
                 printf("Enter Username: ");
-                scanf("%s", user_name);
+                scanf("%19s", user_name);
                 printf("Enter Password: ");
-                scanf("%s", password);
+                scanf("%29s", password);
                 flag = loginverify(user_name, password);
 
                 if (flag == 1)
@@ -78,8 +78,9 @@ int main()
 void mainmenu(char *usernm)
 {
     int menuchoice = 100;
-
-    while (menuchoice != 0)
+    char usrnm[30];
+    strcpy(usrnm, usernm);
+    while (menuchoice != 12)
     {
 
         printf("1. View All Accounts\n");
@@ -100,15 +101,8 @@ void mainmenu(char *usernm)
         scanf("%d", &menuchoice);
         printf("\n");
 
-        switch (menuchoice)
-        {
-        case 1:
-            SearchAndPrint(usernm);
-            break;
-
-        default:
-            break;
-        }
+        if (menuchoice == 1)
+            SearchAndPrint(usrnm);
     }
 }
 
@@ -161,42 +155,34 @@ void createaccount()
     printf("\n");
 }
 
-char SearchAndPrint(char *username)
+void SearchAndPrint(char *username)
 {
-    int numAccounts = 0;
+    printf("\n%s\n", username);
     FILE *fp;
-    fp = fopen(ACCOUNT_DATA, "r");
-    AccountInfo accounts[100];
+    AccountInfo acc;
+    int found = 0;
 
+    fp = fopen(ACCOUNT_DATA, "r");
     if (fp == NULL)
     {
         printf("Error: Could not open file\n");
+        return;
     }
 
-    else
+    while (fscanf(fp, "Name: %s\nAccount Type: %s\nAccount No: %lld\nBalance: %lld\nPhone: %lld\nNID No: %lld\nUsername: %s\n", acc.Name, acc.AccountType, &acc.AccountNo, &acc.Balance, &acc.Phone, &acc.NID, acc.Username) == 7)
     {
-        while (fscanf(fp, "Name: %s\nAccount Type: %s\nAccountNo: %d\nBalance: %d\nPhone: %d\nNID no: %d\nUsername: %s\n", accounts[numAccounts].Name, accounts[numAccounts].AccountType, &accounts[numAccounts].AccountNo, &accounts[numAccounts].Balance, &accounts[numAccounts].Phone, &accounts[numAccounts].NID, accounts[numAccounts].Username == 7))
+
+        if (strcmp(username, acc.Username) == 0)
         {
-            ++numAccounts;
+            found = 1;
+            printf("Account No: %d\nAccount Type: %s\n", acc.AccountNo, acc.AccountType);
         }
     }
 
-    int matchingAccounts[100];
-    int numMatchingAccounts = 0;
-    for (int i = 0; i < numAccounts; ++i)
-    {
-        if (strcmp(accounts[i].Username, username) == 0)
-        {
-            matchingAccounts[numMatchingAccounts] = i;
-            numMatchingAccounts++;
-        }
-    }
-
-    printf("All accounts of the user: \n");
-    for (int i = 0; i < numMatchingAccounts; i++)
-    {
-        int accountIndex = matchingAccounts[i];
-        printf("%d. %d (%s)\n", i + 1, accounts[accountIndex].AccountNo, accounts[accountIndex].AccountType);
-    }
     fclose(fp);
+
+    if (!found)
+    {
+        printf("No matching accounts found\n");
+    }
 }
