@@ -4,6 +4,7 @@
 #include <stdlib.h>
 
 #define USER_PASS "./username.txt"
+#define ACCOUNT_INFO "./AccountInfo.txt"
 
 int loginverify(char *userid, char *pass);
 void createaccount();
