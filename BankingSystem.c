@@ -22,10 +22,10 @@ void createaccount();
 void mainmenu(char *usernm);
 int ReadAccountInfo();
 void ViewAccounts(char *usrnm, int sumaccounts);
+char SearchAndPrint(char *username);
 
 int main()
 {
-    printf("Hello World!");
     int flag, signinoption;
     char user_name[20], password[30];
     printf("Welcome to My Bank\n");
@@ -83,7 +83,6 @@ void mainmenu(char *usernm)
 
     while (menuchoice != 0)
     {
-        int totalaccounts = ReadAccountInfo();
 
         printf("1. View All Accounts\n");
         printf("2. Check Balance\n");
@@ -104,7 +103,7 @@ void mainmenu(char *usernm)
         switch (menuchoice)
         {
         case 1:
-            ViewAccounts(usernm, totalaccounts);
+            SearchAndPrint(usernm);
             break;
 
         default:
@@ -162,7 +161,7 @@ void createaccount()
     printf("\n");
 }
 
-int ReadAccountInfo()
+char SearchAndPrint(char *username)
 {
     int numAccounts = 0;
     AccountInfo accounts[100];
@@ -181,23 +180,23 @@ int ReadAccountInfo()
             ++numAccounts;
         }
     }
-    fclose(fp);
-    return numAccounts;
-}
 
-void ViewAccounts(char *usrnm, int sumaccounts)
-{
-    FILE *fp;
-    fp = fopen(ACCOUNT_DATA, "r");
-
-    if (fp == NULL)
+    int matchingAccounts[100];
+    int numMatchingAccounts = 0;
+    for (int i = 0; i < numAccounts; ++i)
     {
-        printf("Error: Could not open file\n");
+        if (strcmp(accounts[i].Username, username) == 0)
+        {
+            matchingAccounts[numMatchingAccounts] = i;
+            numMatchingAccounts++;
+        }
+    }
+
+    printf("All accounts of the user: \n");
+    for (int i = 0; i < numMatchingAccounts; i++)
+    {
+        int accountIndex = matchingAccounts[i];
+        printf("%d. %d (%s)\n", i + 1, accounts[accountIndex].AccountNo, accounts[accountIndex].AccountType);
     }
 }
-
-
-
-
-
-
+fclose(fp);
