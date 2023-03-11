@@ -119,7 +119,7 @@ int loginverify(char *userid, char *pass)
         return 0;
     }
 
-    while (fscanf(fp, "Username: %s\nPassword: %s\n", user, password) == 2)
+    while (fscanf(fp, "Username: %s Password: %s ", user, password) == 2)
     {
         if (strcmp(userid, user) == 0 && strcmp(pass, password) == 0)
         {
@@ -169,14 +169,14 @@ void SearchAndPrint(char *username)
         return;
     }
 
-    while (fscanf(fp, "Name: %s\nAccount Type: %s\nAccount No: %lld\nBalance: %lld\nPhone: %lld\nNID No: %lld\nUsername: %s\n", acc.Name, acc.AccountType, &acc.AccountNo, &acc.Balance, &acc.Phone, &acc.NID, acc.Username) == 7)
+    while (fscanf(fp, "Name: %s Account Type: %s Account No: %lld Balance: %lld Phone: %lld NID No: %lld Username: %s ", acc.Name, acc.AccountType, &acc.AccountNo, &acc.Balance, &acc.Phone, &acc.NID, acc.Username) == 7)
     {
         printf("Name: %s\nAccount Type: %s\nAccount No: %lld\nBalance: %lld\nPhone: %lld\nNID No: %lld\nUsername: %s\n", acc.Name, acc.AccountType, acc.AccountNo, acc.Balance, acc.Phone, acc.NID, acc.Username);
 
         if (strcmp(username, acc.Username) == 0)
         {
             found = 1;
-            printf("Account No: %lld\nAccount Type: %s\n", acc.AccountNo, acc.AccountType);
+            printf("Account No: %lld Account Type: %s\n", acc.AccountNo, acc.AccountType);
         }
     }
 
