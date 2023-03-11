@@ -46,13 +46,13 @@ Phone: 8801987654321
 NID No: 678901234
 Username: WilliamDavis
 
-Name: Samantha Wilson
+Name: Elizabeth Smith
 Account Type: Current
 Account No: 3456789012
-Balance: 124000
-Phone: 8801923456789
-NID No: 789012345
-Username: SamanthaWilson
+Balance: 93750
+Phone: 8801912345678
+NID No: 124356789
+Username: ElizabethSmith
 
 Name: David Lee
 Account Type: Fixed Deposit

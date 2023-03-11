@@ -157,7 +157,6 @@ void createaccount()
 
 void SearchAndPrint(char *username)
 {
-    printf("\n%s\n", username);
     FILE *fp;
     AccountInfo acc;
     int found = 0;
@@ -169,16 +168,19 @@ void SearchAndPrint(char *username)
         return;
     }
 
-    while (fscanf(fp, "Name: %[^\n] Account Type: %s Account No: %lld Balance: %lld Phone: %lld NID No: %lld Username: %s", acc.Name, acc.AccountType, &acc.AccountNo, &acc.Balance, &acc.Phone, &acc.NID, acc.Username) == 7)
+    int i = 1;
+    while (fscanf(fp, "Name: %[^\n] Account Type: %s Account No: %lld Balance: %lld Phone: %lld NID No: %lld Username: %s \n", acc.Name, acc.AccountType, &acc.AccountNo, &acc.Balance, &acc.Phone, &acc.NID, acc.Username) == 7)
     {
-        printf("Name: %s\nAccount Type: %s\nAccount No: %lld\nBalance: %lld\nPhone: %lld\nNID No: %lld\nUsername: %s\n", acc.Name, acc.AccountType, acc.AccountNo, acc.Balance, acc.Phone, acc.NID, acc.Username);
 
         if (strcmp(username, acc.Username) == 0)
         {
             found = 1;
-            printf("Account No: %lld Account Type: %s\n", acc.AccountNo, acc.AccountType);
+            printf("%d. Account No: %lld\n   Account Type: %s\n", i, acc.AccountNo, acc.AccountType);
+            printf("\n");
         }
     }
+
+    printf("\n");
 
     fclose(fp);
 
