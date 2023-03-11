@@ -8,13 +8,13 @@
 
 typedef struct _accountInfo
 {
-    char Name;
-    char AccountType;
+    char Name[30];
+    char AccountType[20];
     int AccountNo;
     int Balance;
     int Phone;
     int NID;
-    char Username;
+    char Username[30];
 } AccountInfo;
 
 int loginverify(char *userid, char *pass);
