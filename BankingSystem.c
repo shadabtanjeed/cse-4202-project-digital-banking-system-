@@ -25,7 +25,6 @@ void ViewAccounts(char *usrnm, int sumaccounts);
 
 int main()
 {
-    printf("Hello World!");
     int flag, signinoption;
     char user_name[20], password[30];
     printf("Welcome to My Bank\n");
@@ -195,9 +194,3 @@ void ViewAccounts(char *usrnm, int sumaccounts)
         printf("Error: Could not open file\n");
     }
 }
-
-
-
-
-
-
