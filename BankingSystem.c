@@ -4,7 +4,18 @@
 #include <stdlib.h>
 
 #define USER_PASS "./username.txt"
-#define ACCOUNT_INFO "./AccountInfo.txt"
+#define ACCOUNT_DATA "./AccountInfo.txt"
+
+typedef struct _accountInfo
+{
+    char Name;
+    char AccountType;
+    int AccountNo;
+    int Balance;
+    int Phone;
+    int NID;
+    char Username;
+} AccountInfo;
 
 int loginverify(char *userid, char *pass);
 void createaccount();
@@ -13,7 +24,7 @@ void mainmenu();
 int main()
 {
     int flag, signinoption;
-    char username[20], password[30];
+    char user_name[20], password[30];
     printf("Welcome to My Bank\n");
     while (1)
     {
@@ -29,10 +40,10 @@ int main()
             while (1)
             {
                 printf("Enter Username: ");
-                scanf("%s", username);
+                scanf("%s", user_name);
                 printf("Enter Password: ");
                 scanf("%s", password);
-                flag = loginverify(username, password);
+                flag = loginverify(user_name, password);
 
                 if (flag == 1)
                 {
@@ -80,7 +91,7 @@ void mainmenu()
 int loginverify(char *userid, char *pass)
 {
     FILE *fp;
-    char username[20], password[30];
+    char user[20], password[30];
     int found = 0;
 
     fp = fopen(USER_PASS, "r");
@@ -90,9 +101,9 @@ int loginverify(char *userid, char *pass)
         return 0;
     }
 
-    while (fscanf(fp, "Username: %s\nPassword: %s\n", username, password) == 2)
+    while (fscanf(fp, "Username: %s\nPassword: %s\n", user, password) == 2)
     {
-        if (strcmp(userid, username) == 0 && strcmp(pass, password) == 0)
+        if (strcmp(userid, user) == 0 && strcmp(pass, password) == 0)
         {
             found = 1;
             break;
