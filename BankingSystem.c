@@ -19,7 +19,9 @@ typedef struct _accountInfo
 
 int loginverify(char *userid, char *pass);
 void createaccount();
-void mainmenu();
+void mainmenu(char *usernm);
+int ReadAccountInfo();
+void ViewAccounts(char *usrnm, int sumaccounts);
 
 int main()
 {
@@ -50,7 +52,7 @@ int main()
                     printf("\nLogin successful. \n");
                     printf("\n");
                     {
-                        mainmenu();
+                        mainmenu(user_name);
                     }
                     break;
                 }
@@ -74,18 +76,40 @@ int main()
     return 0;
 }
 
-void mainmenu()
+void mainmenu(char *usernm)
 {
-    printf("1. Check Balance\n");
-    printf("2. Cash Deposit\n");
-    printf("3. Cash Withdraw\n");
-    printf("4. Fund Transfer\n");
-    printf("5. Benificiary Management\n");
-    printf("6. Mini Statement\n");
-    printf("7. Account Settings\n");
-    printf("8. Close Account\n");
-    printf("9. ATM/Branch Locations\n");
-    printf("10. Customer Support\n");
+    int menuchoice;
+
+    while (menuchoice != 0)
+    {
+        int totalaccounts = ReadAccountInfo();
+
+        printf("1. View All Accounts\n");
+        printf("2. Check Balance\n");
+        printf("3. Cash Deposit\n");
+        printf("4. Cash Withdraw\n");
+        printf("5. Fund Transfer\n");
+        printf("6. Benificiary Management\n");
+        printf("7. Mini Statement\n");
+        printf("8. Account Settings\n");
+        printf("9. Close Account\n");
+        printf("10. ATM/Branch Locations\n");
+        printf("11. Customer Support\n");
+        printf("12. Exit\n");
+
+        printf("Choose your option: ");
+        scanf("%d", &menuchoice);
+
+        switch (menuchoice)
+        {
+        case 1:
+            ViewAccounts(usernm, totalaccounts);
+            break;
+
+        default:
+            break;
+        }
+    }
 }
 
 int loginverify(char *userid, char *pass)
@@ -135,4 +159,38 @@ void createaccount()
     printf("\n");
     printf("Account Created Successfully\n");
     printf("\n");
+}
+
+int ReadAccountInfo()
+{
+    int numAccounts = 0;
+    AccountInfo accounts[100];
+    FILE *fp;
+    fp = fopen(ACCOUNT_DATA, "r");
+
+    if (fp == NULL)
+    {
+        printf("Error: Could not open file\n");
+    }
+
+    else
+    {
+        while (fscanf(fp, "Name : %s\nAccount Type : %s\nAccountNo : %d\nBalance : %d\nPhone : %d\nNID no : $d\nUsername : %s", accounts[numAccounts].Name, accounts[numAccounts].AccountType, &accounts[numAccounts].AccountNo, &accounts[numAccounts].Balance, &accounts[numAccounts].Phone, &accounts[numAccounts].NID, accounts[numAccounts].Username == 7))
+        {
+            ++numAccounts;
+        }
+    }
+    fclose(fp);
+    return numAccounts;
+}
+
+void ViewAccounts(char *usrnm, int sumaccounts)
+{
+    FILE *fp;
+    fp = fopen(ACCOUNT_DATA, "r");
+
+    if (fp == NULL)
+    {
+        printf("Error: Could not open file\n");
+    }
 }
