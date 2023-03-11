@@ -13,7 +13,7 @@ typedef struct
     long long AccountNo;
     long long Balance;
     long long Phone;
-    long NID;
+    long long NID;
     char Username[30];
 } AccountInfo;
 
@@ -171,11 +171,12 @@ void SearchAndPrint(char *username)
 
     while (fscanf(fp, "Name: %s\nAccount Type: %s\nAccount No: %lld\nBalance: %lld\nPhone: %lld\nNID No: %lld\nUsername: %s\n", acc.Name, acc.AccountType, &acc.AccountNo, &acc.Balance, &acc.Phone, &acc.NID, acc.Username) == 7)
     {
+        printf("Name: %s\nAccount Type: %s\nAccount No: %lld\nBalance: %lld\nPhone: %lld\nNID No: %lld\nUsername: %s\n", acc.Name, acc.AccountType, acc.AccountNo, acc.Balance, acc.Phone, acc.NID, acc.Username);
 
         if (strcmp(username, acc.Username) == 0)
         {
             found = 1;
-            printf("Account No: %d\nAccount Type: %s\n", acc.AccountNo, acc.AccountType);
+            printf("Account No: %lld\nAccount Type: %s\n", acc.AccountNo, acc.AccountType);
         }
     }
 
