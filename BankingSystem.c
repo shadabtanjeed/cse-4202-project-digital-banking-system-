@@ -198,5 +198,5 @@ char SearchAndPrint(char *username)
         int accountIndex = matchingAccounts[i];
         printf("%d. %d (%s)\n", i + 1, accounts[accountIndex].AccountNo, accounts[accountIndex].AccountType);
     }
+    fclose(fp);
 }
-fclose(fp);
