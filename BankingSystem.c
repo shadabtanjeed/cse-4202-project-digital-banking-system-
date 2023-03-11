@@ -52,9 +52,7 @@ int main()
                 {
                     printf("\nLogin successful. \n");
                     printf("\n");
-                    {
-                        mainmenu(user_name);
-                    }
+                    mainmenu(user_name);
                     break;
                 }
                 else
@@ -79,7 +77,7 @@ int main()
 
 void mainmenu(char *usernm)
 {
-    int menuchoice;
+    int menuchoice = 100;
 
     while (menuchoice != 0)
     {
@@ -97,8 +95,10 @@ void mainmenu(char *usernm)
         printf("11. Customer Support\n");
         printf("12. Exit\n");
 
+        printf("\n");
         printf("Choose your option: ");
         scanf("%d", &menuchoice);
+        printf("\n");
 
         switch (menuchoice)
         {
@@ -164,9 +164,9 @@ void createaccount()
 char SearchAndPrint(char *username)
 {
     int numAccounts = 0;
-    AccountInfo accounts[100];
     FILE *fp;
     fp = fopen(ACCOUNT_DATA, "r");
+    AccountInfo accounts[100];
 
     if (fp == NULL)
     {
@@ -175,7 +175,7 @@ char SearchAndPrint(char *username)
 
     else
     {
-        while (fscanf(fp, "Name : %s\nAccount Type : %s\nAccountNo : %d\nBalance : %d\nPhone : %d\nNID no : $d\nUsername : %s", accounts[numAccounts].Name, accounts[numAccounts].AccountType, &accounts[numAccounts].AccountNo, &accounts[numAccounts].Balance, &accounts[numAccounts].Phone, &accounts[numAccounts].NID, accounts[numAccounts].Username == 7))
+        while (fscanf(fp, "Name: %s\nAccount Type: %s\nAccountNo: %d\nBalance: %d\nPhone: %d\nNID no: %d\nUsername: %s\n", accounts[numAccounts].Name, accounts[numAccounts].AccountType, &accounts[numAccounts].AccountNo, &accounts[numAccounts].Balance, &accounts[numAccounts].Phone, &accounts[numAccounts].NID, accounts[numAccounts].Username == 7))
         {
             ++numAccounts;
         }
