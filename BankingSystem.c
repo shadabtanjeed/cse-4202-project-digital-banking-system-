@@ -107,12 +107,21 @@ void createaccount()
 {
     char username[20], password[20];
     printf("Enter your login credentials: \n");
+    // a function can be added to check uniquenness
     printf("Enter Username: ");
     scanf("%s", username);
     printf("Enter Password: ");
     scanf("%s", password);
     printf("\n");
     printf("Enter your Account details: \n");
+    printf("Enter your Name: ");
+    printf("Enter your Account Type (Savings/Current/Fixed Deposit): ");
+    // here unique account number is requires. or it can be generated automatically
+    printf("Enter your Account No: ");
+    printf("Enter your Balance: ");
+    printf("Enter your Phone No: ");
+    printf("Enter your NID No: ");
+    printf("\n");
     printf("Account Created Successfully\n");
     printf("\n");
 }
