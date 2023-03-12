@@ -160,7 +160,7 @@ void SearchAndPrint(char *username)
     printf("User Name: %s\n", username);
     FILE *fp;
     AccountInfo acc;
-    int found = 0;
+    int found = 0, ac_count = 1;
 
     fp = fopen(ACCOUNT_DATA, "r");
     if (fp == NULL)
@@ -173,8 +173,10 @@ void SearchAndPrint(char *username)
     {
         if (strcmp(username, acc.Username) == 0)
         {
+            printf("Account %d: \n", ac_count);
             printf("Name: %s\nAccount Type: %s\nAccount No: %lld\nBalance: %lld\nPhone: %lld\nNID No: %lld\n\n", acc.Name, acc.AccountType, acc.AccountNo, acc.Balance, acc.Phone, acc.NID);
             found = 1;
+            ++ac_count;
         }
     }
 
