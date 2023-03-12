@@ -23,7 +23,7 @@ NID No: 345678901
 Username: SarahWilliams
 
 Name: Michael Johnson 
-Account Type: Fixed Deposit
+Account Type: Fixed Deposit 
 Account No: 7654321987
 Balance: 298500
 Phone: 8801987654321
@@ -55,7 +55,7 @@ NID No: 124356789
 Username: ElizabethSmith
 
 Name: David Lee 
-Account Type: Fixed Deposit
+Account Type: Fixed Deposit 
 Account No: 8765432109
 Balance: 748000
 Phone: 8801987654321
@@ -87,7 +87,7 @@ NID No: 234567890
 Username: MeganAnderson
 
 Name: Benjamin Martin 
-Account Type: Fixed Deposit
+Account Type: Fixed Deposit 
 Account No: 6543210987
 Balance: 175600
 Phone: 8801987654321
@@ -111,7 +111,7 @@ NID No: 187452936
 Username: RyanTaylor
 
 Name: Kimberly Davis 
-Account Type: Fixed Deposit
+Account Type: Fixed Deposit 
 Account No: 4176958023
 Balance: 763201
 Phone: 8801726930395
@@ -135,7 +135,7 @@ NID No: 352491867
 Username: LaurenWilson
 
 Name: Tyler Jackson 
-Account Type: Fixed Deposit
+Account Type: Fixed Deposit 
 Account No: 6437918275
 Balance: 354670
 Phone: 8801936729042
@@ -159,7 +159,7 @@ NID No: 987512634
 Username: DanielSmith
 
 Name: Anna Johnson 
-Account Type: Fixed Deposit
+Account Type: Fixed Deposit 
 Account No: 8943125671
 Balance: 324567
 Phone: 8801927863950
@@ -183,7 +183,7 @@ NID No: 845672139
 Username: OliviaJones
 
 Name: Ethan Garcia 
-Account Type: Fixed Deposit
+Account Type: Fixed Deposit 
 Account No: 9027458316
 Balance: 236571
 Phone: 8801934769214

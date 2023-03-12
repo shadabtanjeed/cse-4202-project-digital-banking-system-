@@ -1,3 +1,9 @@
+/*
+__________IMPORTANT NOTES__________
+For inputting Name manually put a space after the last name
+For inputting Fixed Deposit as Account type, put a space at last
+*/
+
 #include <stdio.h>
 #include <time.h>
 #include <string.h>
@@ -157,7 +163,6 @@ void createaccount()
 
 void SearchAndPrint(char *username)
 {
-    printf("User Name: %s\n", username);
     FILE *fp;
     AccountInfo acc;
     int found = 0, ac_count = 1;
@@ -169,12 +174,12 @@ void SearchAndPrint(char *username)
         return;
     }
 
-    while (fscanf(fp, "Name: %[^\n] \nAccount Type: %s\nAccount No: %lld\nBalance: %lld\nPhone: %lld\nNID No: %lld\nUsername: %s\n", acc.Name, acc.AccountType, &acc.AccountNo, &acc.Balance, &acc.Phone, &acc.NID, acc.Username) == 7)
+    while (fscanf(fp, "Name: %[^\n] \nAccount Type: %[^\n] \nAccount No: %lld\nBalance: %lld\nPhone: %lld\nNID No: %lld\nUsername: %s\n", acc.Name, acc.AccountType, &acc.AccountNo, &acc.Balance, &acc.Phone, &acc.NID, acc.Username) == 7)
     {
         if (strcmp(username, acc.Username) == 0)
         {
             printf("Account %d: \n", ac_count);
-            printf("Name: %s\nAccount Type: %s\nAccount No: %lld\nBalance: %lld\nPhone: %lld\nNID No: %lld\n\n", acc.Name, acc.AccountType, acc.AccountNo, acc.Balance, acc.Phone, acc.NID);
+            printf("Name: %s\nAccount Type: %s\nAccount No: %lld\nBalance: %lld\n \n", acc.Name, acc.AccountType, acc.AccountNo, acc.Balance);
             found = 1;
             ++ac_count;
         }
