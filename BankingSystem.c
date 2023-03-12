@@ -119,7 +119,7 @@ int loginverify(char *userid, char *pass)
         return 0;
     }
 
-    while (fscanf(fp, "Username: %s Password: %s ", user, password) == 2)
+    while (fscanf(fp, "Username: %s\nPassword: %s\n", user, password) == 2)
     {
         if (strcmp(userid, user) == 0 && strcmp(pass, password) == 0)
         {
@@ -157,6 +157,7 @@ void createaccount()
 
 void SearchAndPrint(char *username)
 {
+    printf("User Name: %s\n", username);
     FILE *fp;
     AccountInfo acc;
     int found = 0;
@@ -168,24 +169,19 @@ void SearchAndPrint(char *username)
         return;
     }
 
-    int i = 1;
-    while (fscanf(fp, "Name: %[^\n] Account Type: %s Account No: %lld Balance: %lld Phone: %lld NID No: %lld Username: %s \n", acc.Name, acc.AccountType, &acc.AccountNo, &acc.Balance, &acc.Phone, &acc.NID, acc.Username) == 7)
+    while (fscanf(fp, "Name: %[^\n] \nAccount Type: %s \nAccount No: %lld \nBalance: %lld \nPhone: %lld \nNID No: %lld \nUsername: %s \n", acc.Name, acc.AccountType, &acc.AccountNo, &acc.Balance, &acc.Phone, &acc.NID, acc.Username) == 7)
     {
-
         if (strcmp(username, acc.Username) == 0)
         {
+            printf("Name: %s\nAccount Type: %s\nAccount No: %lld\nBalance: %lld\nPhone: %lld\nNID No: %lld\n\n", acc.Name, acc.AccountType, acc.AccountNo, acc.Balance, acc.Phone, acc.NID);
             found = 1;
-            printf("%d. Account No: %lld\n   Account Type: %s\n", i, acc.AccountNo, acc.AccountType);
-            printf("\n");
         }
     }
 
-    printf("\n");
-
-    fclose(fp);
-
     if (!found)
     {
-        printf("No matching accounts found\n");
+        printf("No matching account found.\n");
     }
+
+    fclose(fp);
 }
