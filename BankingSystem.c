@@ -35,7 +35,7 @@ void Balance(char *username);
 
 int main()
 {
-    int flag, signinoption;
+    int flag, signinoption = 0;
     char user_name[20], password[30];
     printf("Welcome to My Bank\n");
     while (1)
@@ -241,7 +241,6 @@ void MatchAndShow(char *usname, struct AccountInfo account[MAX_ACCOUNTS], int *m
         printf("\n");
     }
     printf("\n");
-    return NULL;
 }
 
 void Balance(char *username)
