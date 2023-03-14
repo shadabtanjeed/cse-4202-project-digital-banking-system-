@@ -84,8 +84,6 @@ int main()
 void mainmenu(char *usernm)
 {
     int menuchoice = 100;
-    char usrnm[30];
-    strcpy(usrnm, usernm);
     while (menuchoice != 12)
     {
 
@@ -110,13 +108,13 @@ void mainmenu(char *usernm)
         switch (menuchoice)
         {
         case 1:
-            SearchAndPrint(usrnm);
+            SearchAndPrint(usernm);
             break;
 
         default:
             break;
         }
-        }
+    }
 }
 
 int loginverify(char *userid, char *pass)
