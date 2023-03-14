@@ -107,9 +107,16 @@ void mainmenu(char *usernm)
         scanf("%d", &menuchoice);
         printf("\n");
 
-        if (menuchoice == 1)
+        switch (menuchoice)
+        {
+        case 1:
             SearchAndPrint(usrnm);
-    }
+            break;
+
+        default:
+            break;
+        }
+        }
 }
 
 int loginverify(char *userid, char *pass)
