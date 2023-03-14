@@ -49,7 +49,7 @@ Username: WilliamDavis
 Name: Elizabeth Smith 
 Account Type: Current
 Account No: 3456789012
-Balance: 93750
+Balance: 2569810
 Phone: 8801912345678
 NID No: 124356789
 Username: ElizabethSmith

@@ -11,8 +11,9 @@ For inputting Fixed Deposit as Account type, put a space at last
 
 #define USER_PASS "./username.txt"
 #define ACCOUNT_DATA "./AccountInfo.txt"
+#define MAX_ACCOUNTS 100
 
-typedef struct
+typedef struct AccountInfo
 {
     char Name[30];
     char AccountType[20];
@@ -21,7 +22,7 @@ typedef struct
     long long Phone;
     long long NID;
     char Username[30];
-} AccountInfo;
+};
 
 int loginverify(char *userid, char *pass);
 void createaccount();
@@ -29,6 +30,8 @@ void mainmenu(char *usernm);
 int ReadAccountInfo();
 void ViewAccounts(char *usrnm, int sumaccounts);
 void SearchAndPrint(char *username);
+void MatchAndShow(char *usname, struct AccountInfo Accounts[MAX_ACCOUNTS], int *mathingAccounts);
+void Balance(char *username);
 
 int main()
 {
@@ -111,6 +114,10 @@ void mainmenu(char *usernm)
             SearchAndPrint(usernm);
             break;
 
+        case 2:
+            Balance(usernm);
+            break;
+
         default:
             break;
         }
@@ -169,7 +176,7 @@ void createaccount()
 void SearchAndPrint(char *username)
 {
     FILE *fp;
-    AccountInfo acc;
+    struct AccountInfo acc;
     int found = 0, ac_count = 1;
 
     fp = fopen(ACCOUNT_DATA, "r");
@@ -196,4 +203,56 @@ void SearchAndPrint(char *username)
     {
         printf("No matching accounts found\n");
     }
+}
+
+void MatchAndShow(char *usname, struct AccountInfo account[MAX_ACCOUNTS], int *matchingAccounts)
+{
+    FILE *fp;
+    fp = fopen(ACCOUNT_DATA, "r");
+    if (fp == NULL)
+    {
+        printf("Error: Could not open file\n");
+        return NULL;
+    }
+
+    int numAccounts = 0;
+    while (fscanf(fp, "Name: %[^\n] \nAccount Type: %[^\n] \nAccount No: %lld\nBalance: %lld\nPhone: %lld\nNID No: %lld\nUsername: %s\n", account[numAccounts].Name, account[numAccounts].AccountType, &account[numAccounts].AccountNo, &account[numAccounts].Balance, &account[numAccounts].Phone, &account[numAccounts].NID, account[numAccounts].Username) == 7)
+    {
+        numAccounts++;
+    }
+
+    int numMatchingAccounts = 0;
+    for (int i = 0; i < numAccounts; i++)
+    {
+        if (strcmp(account[i].Username, usname) == 0)
+        {
+            matchingAccounts[numMatchingAccounts] = i;
+            numMatchingAccounts++;
+        }
+    }
+
+    fclose(fp);
+
+    printf("Accounts for username %s:\n \n", usname);
+    for (int i = 0; i < numMatchingAccounts; i++)
+    {
+        int accountIndex = matchingAccounts[i];
+        printf("%d. Account No: %lld\n   Account Type: %s \n", i + 1, account[accountIndex].AccountNo, account[accountIndex].AccountType);
+        printf("\n");
+    }
+    printf("\n");
+    return NULL;
+}
+
+void Balance(char *username)
+{
+    struct AccountInfo account[MAX_ACCOUNTS];
+    int matchingAccounts[20];
+    int BalanceChoice;
+    MatchAndShow(username, account, matchingAccounts);
+    printf("Choose the corresponding Account (1/2/3...): ");
+    scanf("%d", &BalanceChoice);
+    int index = matchingAccounts[BalanceChoice - 1];
+    printf("\nCurrent Balance: Tk. %lld", account[index].Balance);
+    printf("\n \n");
 }
