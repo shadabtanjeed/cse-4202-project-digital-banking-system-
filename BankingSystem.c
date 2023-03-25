@@ -119,7 +119,7 @@ void mainmenu(char *usernm)
             break;
 
         default:
-            break;
+            printf("Please enter a valid choice \n \n");
         }
     }
 }
