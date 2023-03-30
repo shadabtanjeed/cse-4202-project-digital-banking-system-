@@ -118,6 +118,10 @@ void mainmenu(char *usernm)
             Balance(usernm);
             break;
 
+        case 12:
+            return;
+            break;
+
         default:
             printf("Please enter a valid choice \n \n");
         }
