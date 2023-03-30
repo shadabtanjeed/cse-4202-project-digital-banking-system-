@@ -23,8 +23,10 @@ typedef struct AccountInfo
     long long NID;
     char Username[30];
 };
+AccountInfo
 
-int loginverify(char *userid, char *pass);
+    int
+    loginverify(char *userid, char *pass);
 void createaccount();
 void mainmenu(char *usernm);
 int ReadAccountInfo();
