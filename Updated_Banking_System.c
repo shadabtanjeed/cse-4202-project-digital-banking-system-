@@ -239,7 +239,7 @@ void MatchAndShow(char *usname, struct AccountInfo account[MAX_ACCOUNTS], int *m
 
     fclose(fp);
 
-    printf("Accounts for username %s:\n \n", usname);
+    printf("Accounts for  %s:\n \n", usname);
     for (int i = 0; i < numMatchingAccounts; i++)
     {
         int accountIndex = matchingAccounts[i];
