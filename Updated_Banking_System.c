@@ -90,6 +90,23 @@ void mainmenu(char *usernm)
     AccountInfo *account_info = (AccountInfo *)malloc(MAX_ACCOUNTS * sizeof(AccountInfo));
     while (menuchoice != 12)
     {
+        int count = 0;
+
+        FILE *fp;
+
+        fp = fopen(USER_PASS, "r");
+        if (fp == NULL)
+        {
+            printf("Error: Could not open file\n");
+            return 0;
+        }
+
+        while (fscanf(fp, "Name: %[^\n] \nAccount Type: %[^\n] \nAccount No: %lld\nBalance: %lld\nPhone: %lld\nNID No: %lld\nUsername: %s\n", account_info[count].Name, account_info[count].AccountType, &account_info[count].AccountNo, &account_info[count].Balance, &account_info[count].Phone, &account_info[count].NID, account_info[count].Username) == 7)
+        {
+            ++count;
+        }
+
+        fclose(fp);
 
         printf("1. View All Accounts\n");
         printf("2. Check Balance\n");
