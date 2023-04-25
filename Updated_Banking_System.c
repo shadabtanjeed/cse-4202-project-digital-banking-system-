@@ -186,7 +186,7 @@ void createaccount()
     printf("Enter your Account details: \n");
     printf("Enter your Name: ");
     printf("Enter your Account Type (Savings/Current/Fixed Deposit): ");
-    // here unique account number is requires. or it can be generated automatically
+    // here unique account number is required. or it can be generated automatically
     printf("Enter your Account No: ");
     printf("Enter your Balance: ");
     printf("Enter your Phone No: ");
