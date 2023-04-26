@@ -23,7 +23,6 @@ typedef struct AccountInfo
     long long Phone;
     long long NID;
     char Username[30];
-    char Password[30];
 } AccountInfo;
 
 int loginverify(char *userid, char *pass);
@@ -201,18 +200,25 @@ int loginverify(char *userid, char *pass)
 void createaccount()
 {
     AccountInfo newAccount;
+
+    char balance[10], phone[13], nid[9];
+
     printf("\nEnter your Name (first and last name): ");
-    scanf(" %[^\n]s", newAccount.Name);
+    scanf("%s", newAccount.Name);
     printf("Enter Account Type (Savings or Current or Fixed Deposit): ");
-    scanf(" %[^\n]s", newAccount.AccountType);
+    scanf("%s", newAccount.AccountType);
     printf("Enter Initial Deposit: ");
-    scanf("%lld", &newAccount.Balance);
-    printf("Enter Phone number: ");
-    scanf("%lld", &newAccount.Phone);
-    printf("Enter NID number: ");
-    scanf("%lld", &newAccount.NID);
+    scanf("%s", balance);
+    printf("Enter Phone number (13 digits): ");
+    scanf("%s", phone);
+    printf("Enter NID number (9 digits): ");
+    scanf("%s", nid);
     printf("Enter Username: ");
     scanf("%s", newAccount.Username);
+
+    newAccount.Balance = atoi(balance);
+    newAccount.Phone = atoi(phone);
+    newAccount.NID = atoi(nid);
 
     // prompt for password
     char password[30];
@@ -221,7 +227,6 @@ void createaccount()
         printf("Enter Password (at least 10 characters): ");
         scanf("%s", password);
     } while (strlen(password) < 10);
-    strcpy(newAccount.Password, password);
 
     // generate 10-digit account number
     srand(time(0));
@@ -247,7 +252,7 @@ void createaccount()
     fprintf(fp, "Phone: %lld\n", newAccount.Phone);
     fprintf(fp, "NID No: %lld\n", newAccount.NID);
     fprintf(fp, "Username: %s\n", newAccount.Username);
-    fprintf(fp, "Password: %s\n", newAccount.Password);
+    fprintf(fp, "Password: %s\n", password);
 
     fclose(fp);
 
@@ -260,7 +265,7 @@ void createaccount()
     }
 
     fprintf(fp1, "Username: %s\n", newAccount.Username);
-    fprintf(fp1, "Password: %s\n", newAccount.Password);
+    fprintf(fp1, "Password: %s\n", password);
 
     fclose(fp1);
 
@@ -416,44 +421,4 @@ void CashDeposit(char *username, int count, AccountInfo *account_info)
 
 void CashWithdrawal(char *username, int count, AccountInfo *account_info)
 {
-    long long amount, accountno;
-    char password[30];
-    int found = 0;
-
-    printf("Enter account no: ");
-    scanf("%lld", &accountno);
-
-    for (int i = 0; i < count; ++i)
-    {
-        if (strcmp(account_info[i].Username, username) == 0 && account_info[i].AccountNo == accountno)
-        {
-            printf("Enter amount to withdraw: ");
-            scanf("%lld", &amount);
-            printf("Enter password: ");
-            scanf("%s", password);
-
-            // check if password is correct
-            if (strcmp(password, account_info[i].Password) != 0)
-            {
-                printf("Incorrect password\n");
-                return;
-            }
-
-            if (account_info[i].Balance - amount < 0)
-            {
-                printf("Insufficient balance\n");
-            }
-            else
-            {
-                account_info[i].Balance -= amount;
-                printf("Withdrawal successful. Your new balance is %lld\n", account_info[i].Balance);
-            }
-            found = 1;
-            break;
-        }
-    }
-    if (found == 0)
-    {
-        printf("Account not found\n");
-    }
 }
