@@ -38,7 +38,7 @@ int main()
 {
     int flag, signinoption = 0;
     char user_name[20], password[30];
-    printf("\n\nWelcome to My Bank\n\n");
+    printf("\nWelcome to My Bank\n\n");
     while (1)
     {
         printf("1. Login\n");
@@ -190,6 +190,7 @@ void createaccount()
     printf("Enter your Account No: ");
     printf("Enter your Balance: ");
     printf("Enter your Phone No: ");
+    // this here also random unique number can be generated
     printf("Enter your NID No: ");
     printf("\n");
     printf("Account Created Successfully\n");
