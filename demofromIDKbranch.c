@@ -364,43 +364,36 @@ void Balance(char *username, int count, AccountInfo *account_info)
 
 void CashDeposit(char *username, int count, AccountInfo *account_info)
 {
-    long long deposit;
-    int index, matchingAccounts[MAX_ACCOUNTS], i, matchingCount = 0;
-    char password[30];
+    long long deposit, old_balance;
+    int *matchingAccounts = malloc(count * sizeof(int));
+    int i, choice, matchingCount = 0;
 
-    printf("Enter Account No: ");
-    long long AccountNo;
-    scanf("%lld", &AccountNo);
+    int found = MatchAndShow(username, account_info, count, matchingAccounts);
 
-    index = MatchAndShow(username, account_info, count, matchingAccounts);
-
-    if (index == -1)
+    if (found == 0)
     {
         printf("No matching accounts found.\n");
         return;
     }
 
-    if (account_info[matchingAccounts[index]].AccountNo == AccountNo)
-    {
-        printf("Enter deposit amount: ");
-        scanf("%lld", &deposit);
-
-        printf("Enter password: ");
-        scanf("%29s", password);
-
-        if (strcmp(password, account_info[matchingAccounts[index]].Password) == 0)
-        {
-            account_info[matchingAccounts[index]].Balance += deposit;
-            printf("Deposit successful!\n");
-        }
-        else
-        {
-            printf("Invalid password.\n");
-        }
-    }
     else
     {
-        printf("No matching accounts found.\n");
+        printf("Choose the corresponding Account (1/2/3...): ");
+        scanf("%d", &choice);
+        int index = matchingAccounts[choice - 1];
+
+        printf("\nEnter the amount to deposit: ");
+        scanf("%lld", &deposit);
+        printf("\n");
+
+        old_balance = account_info[index].Balance;
+
+        account_info[index].Balance = account_info[index].Balance + deposit;
+
+        printf("Account Deposit Successful\n");
+        printf("Current Balnce: Tk. %lld only", account_info[index].Balance);
+
+        printf("\n \n");
     }
 
     FILE *fp = fopen(ACCOUNT_DATA, "w");
@@ -412,12 +405,13 @@ void CashDeposit(char *username, int count, AccountInfo *account_info)
 
     for (i = 0; i < count; i++)
     {
-        fprintf(fp, "Name: %s\nAccount Type: %s\nAccount No: %lld\nBalance: %lld\nPhone: %lld\nNID No: %lld\nUsername: %s\n",
+        fprintf(fp, "Name: %s\nAccount Type: %s\nAccount No: %lld\nBalance: %lld\nPhone: %lld\nNID No: %lld\nUsername: %s\n\n",
                 account_info[i].Name, account_info[i].AccountType, account_info[i].AccountNo,
                 account_info[i].Balance, account_info[i].Phone, account_info[i].NID, account_info[i].Username);
     }
 
     fclose(fp);
+    free(matchingAccounts);
 }
 
 void CashWithdrawal(char *username, int count, AccountInfo *account_info)
