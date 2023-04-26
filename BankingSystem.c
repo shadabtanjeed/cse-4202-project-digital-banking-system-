@@ -23,6 +23,7 @@ typedef struct AccountInfo
     long long Phone;
     long long NID;
     char Username[30];
+    char Password[30];
 } AccountInfo;
 
 int loginverify(char *userid, char *pass);
@@ -35,7 +36,7 @@ int MatchAndShow(char *usname, struct AccountInfo *Accounts, int counter, int *m
 void Balance(char *username, int count, AccountInfo *account_info);
 void CashDeposit(char *username, int count, AccountInfo *account_info);
 void CashWithdrawal(char *username, int count, AccountInfo *account_info);
-
+int CheckAccountExists(long long accountNo);
 
 int main()
 {
@@ -123,7 +124,6 @@ void mainmenu(char *usernm)
         printf("10. ATM/Branch Locations\n");
         printf("11. Customer Support\n");
         printf("12. Exit\n");
-
         printf("\n");
         printf("Choose your option: ");
         scanf("%d", &menuchoice);
@@ -199,6 +199,7 @@ int loginverify(char *userid, char *pass)
         return 0;
     }
 
+    
     while (fscanf(fp, "Username: %s\nPassword: %s\n", user, password) == 2)
     {
         if (strcmp(userid, user) == 0 && strcmp(pass, password) == 0)
@@ -214,25 +215,98 @@ int loginverify(char *userid, char *pass)
 
 void createaccount()
 {
-    char username[20], password[20];
-    printf("Enter your login credentials: \n");
-    // a function can be added to check uniquenness
+    AccountInfo newAccount;
+    printf("\nEnter your Name (first and last name): ");
+    scanf(" %[^\n]s", newAccount.Name);
+    printf("Enter Account Type (Savings or Current or Fixed Deposit): ");
+    scanf(" %[^\n]s", newAccount.AccountType);
+    printf("Enter Initial Deposit: ");
+    scanf("%lld", &newAccount.Balance);
+    printf("Enter Phone number: ");
+    scanf("%lld", &newAccount.Phone);
+    printf("Enter NID number: ");
+    scanf("%lld", &newAccount.NID);
     printf("Enter Username: ");
-    scanf("%s", username);
-    printf("Enter Password: ");
-    scanf("%s", password);
-    printf("\n");
-    printf("Enter your Account details: \n");
-    printf("Enter your Name: ");
-    printf("Enter your Account Type (Savings/Current/Fixed Deposit): ");
-    // here unique account number is required. or it can be generated automatically
-    printf("Enter your Account No: ");
-    printf("Enter your Balance: ");
-    printf("Enter your Phone No: ");
-    printf("Enter your NID No: ");
-    printf("\n");
-    printf("Account Created Successfully\n");
-    printf("\n");
+    scanf("%s", newAccount.Username);
+    
+    // prompt for password
+    char password[30];
+    do {
+        printf("Enter Password (at least 10 characters): ");
+        scanf("%s", password);
+    } while (strlen(password) < 10);
+    strcpy(newAccount.Password, password);
+
+    // generate 10-digit account number
+    srand(time(0));
+    long long int accountNo = rand() % 9000000000 + 1000000000; // range from 1000000000 to 9999999999
+    while (CheckAccountExists(accountNo))
+    {
+        accountNo = rand() % 9000000000 + 1000000000; // generate a new account number if it already exists
+    }
+    newAccount.AccountNo = accountNo;
+
+    // add new account to first file
+    FILE *fp = fopen(ACCOUNT_DATA, "a");
+    if (fp == NULL)
+    {
+        printf("Error: Could not open file\n");
+        return;
+    }
+
+    fprintf(fp, "Name: %s\n", newAccount.Name);
+    fprintf(fp, "Account Type: %s\n", newAccount.AccountType);
+    fprintf(fp, "Account No: %lld\n", newAccount.AccountNo);
+    fprintf(fp, "Balance: %lld\n", newAccount.Balance);
+    fprintf(fp, "Phone: %lld\n", newAccount.Phone);
+    fprintf(fp, "NID No: %lld\n", newAccount.NID);
+    fprintf(fp, "Username: %s\n", newAccount.Username);
+    fprintf(fp, "Password: %s\n", newAccount.Password);
+
+    fclose(fp);
+
+
+    // add new account to the other file
+    FILE *fp1 = fopen(USER_PASS, "a");
+    if (fp1 == NULL)
+    {
+        printf("Error: Could not open file\n");
+        return;
+    }
+
+    fprintf(fp1, "Username: %s\n", newAccount.Username);
+    fprintf(fp1, "Password: %s\n", newAccount.Password);
+
+    fclose(fp1);
+
+
+    printf("\nAccount created successfully!\n");
+    printf("Your Account No: %lld\n", newAccount.AccountNo);
+}
+
+int CheckAccountExists(long long accountNo)
+{
+    FILE *fp;
+    AccountInfo account;
+    fp = fopen(ACCOUNT_DATA, "r");
+    if (fp == NULL)
+    {
+        printf("Error: Could not open file\n");
+        return 0;
+    }
+
+    while (fscanf(fp, "Name: %[^\n] \nAccount Type: %[^\n] \nAccount No: %lld\nBalance: %lld\nPhone: %lld\nNID No: %lld\nUsername: %[^\n]\n", account.Name, account.AccountType, &account.AccountNo, &account.Balance, &account.Phone, &account.NID, account.Username) == 7)
+    {
+        if (account.AccountNo == accountNo)
+        {
+            printf("Error: Account number already exists. Please try again.\n\n");
+            fclose(fp);
+            return 1;
+        }
+    }
+
+    fclose(fp);
+    return 0;
 }
 
 void SearchAndPrint(char *username, int count, AccountInfo *account_info)
@@ -304,82 +378,97 @@ void Balance(char *username, int count, AccountInfo *account_info)
     free(matchingAccounts);
 }
 
-void CashDeposit(char *username, int count, AccountInfo *account_info)
-{
-    long long account_no, amount;
-    int i, flag = 0;
-    printf("Enter Account Number: ");
-    scanf("%lld", &account_no);
-    printf("Enter Amount to be deposited: ");
-    scanf("%lld", &amount);
-    for (i = 0; i < count; i++)
-    {
-        if (strcmp(account_info[i].Username, username) == 0 && account_info[i].AccountNo == account_no)
-        {
-            flag = 1;
-            account_info[i].Balance += amount;
-            printf("\nDeposit Successful\n");
-            printf("Account Number: %lld\n", account_info[i].AccountNo);
-            printf("New Balance: %lld\n\n", account_info[i].Balance);
+void CashDeposit(char *username, int count, AccountInfo *account_info) {
+    long long deposit;
+    int index, matchingAccounts[MAX_ACCOUNTS], i, matchingCount = 0;
+    char password[30];
 
-            FILE *fp = fopen(ACCOUNT_DATA, "w");
-            if (fp == NULL)
-            {
-                printf("Error: Could not open file\n");
-            }
-            for (i = 0; i < count; i++)
-            {
-                fprintf(fp, "Name: %s\nAccount Type: %s\nAccount No: %lld\nBalance: %lld\nPhone: %lld\nNID No: %lld\nUsername: %s\n", account_info[i].Name, account_info[i].AccountType, account_info[i].AccountNo, account_info[i].Balance, account_info[i].Phone, account_info[i].NID, account_info[i].Username);
-            }
-            fclose(fp);
-            break;
+    printf("Enter Account No: ");
+    long long AccountNo;
+    scanf("%lld", &AccountNo);
+
+    index = MatchAndShow(username, account_info, count, matchingAccounts);
+
+    if (index == -1) {
+        printf("No matching accounts found.\n");
+        return;
+    }
+
+    if (account_info[matchingAccounts[index]].AccountNo == AccountNo) {
+        printf("Enter deposit amount: ");
+        scanf("%lld", &deposit);
+        
+        printf("Enter password: ");
+        scanf("%29s", password);
+
+        if (strcmp(password, account_info[matchingAccounts[index]].Password) == 0) {
+            account_info[matchingAccounts[index]].Balance += deposit;
+            printf("Deposit successful!\n");
+        } else {
+            printf("Invalid password.\n");
         }
+    } else {
+        printf("No matching accounts found.\n");
     }
-    if (flag == 0)
-    {
-        printf("\nAccount not found or you do not have the permission to deposit in this account\n\n");
+
+    FILE *fp = fopen(ACCOUNT_DATA, "w");
+    if (fp == NULL) {
+        printf("Error: Could not open file.\n");
+        return;
     }
+
+    for (i = 0; i < count; i++) {
+        fprintf(fp, "Name: %s\nAccount Type: %s\nAccount No: %lld\nBalance: %lld\nPhone: %lld\nNID No: %lld\nUsername: %s\n",
+            account_info[i].Name, account_info[i].AccountType, account_info[i].AccountNo,
+            account_info[i].Balance, account_info[i].Phone, account_info[i].NID, account_info[i].Username);
+    }
+
+    fclose(fp);
 }
 
 void CashWithdrawal(char *username, int count, AccountInfo *account_info)
 {
-    long long account_no, withdraw_amount;
-    int i, account_index = -1;
-    printf("Enter account number: ");
-    scanf("%lld", &account_no);
-    for (i = 0; i < count; i++)
+    long long amount, accountno;
+    char password[30];
+    int found = 0;
+
+    printf("Enter account no: ");
+    scanf("%lld", &accountno);
+
+    for (int i = 0; i < count; ++i)
     {
-        if (strcmp(account_info[i].Username, username) == 0 && account_info[i].AccountNo == account_no)
+        if (strcmp(account_info[i].Username, username) == 0 && account_info[i].AccountNo == accountno)
         {
-            account_index = i;
+            printf("Enter amount to withdraw: ");
+            scanf("%lld", &amount);
+            printf("Enter password: ");
+            scanf("%s", password);
+
+            // check if password is correct
+            if (strcmp(password, account_info[i].Password) != 0)
+            {
+                printf("Incorrect password\n");
+                return;
+            }
+
+            if (account_info[i].Balance - amount < 0)
+            {
+                printf("Insufficient balance\n");
+            }
+            else
+            {
+                account_info[i].Balance -= amount;
+                printf("Withdrawal successful. Your new balance is %lld\n", account_info[i].Balance);
+            }
+            found = 1;
             break;
         }
     }
-    if (account_index == -1)
+    if (found == 0)
     {
-        printf("Account not found.\n");
-        return;
+        printf("Account not found\n");
     }
-    printf("Enter amount to withdraw: ");
-    scanf("%lld", &withdraw_amount);
-    if (withdraw_amount > account_info[account_index].Balance)
-    {
-        printf("Insufficient balance.\n");
-        return;
-    }
-    account_info[account_index].Balance -= withdraw_amount;
-    FILE *fp = fopen(ACCOUNT_DATA, "w");
-    if (fp == NULL)
-    {
-        printf("Error: Could not open file\n");
-        return;
-    }
-    for (i = 0; i < count; i++)
-    {
-        fprintf(fp, "Name: %s\nAccount Type: %s\nAccount No: %lld\nBalance: %lld\nPhone: %lld\nNID No: %lld\nUsername: %s\n\n", account_info[i].Name, account_info[i].AccountType, account_info[i].AccountNo, account_info[i].Balance, account_info[i].Phone, account_info[i].NID, account_info[i].Username);
-    }
-    fclose(fp);
-    printf("Cash withdrawn successfully. Updated balance: %lld\n", account_info[account_index].Balance);
 }
+
 
 
