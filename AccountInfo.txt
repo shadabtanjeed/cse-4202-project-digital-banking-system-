@@ -1,7 +1,7 @@
 Name: Elizabeth Smith 
 Account Type: Savings
 Account No: 6549873214
-Balance: 93850
+Balance: 93800
 Phone: 8801912345678
 NID No: 124356789
 Username: ElizabethSmith

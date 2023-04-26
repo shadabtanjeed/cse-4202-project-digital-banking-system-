@@ -421,4 +421,58 @@ void CashDeposit(char *username, int count, AccountInfo *account_info)
 
 void CashWithdrawal(char *username, int count, AccountInfo *account_info)
 {
+    long long withdrawal, old_balance;
+    int *matchingAccounts = malloc(count * sizeof(int));
+    int i, choice, matchingCount = 0;
+
+    int found = MatchAndShow(username, account_info, count, matchingAccounts);
+
+    if (found == 0)
+    {
+        printf("No matching accounts found.\n");
+        return;
+    }
+
+    else
+    {
+        printf("Choose the corresponding Account (1/2/3...): ");
+        scanf("%d", &choice);
+        int index = matchingAccounts[choice - 1];
+
+        printf("\nEnter the amount to withdraw: ");
+        scanf("%lld", &withdrawal);
+        printf("\n");
+
+        old_balance = account_info[index].Balance;
+
+        if (withdrawal > old_balance)
+            printf("Not sufficient balance\n\n");
+
+        else
+        {
+            account_info[index].Balance = account_info[index].Balance - withdrawal;
+
+            printf("Account Deposit Successful\n");
+            printf("Current Balnce: Tk. %lld only", account_info[index].Balance);
+
+            printf("\n \n");
+        }
+    }
+
+    FILE *fp = fopen(ACCOUNT_DATA, "w");
+    if (fp == NULL)
+    {
+        printf("Error: Could not open file.\n");
+        return;
+    }
+
+    for (i = 0; i < count; i++)
+    {
+        fprintf(fp, "Name: %s\nAccount Type: %s\nAccount No: %lld\nBalance: %lld\nPhone: %lld\nNID No: %lld\nUsername: %s\n\n",
+                account_info[i].Name, account_info[i].AccountType, account_info[i].AccountNo,
+                account_info[i].Balance, account_info[i].Phone, account_info[i].NID, account_info[i].Username);
+    }
+
+    fclose(fp);
+    free(matchingAccounts);
 }
