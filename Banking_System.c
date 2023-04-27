@@ -1,7 +1,7 @@
 /*
 __________IMPORTANT NOTES__________
 For inputting Name manually in the text file put a space after the last name
-For inputting Fixed Deposit as Account typein the text file, put a space at last
+For inputting Fixed Deposit as Account type in the text file, put a space at last
 */
 
 #include <stdio.h>
