@@ -49,6 +49,7 @@ void CashDeposit(char *username, int count, AccountInfo *account_info);
 void CashWithdrawal(char *username, int count, AccountInfo *account_info);
 int CheckAccountExists(long long accountNo);
 void CreateAccount2();
+void CreateAnotherAccount(char *username, int count, AccountInfo *account_info);
 void Transaction(long long ac_no, char *date, char *trnx_type, long long old_balance, long long trnx_amnt, long long new_balance);
 void generate_transaction_id(char *id);
 void Statement(char *username, AccountInfo *account_info, int counter);
@@ -139,11 +140,12 @@ void mainmenu(char *usernm)
         printf("5. Fund Transfer\n");
         printf("6. Benificiary Management\n");
         printf("7. Mini Statement\n");
-        printf("8. Account Settings\n");
-        printf("9. Close Account\n");
-        printf("10. ATM/Branch Locations\n");
-        printf("11. Customer Support\n");
-        printf("12. Exit\n");
+        printf("8. Create Another Account\n");
+        printf("9. Account Settings\n");
+        printf("10. Close Account\n");
+        printf("11. ATM/Branch Locations\n");
+        printf("12. Customer Support\n");
+        printf("13. Exit\n");
         printf("\n");
         printf("Choose your option: ");
         scanf("%d", &menuchoice);
@@ -175,7 +177,8 @@ void mainmenu(char *usernm)
             Statement(usernm, account_info, count);
             break;
         case 8:
-
+            CreateAnotherAccount(usernm, count, account_info);
+            break;
         case 9:
 
         case 10:
@@ -183,6 +186,8 @@ void mainmenu(char *usernm)
         case 11:
 
         case 12:
+
+        case 13:
             free(account_info);
             return;
             break;
@@ -389,6 +394,62 @@ void CreateAccount2()
     fprintf(fp1, "Password: %s\n", password);
 
     fclose(fp1);
+
+    printf("\nAccount created successfully!\n");
+    printf("Your Account No: %lld\n\n", account_info[count].AccountNo);
+
+    count++;
+
+    FILE *fp4 = fopen(ACCOUNT_DATA, "w");
+    if (fp4 == NULL)
+    {
+        printf("Error: Could not open file.\n");
+        return;
+    }
+
+    for (int i = 0; i < count; i++)
+    {
+        fprintf(fp4, "Name: %s \nAccount Type: %s \nAccount No: %lld\nBalance: %lld\nPhone: %lld\nNID No: %lld\nUsername: %s\n\n",
+                account_info[i].Name, account_info[i].AccountType, account_info[i].AccountNo,
+                account_info[i].Balance, account_info[i].Phone, account_info[i].NID, account_info[i].Username);
+    }
+
+    fclose(fp4);
+}
+
+void CreateAnotherAccount(char *username, int count, AccountInfo *account_info)
+{
+    int found_index;
+    for (int i = 0; i < count; i++)
+    {
+        scanf("Name: %s \nAccount Type: %s \nAccount No: %lld\nBalance: %lld\nPhone: %lld\nNID No: %lld\nUsername: %s\n\n",
+              account_info[i].Name, account_info[i].AccountType, &account_info[i].AccountNo,
+              &account_info[i].Balance, &account_info[i].Phone, &account_info[i].NID, account_info[i].Username);
+
+        if (strcmp(username, account_info[i].Username) == 0)
+        {
+            found_index = i;
+            break;
+        }
+    }
+
+    printf("Enter Account Type (Savings or Current or Fixed Deposit): ");
+    scanf(" %[^\n]", account_info[count].AccountType);
+    printf("Enter Initial Deposit: ");
+    scanf("%lld", &account_info[count].Balance);
+
+    strcpy(account_info[count].Name, account_info[found_index].Name);
+    account_info[count].NID = account_info[found_index].NID;
+    account_info[count].Phone = account_info[found_index].Phone;
+    strcpy(account_info[count].Username, account_info[found_index].Username);
+
+    srand(time(0));
+    long long int accountNo = rand() % 9000000000 + 1000000000;
+    while (CheckAccountExists(accountNo))
+    {
+        accountNo = rand() % 9000000000 + 1000000000;
+    }
+    account_info[count].AccountNo = accountNo;
 
     printf("\nAccount created successfully!\n");
     printf("Your Account No: %lld\n\n", account_info[count].AccountNo);
