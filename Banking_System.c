@@ -675,7 +675,7 @@ void Statement(char *username, AccountInfo *account_info, int counter)
 
         int count_transaction = 0;
 
-        while (fscanf(fp, "Transaction ID: %[^\n] \nAccount No: %lld\nTransaction Date: %[^\n] \nTransaction Type: %[^\n] \nPrevious Balance: %lld\nTransaction Amount: %lld\nUpdated Balance: %lld\n", transaction_info[count_transaction].TRNX_ID, &transaction_info[count_transaction].AC_No, transaction_info[count_transaction].Date, transaction_info[count_transaction].Transaction_Type, &transaction_info[count_transaction].OLD_Balance, &transaction_info[count_transaction].TRNX_Amount, &transaction_info[count_transaction].NEW_Balance) == 7)
+        while (fscanf(fp, "Transaction ID: %s\nAccount No: %lld\nTransaction Date: %s\nTransaction Type: %s\nPrevious Balance: %lld\nTransaction Amount: %lld\nUpdated Balance: %lld\n", transaction_info[count_transaction].TRNX_ID, &transaction_info[count_transaction].AC_No, transaction_info[count_transaction].Date, transaction_info[count_transaction].Transaction_Type, &transaction_info[count_transaction].OLD_Balance, &transaction_info[count_transaction].TRNX_Amount, &transaction_info[count_transaction].NEW_Balance) == 7)
         {
             count_transaction++;
         }
@@ -690,9 +690,9 @@ void Statement(char *username, AccountInfo *account_info, int counter)
                 if (transactions == 1)
                 {
                     printf("\n\n");
-                    printf("Transaction ID\tTransaction Date\tTransaction Type\tPrevious Balance\tUpdated Balance\n\n");
+                    printf("%-21s %-21s %-21s %-21s %-21s\n", "Transaction ID", "Transaction Date", "Transaction Type", "Previous Balance", "Updated Balance");
                 }
-                printf("%s\t%lld\t%s\t%s\t%lld\t%lld\t%lld\n", transaction_info[i].TRNX_ID, transaction_info[i].AC_No, transaction_info[i].Date, transaction_info[i].Transaction_Type, transaction_info[i].OLD_Balance, transaction_info[i].TRNX_Amount, transaction_info[i].NEW_Balance);
+                printf("%-21s %-21s %-21s %-21lld %-21lld\n", transaction_info[i].TRNX_ID, transaction_info[i].Date, transaction_info[i].Transaction_Type, transaction_info[i].OLD_Balance, transaction_info[i].NEW_Balance);
             }
         }
         printf("\n\n");
