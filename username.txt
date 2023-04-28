@@ -1,6 +1,3 @@
-Username: ElizabethSmith
-Password: G7FkPvHd3m
-
 Username: ChristopherJones
 Password: 2QvC8zNtLs
 
@@ -88,8 +85,6 @@ Password: fdfewfwvwefwef
 Username: AdnanSami
 Password: frgf3fw4fww
 
-Username: NickMiller
-Password: asfrgrfwfsvfw
-
 Username: ZubayerRuhit
 Password: rajshahipabna
+

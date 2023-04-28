@@ -37,8 +37,13 @@ typedef struct TransactionInfo
     char TRNX_ID[10];
 } TransactionInfo;
 
+typedef struct Username
+{
+    char Username[30];
+    char Password[30];
+} Username;
+
 int loginverify(char *userid, char *pass);
-void createaccount();
 void mainmenu(char *usernm);
 int ReadAccountInfo();
 void ViewAccounts(char *usrnm, int sumaccounts);
@@ -55,7 +60,7 @@ void generate_transaction_id(char *id);
 void Statement(char *username, AccountInfo *account_info, int counter);
 void swap_transactions(TransactionInfo *a, TransactionInfo *b);
 void sort_transactions_by_date(TransactionInfo *transaction_info, int count_transaction);
-
+void CloseAccount(char *username, int count, int count_user, AccountInfo *account_info, Username *user_name);
 int compare_dates(TransactionInfo *a, TransactionInfo *b);
 
 int main()
@@ -97,7 +102,6 @@ int main()
             }
             break;
         case 2:
-            // createaccount();
             CreateAccount2();
             break;
         case 3:
@@ -113,15 +117,20 @@ int main()
 void mainmenu(char *usernm)
 {
     int menuchoice = 100;
+
     AccountInfo *account_info = (AccountInfo *)malloc(MAX_ACCOUNTS * sizeof(AccountInfo));
+    Username *user_name = (Username *)malloc(MAX_ACCOUNTS * sizeof(Username));
+
     while (menuchoice != 12)
     {
-        int count = 0;
+        int count = 0, count_user = 0;
 
         FILE *fp;
+        FILE *fp5;
 
         fp = fopen(ACCOUNT_DATA, "r");
-        if (fp == NULL)
+        fp5 = fopen(USER_PASS, "r");
+        if (fp == NULL || fp5 == NULL)
         {
             printf("Error: Could not open file\n");
         }
@@ -131,7 +140,13 @@ void mainmenu(char *usernm)
             ++count;
         }
 
+        while (fscanf(fp5, "Username: %s\nPassword: %s\n", user_name[count_user].Username, user_name[count_user].Password) == 2)
+        {
+            count_user++;
+        }
+
         fclose(fp);
+        fclose(fp5);
 
         printf("1. View All Accounts\n");
         printf("2. Check Balance\n");
@@ -182,7 +197,8 @@ void mainmenu(char *usernm)
         case 9:
 
         case 10:
-
+            CloseAccount(usernm, count, count_user, account_info, user_name);
+            break;
         case 11:
 
         case 12:
@@ -223,84 +239,6 @@ int loginverify(char *userid, char *pass)
     fclose(fp);
     return found;
 }
-
-/*
-void createaccount()
-{
-    AccountInfo newAccount;
-
-    char balance[10], phone[13], nid[9];
-
-    printf("\nEnter your Name (first and last name): ");
-    scanf("%s", newAccount.Name);
-    printf("Enter Account Type (Savings or Current or Fixed Deposit): ");
-    scanf("%s", newAccount.AccountType);
-    printf("Enter Initial Deposit: ");
-    scanf("%s", balance);
-    printf("Enter Phone number (13 digits): ");
-    scanf("%s", phone);
-    printf("Enter NID number (9 digits): ");
-    scanf("%s", nid);
-    printf("Enter Username: ");
-    scanf("%s", newAccount.Username);
-
-    newAccount.Balance = atoi(balance);
-    newAccount.Phone = atoi(phone);
-    newAccount.NID = atoi(nid);
-
-    // prompt for password
-    char password[30];
-    do
-    {
-        printf("Enter Password (at least 10 characters): ");
-        scanf("%s", password);
-    } while (strlen(password) < 10);
-
-    // generate 10-digit account number
-    srand(time(0));
-    long long int accountNo = rand() % 9000000000 + 1000000000; // range from 1000000000 to 9999999999
-    while (CheckAccountExists(accountNo))
-    {
-        accountNo = rand() % 9000000000 + 1000000000; // generate a new account number if it already exists
-    }
-    newAccount.AccountNo = accountNo;
-
-    // add new account to first file
-    FILE *fp3 = fopen(ACCOUNT_DATA, "a");
-    if (fp3 == NULL)
-    {
-        printf("Error: Could not open file\n");
-        return;
-    }
-
-    fprintf(fp3, "Name: %s\n", newAccount.Name);
-    fprintf(fp3, "Account Type: %s\n", newAccount.AccountType);
-    fprintf(fp3, "Account No: %lld\n", newAccount.AccountNo);
-    fprintf(fp3, "Balance: %lld\n", newAccount.Balance);
-    fprintf(fp3, "Phone: %lld\n", newAccount.Phone);
-    fprintf(fp3, "NID No: %lld\n", newAccount.NID);
-    fprintf(fp3, "Username: %s\n", newAccount.Username);
-    fprintf(fp3, "Password: %s\n", password);
-
-    fclose(fp3);
-
-    // add new account to the other file
-    FILE *fp1 = fopen(USER_PASS, "a");
-    if (fp1 == NULL)
-    {
-        printf("Error: Could not open file\n");
-        return;
-    }
-
-    fprintf(fp1, "Username: %s\n", newAccount.Username);
-    fprintf(fp1, "Password: %s\n", password);
-
-    fclose(fp1);
-
-    printf("\nAccount created successfully!\n");
-    printf("Your Account No: %lld\n", newAccount.AccountNo);
-}
-*/
 
 int CheckAccountExists(long long accountNo)
 {
@@ -490,7 +428,7 @@ void SearchAndPrint(char *username, int count, AccountInfo *account_info)
 
     if (!found)
     {
-        printf("No matching accounts found\n");
+        printf("No matching accounts found\n\n");
     }
 }
 
@@ -842,4 +780,81 @@ void Statement(char *username, AccountInfo *account_info, int counter)
             printf("No transactions found!!\n\n");
         free(transaction_info);
     }
+}
+
+void CloseAccount(char *username, int count, int count_user, AccountInfo *account_info, Username *user_name)
+{
+    int i, j, flag = 0;
+
+    int *matchingAccounts = malloc(count * sizeof(int));
+    int BalanceChoice;
+    int found = MatchAndShow(username, account_info, count, matchingAccounts);
+    if (found == 0)
+        printf("No accounts found \n\n");
+    else
+    {
+        printf("Choose the corresponding Account (1/2/3...): ");
+        scanf("%d", &BalanceChoice);
+        int index = matchingAccounts[BalanceChoice - 1];
+
+        for (int j = index; j < count - 1; j++)
+        {
+            account_info[j] = account_info[j + 1];
+        }
+
+        printf("\nAccount closed successfully.\n\n");
+
+        // Update account and username files
+        FILE *fp;
+
+        fp = fopen(ACCOUNT_DATA, "w");
+
+        if (fp == NULL)
+        {
+            printf("Error: Could not open file\n");
+            return;
+        }
+
+        for (i = 0; i < count - 1; i++)
+        {
+            fprintf(fp, "Name: %s\nAccount Type: %s\nAccount No: %lld\nBalance: %lld\nPhone: %lld\nNID No: %lld\nUsername: %s\n\n", account_info[i].Name, account_info[i].AccountType, account_info[i].AccountNo, account_info[i].Balance, account_info[i].Phone, account_info[i].NID, account_info[i].Username);
+        }
+        fclose(fp);
+
+        if (found == 1)
+        {
+
+            int user_index;
+            for (int i = 0; i < count_user; ++i)
+            {
+                if (strcmp(user_name[i].Username, username) == 0)
+                {
+                    user_index = i;
+                    break;
+                }
+            }
+
+            for (int j = user_index; j < count_user - 1; j++)
+            {
+                user_name[j] = user_name[j + 1];
+            }
+
+            FILE *fp5;
+            fp5 = fopen(USER_PASS, "w");
+
+            if (fp5 == NULL)
+            {
+                printf("Error: Could not open file\n");
+                return;
+            }
+
+            for (i = 0; i < count_user - 1; i++)
+            {
+                fprintf(fp5, "Username: %s\nPassword: %s\n\n", user_name[i].Username, user_name[i].Password);
+            }
+            fclose(fp5);
+        }
+    }
+
+    free(matchingAccounts);
 }

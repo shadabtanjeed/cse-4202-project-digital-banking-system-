@@ -37,7 +37,7 @@ void CashDeposit(char *username, int count, AccountInfo *account_info);
 void CashWithdrawal(char *username, int count, AccountInfo *account_info);
 int CheckAccountExists(long long accountNo);
 void CreateAccount2();
-void CloseAccount(char *username, int count, AccountInfo *account_info, Username *user_name);
+void CloseAccount(char *username, int count, int count_user, AccountInfo *account_info, Username *user_name);
 
 int main()
 {
@@ -115,9 +115,10 @@ void mainmenu(char *usernm)
             ++count;
         }
 
-        for(int k = 0; k < count; k++)
+        int count_user = 0;
+        while (fscanf(fp5, "Username: %s\nPassword: %s\n", user_name[count_user].Username, user_name[count_user].Password) == 2)
         {
-            fscanf(fp5, "Username: %s\nPassword: %s\n", user_name[k].Username, user_name[k].Password ) == 2;
+            count_user++;
         }
 
         fclose(fp);
@@ -167,9 +168,8 @@ void mainmenu(char *usernm)
         case 8:
 
         case 9:
-            CloseAccount(usernm, count, account_info, user_name);
+            CloseAccount(usernm, count, count_user, account_info, user_name);
             break;
-
 
         case 10:
 
@@ -212,38 +212,31 @@ int loginverify(char *userid, char *pass)
     return found;
 }
 
-void CloseAccount(char *username, int count, AccountInfo *account_info, Username *user_name)
+void CloseAccount(char *username, int count, int count_user, AccountInfo *account_info, Username *user_name)
 {
-    long long accountNo;
     int i, j, flag = 0;
 
-    printf("Enter Account Number: ");
-    scanf("%lld", &accountNo);
-
-    // Check if the account number belongs to the user
-    for (i = 0; i < count; i++)
+    int *matchingAccounts = malloc(count * sizeof(int));
+    int BalanceChoice;
+    int found = MatchAndShow(username, account_info, count, matchingAccounts);
+    if (found == 0)
+        printf("No accounts found \n\n");
+    else
     {
-        if (account_info[i].AccountNo == accountNo && strcmp(account_info[i].Username, username) == 0)
-        {
-            flag = 1;
-            break;
-        }
-    }
+        printf("Choose the corresponding Account (1/2/3...): ");
+        scanf("%d", &BalanceChoice);
+        int index = matchingAccounts[BalanceChoice - 1];
 
-    // If account belongs to the user, remove the account information and update files
-    if (flag == 1)
-    {
-        for (j = i; j < count - 1; j++)
+        for (int j = index; j < count - 1; j++)
         {
             account_info[j] = account_info[j + 1];
-            user_name[j] = user_name[j+1];
         }
 
-        printf("\nAccount closed successfully.\n");
+        printf("\nAccount closed successfully.\n\n");
 
         // Update account and username files
         FILE *fp;
-        
+
         fp = fopen(ACCOUNT_DATA, "w");
 
         if (fp == NULL)
@@ -254,32 +247,46 @@ void CloseAccount(char *username, int count, AccountInfo *account_info, Username
 
         for (i = 0; i < count - 1; i++)
         {
-            fprintf(fp, "Name: %s\nAccount Type: %s\nAccount No: %lld\nBalance: %lld\nPhone: %lld\nNID No: %lld\nUsername: %s\n", account_info[i].Name, account_info[i].AccountType, account_info[i].AccountNo, account_info[i].Balance, account_info[i].Phone, account_info[i].NID, account_info[i].Username);
+            fprintf(fp, "Name: %s\nAccount Type: %s\nAccount No: %lld\nBalance: %lld\nPhone: %lld\nNID No: %lld\nUsername: %s\n\n", account_info[i].Name, account_info[i].AccountType, account_info[i].AccountNo, account_info[i].Balance, account_info[i].Phone, account_info[i].NID, account_info[i].Username);
         }
         fclose(fp);
-        
-        FILE *fp5;
-        fp5 = fopen(USER_PASS, "w");
 
-        if (fp5 == NULL)
+        if (found == 1)
         {
-            printf("Error: Could not open file\n");
-            return;
+
+            int user_index;
+            for (int i = 0; i < count_user; ++i)
+            {
+                if (strcmp(user_name[i].Username, username) == 0)
+                {
+                    user_index = i;
+                    break;
+                }
+            }
+
+            for (int j = user_index; j < count_user - 1; j++)
+            {
+                user_name[j] = user_name[j + 1];
+            }
+
+            FILE *fp5;
+            fp5 = fopen(USER_PASS, "w");
+
+            if (fp5 == NULL)
+            {
+                printf("Error: Could not open file\n");
+                return;
+            }
+
+            for (i = 0; i < count - 1; i++)
+            {
+                fprintf(fp5, "Username: %s\nPassword: %s\n\n", user_name[i].Username, user_name[i].Password);
+            }
+            fclose(fp5);
         }
-
-        for (i = 0; i < count - 1; i++)
-        {
-            fprintf(fp5, "Username: %s\nPassword: %s\n", user_name[i].Username, user_name[i].Password);
-        }
-        fclose(fp5);
-
-    
-
     }
-    else
-    {
-        printf("\nAccount not found or does not belong to you.\n");
-    }
+
+    free(matchingAccounts);
 }
 
 int CheckAccountExists(long long accountNo)
@@ -414,7 +421,7 @@ void SearchAndPrint(char *username, int count, AccountInfo *account_info)
 
     if (!found)
     {
-        printf("No matching accounts found\n");
+        printf("No matching accounts found\n\n");
     }
 }
 
