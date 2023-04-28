@@ -105,17 +105,19 @@ void mainmenu(char *usernm)
 
         fp = fopen(ACCOUNT_DATA, "r");
         fp5 = fopen(USER_PASS, "r");
-        if (fp == NULL && fp5 == NULL)
+        if (fp == NULL || fp5 == NULL)
         {
             printf("Error: Could not open file\n");
         }
 
         while (fscanf(fp, "Name: %[^\n] \nAccount Type: %[^\n] \nAccount No: %lld\nBalance: %lld\nPhone: %lld\nNID No: %lld\nUsername: %s\n", account_info[count].Name, account_info[count].AccountType, &account_info[count].AccountNo, &account_info[count].Balance, &account_info[count].Phone, &account_info[count].NID, account_info[count].Username) == 7)
         {
-            while (fscanf(fp5, "Username: %s\nPassword: %s\n", user_name[count].Username, user_name[count].Password ) == 2)
-            {
-                ++count;
-            }
+            ++count;
+        }
+
+        for(int k = 0; k < count; k++)
+        {
+            fscanf(fp5, "Username: %s\nPassword: %s\n", user_name[k].Username, user_name[k].Password ) == 2;
         }
 
         fclose(fp);
@@ -241,11 +243,10 @@ void CloseAccount(char *username, int count, AccountInfo *account_info, Username
 
         // Update account and username files
         FILE *fp;
-        FILE *fp5;
+        
         fp = fopen(ACCOUNT_DATA, "w");
-        fp5 = fopen(USER_PASS, "w");
 
-        if (fp == NULL || fp5 == NULL)
+        if (fp == NULL)
         {
             printf("Error: Could not open file\n");
             return;
@@ -254,11 +255,25 @@ void CloseAccount(char *username, int count, AccountInfo *account_info, Username
         for (i = 0; i < count - 1; i++)
         {
             fprintf(fp, "Name: %s\nAccount Type: %s\nAccount No: %lld\nBalance: %lld\nPhone: %lld\nNID No: %lld\nUsername: %s\n", account_info[i].Name, account_info[i].AccountType, account_info[i].AccountNo, account_info[i].Balance, account_info[i].Phone, account_info[i].NID, account_info[i].Username);
-            fprintf(fp5, "Username: %s\nPassword: %s\n", user_name[i].Username, user_name[i].Password);
+        }
+        fclose(fp);
+        
+        FILE *fp5;
+        fp5 = fopen(USER_PASS, "w");
+
+        if (fp5 == NULL)
+        {
+            printf("Error: Could not open file\n");
+            return;
         }
 
-        fclose(fp);
+        for (i = 0; i < count - 1; i++)
+        {
+            fprintf(fp5, "Username: %s\nPassword: %s\n", user_name[i].Username, user_name[i].Password);
+        }
         fclose(fp5);
+
+    
 
     }
     else
