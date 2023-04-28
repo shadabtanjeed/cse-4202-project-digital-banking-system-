@@ -26,7 +26,7 @@ typedef struct AccountInfo
     char Username[30];
 } AccountInfo;
 
-typedef struct Transaction_Info
+typedef struct TransactionInfo
 {
     long long AC_No;
     char Date[12];
@@ -35,7 +35,7 @@ typedef struct Transaction_Info
     long long TRNX_Amount;
     long long NEW_Balance;
     char TRNX_ID[10];
-} Transaction_Info;
+} TransactionInfo;
 
 int loginverify(char *userid, char *pass);
 void createaccount();
@@ -51,6 +51,7 @@ int CheckAccountExists(long long accountNo);
 void CreateAccount2();
 void Transaction(long long ac_no, char *date, char *trnx_type, long long old_balance, long long trnx_amnt, long long new_balance);
 void generate_transaction_id(char *id);
+void Statement(char *username, AccountInfo *account_info, int counter);
 
 int main()
 {
@@ -167,7 +168,8 @@ void mainmenu(char *usernm)
         case 6:
 
         case 7:
-
+            Statement(usernm, account_info, count);
+            break;
         case 8:
 
         case 9:
@@ -648,4 +650,55 @@ void generate_transaction_id(char *id)
     }
 
     fclose(fp1);
+}
+
+void Statement(char *username, AccountInfo *account_info, int counter)
+{
+    int *matchingAccounts = malloc(counter * sizeof(int));
+    int choice;
+    int found = MatchAndShow(username, account_info, counter, matchingAccounts);
+    if (found == 0)
+        printf("No accounts found \n\n");
+    else
+    {
+        printf("Choose the corresponding Account (1/2/3...): ");
+        scanf("%d", &choice);
+        int index = matchingAccounts[choice - 1];
+        long long account_no = account_info[index].AccountNo;
+
+        free(matchingAccounts);
+
+        TransactionInfo *transaction_info = malloc(MAX_ACCOUNTS * sizeof(TransactionInfo));
+
+        FILE *fp;
+        fp = fopen(TRANSACTION_HISTORY, "r");
+
+        int count_transaction = 0;
+
+        while (fscanf(fp, "Transaction ID: %[^\n] \nAccount No: %lld\nTransaction Date: %[^\n] \nTransaction Type: %[^\n] \nPrevious Balance: %lld\nTransaction Amount: %lld\nUpdated Balance: %lld\n", transaction_info[count_transaction].TRNX_ID, &transaction_info[count_transaction].AC_No, transaction_info[count_transaction].Date, transaction_info[count_transaction].Transaction_Type, &transaction_info[count_transaction].OLD_Balance, &transaction_info[count_transaction].TRNX_Amount, &transaction_info[count_transaction].NEW_Balance) == 7)
+        {
+            count_transaction++;
+        }
+
+        int transactions = 0;
+
+        for (int i = 0; i < count_transaction; ++i)
+        {
+            if (transaction_info[i].AC_No == account_no)
+            {
+                transactions++;
+                if (transactions == 1)
+                {
+                    printf("\n\n");
+                    printf("Transaction ID\tTransaction Date\tTransaction Type\tPrevious Balance\tUpdated Balance\n\n");
+                }
+                printf("%s\t%lld\t%s\t%s\t%lld\t%lld\t%lld\n", transaction_info[i].TRNX_ID, transaction_info[i].AC_No, transaction_info[i].Date, transaction_info[i].Transaction_Type, transaction_info[i].OLD_Balance, transaction_info[i].TRNX_Amount, transaction_info[i].NEW_Balance);
+            }
+        }
+        printf("\n\n");
+
+        if (transactions == 0)
+            printf("No transactions found!!\n\n");
+        free(transaction_info);
+    }
 }
