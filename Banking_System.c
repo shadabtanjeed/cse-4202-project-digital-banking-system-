@@ -52,10 +52,6 @@ void CreateAccount2();
 void Transaction(long long ac_no, char *date, char *trnx_type, long long old_balance, long long trnx_amnt, long long new_balance);
 void generate_transaction_id(char *id);
 void Statement(char *username, AccountInfo *account_info, int counter);
-void swap_transactions(TransactionInfo *a, TransactionInfo *b);
-void sort_transactions_by_date(TransactionInfo *transaction_info, int count_transaction);
-
-int compare_dates(TransactionInfo *a, TransactionInfo *b);
 
 int main()
 {
@@ -656,76 +652,6 @@ void generate_transaction_id(char *id)
     fclose(fp1);
 }
 
-void swap_transactions(TransactionInfo *a, TransactionInfo *b)
-{
-    TransactionInfo temp = *a;
-    *a = *b;
-    *b = temp;
-}
-
-int compare_dates(TransactionInfo *a, TransactionInfo *b)
-{
-    char *date_a = a->Date;
-    char *date_b = b->Date;
-
-    int day_a, month_a, year_a, day_b, month_b, year_b;
-
-    // Splitting date_a based on its length
-    if (strlen(date_a) == 10)
-    {
-        sscanf(date_a, "%d/%d/%d", &day_a, &month_a, &year_a);
-    }
-    else if (strlen(date_a) == 8)
-    {
-        sscanf(date_a, "%2d%2d%4d", &day_a, &month_a, &year_a);
-    }
-    else
-    {
-        return 0; // Invalid date format
-    }
-
-    // Splitting date_b based on its length
-    if (strlen(date_b) == 10)
-    {
-        sscanf(date_b, "%d/%d/%d", &day_b, &month_b, &year_b);
-    }
-    else if (strlen(date_b) == 8)
-    {
-        sscanf(date_b, "%2d%2d%4d", &day_b, &month_b, &year_b);
-    }
-    else
-    {
-        return 0; // Invalid date format
-    }
-
-    if (year_a != year_b)
-    {
-        return year_a - year_b;
-    }
-    else if (month_a != month_b)
-    {
-        return month_a - month_b;
-    }
-    else
-    {
-        return day_a - day_b;
-    }
-}
-
-void sort_transactions_by_date(TransactionInfo *transaction_info, int count_transaction)
-{
-    for (int i = 0; i < count_transaction - 1; i++)
-    {
-        for (int j = 0; j < count_transaction - i - 1; j++)
-        {
-            if (compare_dates(&transaction_info[j], &transaction_info[j + 1]) > 0)
-            {
-                swap_transactions(&transaction_info[j], &transaction_info[j + 1]);
-            }
-        }
-    }
-}
-
 void Statement(char *username, AccountInfo *account_info, int counter)
 {
     int *matchingAccounts = malloc(counter * sizeof(int));
@@ -754,8 +680,6 @@ void Statement(char *username, AccountInfo *account_info, int counter)
             count_transaction++;
         }
 
-        sort_transactions_by_date(transaction_info, count_transaction);
-
         int transactions = 0;
 
         for (int i = 0; i < count_transaction; ++i)
@@ -766,16 +690,12 @@ void Statement(char *username, AccountInfo *account_info, int counter)
                 if (transactions == 1)
                 {
                     printf("\n\n");
-                    printf("%-21s %-21s %-21s %-21s %-21s %-21s\n", "Transaction Date", "Transaction ID", "Transaction Type", "Previous Balance", "Transaction Amount", "Updated Balance");
-                    printf("%-21s %-21s %-21s %-21s %-21s %-21s\n", "--------------", "------------------", "------------------", "-------------------", "-------------------", "-------------------");
+                    printf("%-21s %-21s %-21s %-21s %-21s\n", "Transaction ID", "Transaction Date", "Transaction Type", "Previous Balance", "Updated Balance");
                 }
-                printf("%-21s %-21s %-21s %-21lld %-21lld %-21lld\n", transaction_info[i].Date, transaction_info[i].TRNX_ID, transaction_info[i].Transaction_Type, transaction_info[i].OLD_Balance, transaction_info[i].TRNX_Amount, transaction_info[i].NEW_Balance);
+                printf("%-21s %-21s %-21s %-21lld %-21lld\n", transaction_info[i].TRNX_ID, transaction_info[i].Date, transaction_info[i].Transaction_Type, transaction_info[i].OLD_Balance, transaction_info[i].NEW_Balance);
             }
         }
         printf("\n\n");
-
-        if (transactions > 0)
-            printf("Final Balance: %lld\n\n", account_info[index].Balance);
 
         if (transactions == 0)
             printf("No transactions found!!\n\n");
