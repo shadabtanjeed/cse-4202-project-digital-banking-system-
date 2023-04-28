@@ -11,6 +11,7 @@ For inputting Fixed Deposit as Account type in the text file, put a space at las
 
 #define USER_PASS "./username.txt"
 #define ACCOUNT_DATA "./AccountInfo.txt"
+#define TRANSACTION_HISTORY "./Transactions.txt"
 
 #define MAX_ACCOUNTS 100
 
@@ -25,6 +26,17 @@ typedef struct AccountInfo
     char Username[30];
 } AccountInfo;
 
+typedef struct Transaction_Info
+{
+    long long AC_No;
+    char Date[12];
+    char Transaction_Type[20];
+    long long OLD_Balance;
+    long long TRNX_Amount;
+    long long NEW_Balance;
+    char TRNX_ID[10];
+} Transaction_Info;
+
 int loginverify(char *userid, char *pass);
 void createaccount();
 void mainmenu(char *usernm);
@@ -37,6 +49,8 @@ void CashDeposit(char *username, int count, AccountInfo *account_info);
 void CashWithdrawal(char *username, int count, AccountInfo *account_info);
 int CheckAccountExists(long long accountNo);
 void CreateAccount2();
+void Transaction(long long ac_no, char *date, char *trnx_type, long long old_balance, long long trnx_amnt, long long new_balance);
+void generate_transaction_id(char *id);
 
 int main()
 {
@@ -481,6 +495,10 @@ void CashDeposit(char *username, int count, AccountInfo *account_info)
         scanf("%d", &choice);
         int index = matchingAccounts[choice - 1];
 
+        char date[12];
+        printf("Enter the date of trancaction in the format (dd/mm/yyyy): ");
+        scanf("%s", date);
+
         printf("\nEnter the amount to deposit: ");
         scanf("%lld", &deposit);
         printf("\n");
@@ -488,6 +506,8 @@ void CashDeposit(char *username, int count, AccountInfo *account_info)
         old_balance = account_info[index].Balance;
 
         account_info[index].Balance = account_info[index].Balance + deposit;
+
+        Transaction(account_info[index].AccountNo, date, "Deposit", old_balance, deposit, account_info[index].Balance);
 
         printf("Account Deposit Successful\n");
         printf("Current Balnce: Tk. %lld only", account_info[index].Balance);
@@ -533,6 +553,10 @@ void CashWithdrawal(char *username, int count, AccountInfo *account_info)
         scanf("%d", &choice);
         int index = matchingAccounts[choice - 1];
 
+        char date[12];
+        printf("Enter the date of trancaction in the format (dd/mm/yyyy): ");
+        scanf("%s", date);
+
         printf("\nEnter the amount to withdraw: ");
         scanf("%lld", &withdrawal);
         printf("\n");
@@ -545,6 +569,8 @@ void CashWithdrawal(char *username, int count, AccountInfo *account_info)
         else
         {
             account_info[index].Balance = account_info[index].Balance - withdrawal;
+
+            Transaction(account_info[index].AccountNo, date, "Withdraw", old_balance, withdrawal, account_info[index].Balance);
 
             printf("Account Deposit Successful\n");
             printf("Current Balnce: Tk. %lld only", account_info[index].Balance);
@@ -569,4 +595,57 @@ void CashWithdrawal(char *username, int count, AccountInfo *account_info)
 
     fclose(fp);
     free(matchingAccounts);
+}
+
+void Transaction(long long ac_no, char *date, char *trnx_type, long long old_balance, long long trnx_amnt, long long new_balance)
+{
+    char trnx_id[11];
+    generate_transaction_id(trnx_id);
+
+    FILE *fp1;
+    fp1 = fopen(TRANSACTION_HISTORY, "a");
+    if (fp1 == NULL)
+    {
+        printf("Error: Could not open file.\n");
+        return;
+    }
+    fprintf(fp1, "Transaction ID: %s\nAccount No: %lld\nTransaction Date: %s\nTransaction Type: %s\nPrevious Balance: %lld\nTransaction Amount: %lld\nUpdated Balance: %lld\n\n", trnx_id, ac_no, date, trnx_type, old_balance, trnx_amnt, new_balance);
+
+    fclose(fp1);
+}
+
+void generate_transaction_id(char *id)
+{
+    FILE *fp1;
+    fp1 = fopen(TRANSACTION_HISTORY, "r");
+    if (fp1 == NULL)
+    {
+        printf("Error: Could not open file.\n");
+        return;
+    }
+
+    const char charset[] = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    int len = sizeof(charset) - 1;
+
+    while (1)
+    {
+        for (int i = 0; i < 10; i++)
+        {
+            id[i] = charset[rand() % len];
+        }
+        id[10] = '\0';
+
+        char line[100];
+        while (fgets(line, sizeof(line), fp1))
+        {
+            if (strstr(line, id))
+            {
+                fseek(fp1, 0, SEEK_SET);
+                continue;
+            }
+        }
+        break;
+    }
+
+    fclose(fp1);
 }

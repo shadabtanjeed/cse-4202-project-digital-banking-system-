@@ -1,7 +1,7 @@
 Name: Elizabeth Smith    
 Account Type: Savings   
 Account No: 6549873214
-Balance: 93800
+Balance: 93850
 Phone: 8801912345678
 NID No: 124356789
 Username: ElizabethSmith
@@ -49,7 +49,7 @@ Username: WilliamDavis
 Name: Elizabeth Smith    
 Account Type: Current   
 Account No: 3456789012
-Balance: 2569810
+Balance: 2569910
 Phone: 8801912345678
 NID No: 124356789
 Username: ElizabethSmith
@@ -249,7 +249,7 @@ Username: NickMiller
 Name: Zubayer Ruhit 
 Account Type: Savings 
 Account No: 1000011196
-Balance: 850
+Balance: 700
 Phone: 8801456987456
 NID No: 147832967
 Username: ZubayerRuhit
