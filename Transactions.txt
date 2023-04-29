@@ -22,3 +22,19 @@ Previous Balance: 4000
 Transaction Amount: 50
 Updated Balance: 4050
 
+Transaction ID: 0lyO8v4rKB
+Account No: 1000018581
+Transaction Date: 20/03/2023
+Transaction Type: Deposit
+Previous Balance: 5000
+Transaction Amount: 500
+Updated Balance: 5500
+
+Transaction ID: GCUDPEo7Qj
+Account No: 1000018581
+Transaction Date: 20/03/2023
+Transaction Type: Withdraw
+Previous Balance: 5500
+Transaction Amount: 500
+Updated Balance: 5000
+

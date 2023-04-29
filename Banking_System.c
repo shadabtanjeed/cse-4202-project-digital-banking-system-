@@ -308,7 +308,7 @@ void CreateAccount2()
     char password[30];
     do
     {
-        printf("Enter Password (at least 10 characters): ");
+        printf("Enter Password: ");
         scanf("%s", password);
     } while (strlen(password) < 10);
 
@@ -333,7 +333,7 @@ void CreateAccount2()
 
     fclose(fp1);
 
-    printf("\nAccount created successfully!\n");
+    printf("\nAccount created successfully!\n\n");
     printf("Your Account No: %lld\n\n", account_info[count].AccountNo);
 
     count++;
