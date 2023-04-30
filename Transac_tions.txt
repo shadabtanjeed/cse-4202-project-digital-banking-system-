@@ -1,0 +1,40 @@
+Transaction ID: FRaqbC8wSA
+Account No: 1000011196
+Transaction Date: 20/05/2023
+Transaction Type: Deposit
+Previous Balance: 800
+Transaction Amount: 100
+Updated Balance: 900
+
+Transaction ID: 1XvpFVjCRG
+Account No: 1000011196
+Transaction Date: 15/05/2024
+Transaction Type: Withdraw
+Previous Balance: 900
+Transaction Amount: 200
+Updated Balance: 700
+
+Transaction ID: VkB5R8Q4bY
+Account No: 1000005704
+Transaction Date: 20/04/2022
+Transaction Type: Deposit
+Previous Balance: 4000
+Transaction Amount: 50
+Updated Balance: 4050
+
+Transaction ID: 0lyO8v4rKB
+Account No: 1000018581
+Transaction Date: 20/03/2023
+Transaction Type: Deposit
+Previous Balance: 5000
+Transaction Amount: 500
+Updated Balance: 5500
+
+Transaction ID: GCUDPEo7Qj
+Account No: 1000018581
+Transaction Date: 20/03/2023
+Transaction Type: Withdraw
+Previous Balance: 5500
+Transaction Amount: 500
+Updated Balance: 5000
+
