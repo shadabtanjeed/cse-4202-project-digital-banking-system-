@@ -11,7 +11,7 @@ For inputting Fixed Deposit as Account type in the text file, put a space at las
 
 #define USER_PASS "./username.txt"
 #define ACCOUNT_DATA "./AccountInfo.txt"
-#define TRANSACTION_HISTORY "./Transactions.txt"
+#define TRANSACTION_HISTORY "./Transac_tions.txt"
 
 #define MAX_ACCOUNTS 100
 
@@ -62,6 +62,8 @@ void swap_transactions(TransactionInfo *a, TransactionInfo *b);
 void sort_transactions_by_date(TransactionInfo *transaction_info, int count_transaction);
 void CloseAccount(char *username, int count, int count_user, AccountInfo *account_info, Username *user_name);
 int compare_dates(TransactionInfo *a, TransactionInfo *b);
+void AccountSettings(char *username, int count, AccountInfo *account_info, Username *user_name, int count_user);
+
 
 int main()
 {
@@ -195,7 +197,8 @@ void mainmenu(char *usernm)
             CreateAnotherAccount(usernm, count, account_info);
             break;
         case 9:
-
+            AccountSettings(usernm, count, account_info, user_name, count_user );
+            break;
         case 10:
             CloseAccount(usernm, count, count_user, account_info, user_name);
             break;
@@ -213,6 +216,151 @@ void mainmenu(char *usernm)
         }
     }
 }
+
+void AccountSettings(char *username, int count, AccountInfo *account_info, Username *user_name, int count_user)
+{
+    int i, j, k, found = 0, user_choice;
+    char new_name[30], new_account_type[20], new_phone[12], new_nid[20], new_password[30], new_username[30];
+
+    // Search for the account with the matching username
+    for (i = 0; i < count; i++)
+    {
+        if (strcmp(account_info[i].Username, username) == 0)
+        {
+            found = 1;
+            break;
+        }
+    }
+
+    for (j = 0; j < count_user; j++)
+    {
+        if (strcmp(user_name[j].Username, username) == 0)
+        {
+            break;
+        }
+    }
+
+    if (found == 1)
+    {
+        printf("\n\nAccount Settings\n\n");
+        printf("1. Update Name\n");
+        printf("2. Update Account Type\n");
+        printf("3. Update Phone Number\n");
+        printf("4. Update National ID (NID) Number\n");
+        printf("5. Update Password\n");
+        printf("6. Update Username\n");
+        printf("7. Exit\n\n");
+        printf("Enter your choice: ");
+        scanf("%d", &user_choice);
+        printf("\n");
+
+        switch (user_choice)
+        {
+        case 1:
+            printf("Enter new name: ");
+            scanf(" %[^\n]", new_name);
+            strcpy(account_info[i].Name, new_name);
+            printf("Name updated successfully.\n");
+            break;
+
+        case 2:
+            printf("Enter new account type: ");
+            scanf(" %[^\n]", new_account_type);
+            strcpy(account_info[i].AccountType, new_account_type);
+            printf("Account type updated successfully.\n");
+            break;
+
+        case 3:
+            printf("Enter new phone number: ");
+            scanf("%s", new_phone);
+            account_info[i].Phone = atoll(new_phone);
+            printf("Phone number updated successfully.\n");
+            break;
+
+        case 4:
+            printf("Enter new NID number: ");
+            scanf("%s", new_nid);
+            account_info[i].NID = atoll(new_nid);
+            printf("NID number updated successfully.\n");
+            break;
+
+        case 5:
+            printf("Enter new password: ");
+            scanf("%s", new_password);
+            strcpy(user_name[j].Password, new_password);
+            printf("Password updated successfully.\n");
+            break;
+
+        case 6:
+            printf("Enter new username: ");
+            scanf("%s", new_username);
+            // Check if the new username already exists
+            for (k = 0; k < count_user; k++)
+            {
+                if (strcmp(new_username, user_name[k].Username) == 0)
+                {
+                    printf("Error: Username already exists\n");
+                    return;
+                }
+            }
+            strcpy(account_info[i].Username, new_username);
+            strcpy(user_name[j].Username, new_username);
+            printf("Username updated successfully.\n");
+            break;
+
+        case 7:
+            return;
+
+        default:
+            printf("Invalid choice.\n");
+            break;
+        }
+
+        // Write the updated account information to file
+        if (user_choice != 5)
+        {
+            FILE *fp;
+            fp = fopen(ACCOUNT_DATA, "w");
+            if (fp == NULL)
+            {
+                printf("Error: Could not open file\n");
+                return;
+            }
+
+            for (i = 0; i < count; i++)
+            {
+                fprintf(fp, "Name: %s\nAccount Type: %s\nAccount No: %lld\nBalance: %lld\nPhone: %lld\nNID No: %lld\nUsername: %s\n", account_info[i].Name, account_info[i].AccountType, account_info[i].AccountNo, account_info[i].Balance, account_info[i].Phone, account_info[i].NID, account_info[i].Username);
+            }
+
+            fclose(fp);
+        }
+
+        // Update the username or password in the username file if changed
+        if (user_choice == 6 || user_choice == 5)
+        {
+            FILE *fp2;
+            fp2 = fopen(USER_PASS, "w");
+            if (fp2 == NULL)
+            {
+                printf("Error: Could not open file\n");
+                return;
+            }
+
+            for (k = 0; k < count_user; k++)
+            {
+                fprintf(fp2, "Username: %s\nPassword: %s\n", user_name[k].Username, user_name[k].Password);
+            }
+
+            fclose(fp2);
+        }
+    }
+    else
+    {
+        printf("Error: Account not found.\n");
+    }
+}
+
+
 
 int loginverify(char *userid, char *pass)
 {
@@ -308,7 +456,7 @@ void CreateAccount2()
     char password[30];
     do
     {
-        printf("Enter Password: ");
+        printf("Enter Password (at least 10 characters): ");
         scanf("%s", password);
     } while (strlen(password) < 10);
 
@@ -333,7 +481,7 @@ void CreateAccount2()
 
     fclose(fp1);
 
-    printf("\nAccount created successfully!\n\n");
+    printf("\nAccount created successfully!\n");
     printf("Your Account No: %lld\n\n", account_info[count].AccountNo);
 
     count++;
