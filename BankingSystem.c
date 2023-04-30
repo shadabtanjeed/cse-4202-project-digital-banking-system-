@@ -11,7 +11,7 @@ For inputting Fixed Deposit as Account type in the text file, put a space at las
 
 #define USER_PASS "./username.txt"
 #define ACCOUNT_DATA "./AccountInfo.txt"
-#define TRANSACTION_HISTORY "./Transactions.txt"
+#define TRANSACTION_HISTORY "./Transac_tions.txt"
 
 #define MAX_ACCOUNTS 100
 
