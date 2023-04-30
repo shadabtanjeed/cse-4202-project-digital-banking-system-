@@ -219,7 +219,7 @@ void mainmenu(char *usernm)
 
 void AccountSettings(char *username, int count, AccountInfo *account_info, Username *user_name, int count_user)
 {
-    int i, j, found = 0, user_choice;
+    int i, j, k, found = 0, user_choice;
     char new_name[30], new_account_type[20], new_phone[12], new_nid[20], new_password[30], new_username[30];
 
     // Search for the account with the matching username
@@ -265,7 +265,7 @@ void AccountSettings(char *username, int count, AccountInfo *account_info, Usern
 
         case 2:
             printf("Enter new account type: ");
-            scanf("%s", new_account_type);
+            scanf(" %[^\n]", new_account_type);
             strcpy(account_info[i].AccountType, new_account_type);
             printf("Account type updated successfully.\n");
             break;
@@ -295,16 +295,16 @@ void AccountSettings(char *username, int count, AccountInfo *account_info, Usern
             printf("Enter new username: ");
             scanf("%s", new_username);
             // Check if the new username already exists
-            for (int j = 0; j < count_user; j++)
+            for (k = 0; k < count_user; k++)
             {
-                if (strcmp(new_username, user_name[j].Username) == 0)
+                if (strcmp(new_username, user_name[k].Username) == 0)
                 {
                     printf("Error: Username already exists\n");
                     return;
                 }
             }
             strcpy(account_info[i].Username, new_username);
-            strcpy(user_name[count_user].Username, new_username);
+            strcpy(user_name[j].Username, new_username);
             printf("Username updated successfully.\n");
             break;
 
@@ -317,23 +317,26 @@ void AccountSettings(char *username, int count, AccountInfo *account_info, Usern
         }
 
         // Write the updated account information to file
-        FILE *fp;
-        fp = fopen(ACCOUNT_DATA, "w");
-        if (fp == NULL)
+        if (user_choice != 5)
         {
-            printf("Error: Could not open file\n");
-            return;
+            FILE *fp;
+            fp = fopen(ACCOUNT_DATA, "w");
+            if (fp == NULL)
+            {
+                printf("Error: Could not open file\n");
+                return;
+            }
+
+            for (i = 0; i < count; i++)
+            {
+                fprintf(fp, "Name: %s\nAccount Type: %s\nAccount No: %lld\nBalance: %lld\nPhone: %lld\nNID No: %lld\nUsername: %s\n", account_info[i].Name, account_info[i].AccountType, account_info[i].AccountNo, account_info[i].Balance, account_info[i].Phone, account_info[i].NID, account_info[i].Username);
+            }
+
+            fclose(fp);
         }
 
-        for (i = 0; i < count; i++)
-        {
-            fprintf(fp, "Name: %s\nAccount Type: %s\nAccount No: %lld\nBalance: %lld\nPhone: %lld\nNID No: %lld\nUsername: %s\n", account_info[i].Name, account_info[i].AccountType, account_info[i].AccountNo, account_info[i].Balance, account_info[i].Phone, account_info[i].NID, account_info[i].Username);
-        }
-
-        fclose(fp);
-
-        // Update the username in the login file if the name was changed
-        if (strcmp(account_info[i].Username, user_name[count_user].Username) != 0)
+        // Update the username or password in the username file if changed
+        if (user_choice == 6 || user_choice == 5)
         {
             FILE *fp2;
             fp2 = fopen(USER_PASS, "w");
@@ -343,18 +346,9 @@ void AccountSettings(char *username, int count, AccountInfo *account_info, Usern
                 return;
             }
 
-            for (i = 0; i < count_user; i++)
+            for (k = 0; k < count_user; k++)
             {
-                if (strcmp(user_name[i].Username, username) == 0)
-                {
-                    strcpy(user_name[i].Username, account_info[i].Username);
-                    break;
-                }
-            }
-
-            for (i = 0; i < count_user; i++)
-            {
-                fprintf(fp2, "%s %s\n", user_name[i].Username, user_name[i].Password);
+                fprintf(fp2, "Username: %s\nPassword: %s\n", user_name[k].Username, user_name[k].Password);
             }
 
             fclose(fp2);
