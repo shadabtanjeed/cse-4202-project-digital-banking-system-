@@ -11,7 +11,7 @@ For inputting Fixed Deposit as Account type in the text file, put a space at las
 
 #define USER_PASS "./username.txt"
 #define ACCOUNT_DATA "./AccountInfo.txt"
-#define TRANSACTION_HISTORY "./Transac_tions.txt"
+#define TRANSACTION_HISTORY "./Transactions.txt"
 
 #define MAX_ACCOUNTS 100
 
@@ -63,7 +63,6 @@ void sort_transactions_by_date(TransactionInfo *transaction_info, int count_tran
 void CloseAccount(char *username, int count, int count_user, AccountInfo *account_info, Username *user_name);
 int compare_dates(TransactionInfo *a, TransactionInfo *b);
 void AccountSettings(char *username, int count, AccountInfo *account_info, Username *user_name, int count_user);
-
 
 int main()
 {
@@ -197,7 +196,7 @@ void mainmenu(char *usernm)
             CreateAnotherAccount(usernm, count, account_info);
             break;
         case 9:
-            AccountSettings(usernm, count, account_info, user_name, count_user );
+            AccountSettings(usernm, count, account_info, user_name, count_user);
             break;
         case 10:
             CloseAccount(usernm, count, count_user, account_info, user_name);
@@ -260,28 +259,28 @@ void AccountSettings(char *username, int count, AccountInfo *account_info, Usern
             printf("Enter new name: ");
             scanf(" %[^\n]", new_name);
             strcpy(account_info[i].Name, new_name);
-            printf("Name updated successfully.\n");
+            printf("Name updated successfully.\n\n");
             break;
 
         case 2:
             printf("Enter new account type: ");
             scanf(" %[^\n]", new_account_type);
             strcpy(account_info[i].AccountType, new_account_type);
-            printf("Account type updated successfully.\n");
+            printf("Account type updated successfully.\n\n");
             break;
 
         case 3:
             printf("Enter new phone number: ");
             scanf("%s", new_phone);
             account_info[i].Phone = atoll(new_phone);
-            printf("Phone number updated successfully.\n");
+            printf("Phone number updated successfully.\n\n");
             break;
 
         case 4:
             printf("Enter new NID number: ");
             scanf("%s", new_nid);
             account_info[i].NID = atoll(new_nid);
-            printf("NID number updated successfully.\n");
+            printf("NID number updated successfully.\n\n");
             break;
 
         case 5:
@@ -305,7 +304,7 @@ void AccountSettings(char *username, int count, AccountInfo *account_info, Usern
             }
             strcpy(account_info[i].Username, new_username);
             strcpy(user_name[j].Username, new_username);
-            printf("Username updated successfully.\n");
+            printf("Username updated successfully.\n\n");
             break;
 
         case 7:
@@ -329,7 +328,7 @@ void AccountSettings(char *username, int count, AccountInfo *account_info, Usern
 
             for (i = 0; i < count; i++)
             {
-                fprintf(fp, "Name: %s\nAccount Type: %s\nAccount No: %lld\nBalance: %lld\nPhone: %lld\nNID No: %lld\nUsername: %s\n", account_info[i].Name, account_info[i].AccountType, account_info[i].AccountNo, account_info[i].Balance, account_info[i].Phone, account_info[i].NID, account_info[i].Username);
+                fprintf(fp, "Name: %s\nAccount Type: %s\nAccount No: %lld\nBalance: %lld\nPhone: %lld\nNID No: %lld\nUsername: %s\n\n", account_info[i].Name, account_info[i].AccountType, account_info[i].AccountNo, account_info[i].Balance, account_info[i].Phone, account_info[i].NID, account_info[i].Username);
             }
 
             fclose(fp);
@@ -348,7 +347,7 @@ void AccountSettings(char *username, int count, AccountInfo *account_info, Usern
 
             for (k = 0; k < count_user; k++)
             {
-                fprintf(fp2, "Username: %s\nPassword: %s\n", user_name[k].Username, user_name[k].Password);
+                fprintf(fp2, "Username: %s\nPassword: %s\n\n", user_name[k].Username, user_name[k].Password);
             }
 
             fclose(fp2);
@@ -359,8 +358,6 @@ void AccountSettings(char *username, int count, AccountInfo *account_info, Usern
         printf("Error: Account not found.\n");
     }
 }
-
-
 
 int loginverify(char *userid, char *pass)
 {

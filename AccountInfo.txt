@@ -230,7 +230,7 @@ Phone: 8801559546589
 NID No: 569874569
 Username: NickMiller
 
-Name: Zubayer Ruhit     
+Name: Zubayer Ruhit
 Account Type: Fixed Deposit     
 Account No: 1000005704
 Balance: 4050
