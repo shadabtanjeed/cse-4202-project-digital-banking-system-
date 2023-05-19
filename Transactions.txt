@@ -38,3 +38,51 @@ Previous Balance: 5500
 Transaction Amount: 500
 Updated Balance: 5000
 
+Transaction ID: GCUDPEo789
+Account No: 1000005704
+Transaction Date: 19/05/2023
+Transaction Type: Deposit
+Previous Balance: 4050
+Transaction Amount: 50
+Updated Balance: 4100
+
+Transaction ID: FRaqbC8wSA
+Account No: 1000005704
+Transaction Date: 20/05/2023
+Transaction Type: Withdraw
+Previous Balance: 4100
+Transaction Amount: 100
+Updated Balance: 4000
+
+Transaction ID: FRaqbC8wSA
+Account No: 1000005704
+Transaction Date: 19/05/2023
+Transaction Type: FundTransfer(OUT)
+Previous Balance: 4000
+Transaction Amount: 1000
+Updated Balance: 5000
+
+Transaction ID: 1XvpFVjCRG
+Account No: 1000005802
+Transaction Date: 19/05/2023
+Transaction Type: FundTransfer(IN)
+Previous Balance: 5000
+Transaction Amount: 1000
+Updated Balance: 6000
+
+Transaction ID: s0j9MbQJSe
+Account No: 1000005704
+Transaction Date: 19/05/2023
+Transaction Type: FundTransfer(OUT)
+Previous Balance: 5000
+Transaction Amount: 1000
+Updated Balance: 4000
+
+Transaction ID: bwEdPiduK5
+Account No: 1000005802
+Transaction Date: 19/05/2023
+Transaction Type: FundTransfer(IN)
+Previous Balance: 6000
+Transaction Amount: 1000
+Updated Balance: 7000
+

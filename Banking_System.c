@@ -15,6 +15,7 @@ For inputting Fixed Deposit as Account type in the text file, put a space at las
 #define BENEFICIARY_INFO "./BeneficiaryInfo.txt"
 
 #define MAX_ACCOUNTS 100
+#define ID_LENGTH 10
 
 typedef struct AccountInfo
 {
@@ -76,6 +77,7 @@ int compare_dates(TransactionInfo *a, TransactionInfo *b);
 void AccountSettings(char *username, int count, AccountInfo *account_info, Username *user_name, int count_user);
 void Beneficiary(char *username);
 int ShowBenificiary(char *usname, struct BeneficiaryInfo *benefeciary_info, int counter, int *matchingAccounts);
+void FundTransfer(char *username, int count, AccountInfo *account_info);
 
 int main()
 {
@@ -200,7 +202,8 @@ void mainmenu(char *usernm)
             break;
 
         case 5:
-
+            FundTransfer(usernm, count, account_info);
+            break;
         case 6:
             Beneficiary(usernm);
             break;
@@ -765,6 +768,7 @@ void CashWithdrawal(char *username, int count, AccountInfo *account_info)
 
 void Transaction(long long ac_no, char *date, char *trnx_type, long long old_balance, long long trnx_amnt, long long new_balance)
 {
+
     char trnx_id[11];
     generate_transaction_id(trnx_id);
 
@@ -782,38 +786,14 @@ void Transaction(long long ac_no, char *date, char *trnx_type, long long old_bal
 
 void generate_transaction_id(char *id)
 {
-    FILE *fp1;
-    fp1 = fopen(TRANSACTION_HISTORY, "r");
-    if (fp1 == NULL)
-    {
-        printf("Error: Could not open file.\n");
-        return;
-    }
-
     const char charset[] = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
     int len = sizeof(charset) - 1;
 
-    while (1)
+    for (int i = 0; i < 10; i++)
     {
-        for (int i = 0; i < 10; i++)
-        {
-            id[i] = charset[rand() % len];
-        }
-        id[10] = '\0';
-
-        char line[100];
-        while (fgets(line, sizeof(line), fp1))
-        {
-            if (strstr(line, id))
-            {
-                fseek(fp1, 0, SEEK_SET);
-                continue;
-            }
-        }
-        break;
+        id[i] = charset[rand() % len];
     }
-
-    fclose(fp1);
+    id[10] = '\0';
 }
 
 void swap_transactions(TransactionInfo *a, TransactionInfo *b)
@@ -1136,7 +1116,7 @@ void Beneficiary(char *username)
         else if (menu_choice == 3)
         {
 
-            int matchingAccounts[10];
+            int *matchingAccounts = malloc(count_beneficiary * sizeof(int));
             ShowBenificiary(username, beneficiary_info, count_beneficiary, matchingAccounts);
             printf("Choose the account you want to remove: ");
             int choice_remove;
@@ -1173,4 +1153,149 @@ void Beneficiary(char *username)
 
         free(beneficiary_info);
     }
+}
+
+void FundTransfer(char *username, int count, AccountInfo *account_info)
+{
+    int choice_main;
+    long long old_source, new_source, old_destination, new_destination;
+
+    printf("1. Transfer within own account\n");
+    printf("2. Transfer to a different account\n");
+    printf("\nChoose your option: ");
+    scanf("%d", &choice_main);
+
+    if (choice_main == 1)
+    {
+        long long ac_source, ac_destination;
+
+        int *matchingAccounts = malloc(count * sizeof(int));
+
+        printf("\n");
+        int found = MatchAndShow(username, account_info, count, matchingAccounts);
+
+        if (found == 0)
+        {
+            printf("No matching accounts found.\n");
+            return;
+        }
+
+        else
+        {
+            int ac_choice;
+            printf("Choose the source Account (1/2/3...): ");
+            scanf("%d", &ac_choice);
+            int index_source = matchingAccounts[ac_choice - 1];
+
+            printf("\n");
+            MatchAndShow(username, account_info, count, matchingAccounts);
+
+            printf("Choose the destination Account (1/2/3...): ");
+            scanf("%d", &ac_choice);
+            int index_destination = matchingAccounts[ac_choice - 1];
+
+            if (index_destination == index_source)
+                printf("Transfer to the same account not possible\n\n");
+
+            else
+            {
+
+                long long amount;
+                printf("Enter amount: ");
+                scanf("%lld", &amount);
+
+                if (account_info[index_source].Balance < amount)
+                    printf("Insufficient Balance\n\n");
+
+                else
+                {
+                    char date[12];
+                    printf("Enter the date of trancaction in the format (dd/mm/yyyy): ");
+                    scanf("%s", date);
+
+                    printf("\nSelecct the method of transfer: \n\n");
+                    printf("1. EFT\n");
+                    printf("2. NPSB\n");
+                    printf("3. RTGS\n\n");
+                    printf("Enter your choice: ");
+
+                    int transfer_method;
+
+                    // OTP PART
+
+                    scanf("%d", &transfer_method);
+
+                    FILE *fptr;
+                    int otp;
+
+                    srand(time(NULL));
+                    otp = rand() % 9000 + 1000;
+
+                    fptr = fopen("OTP.txt", "w");
+
+                    if (fptr == NULL)
+                    {
+                        printf("Error opening file!");
+                        exit(1);
+                    }
+
+                    fprintf(fptr, "%d", otp);
+
+                    fclose(fptr);
+
+                    int OTP_user;
+
+                    printf("A 4 digit OTP has been sent to the OTP.txt file\n\n");
+                    printf("OTP: ");
+                    scanf("%d", &OTP_user);
+                    printf("\n");
+
+                    if (otp != OTP_user)
+                        printf("OTP didn't match. \n\n");
+
+                    else
+                    {
+                        old_source = account_info[index_source].Balance;
+                        new_source = old_source - amount;
+                        account_info[index_source].Balance = new_source;
+
+                        Transaction(account_info[index_source].AccountNo, date, "FundTransfer(OUT)", old_source, amount, new_source);
+
+                        old_destination = account_info[index_destination].Balance;
+                        new_destination = old_destination + amount;
+                        account_info[index_destination].Balance = new_destination;
+
+                        Transaction(account_info[index_destination].AccountNo, date, "FundTransfer(IN)", old_destination, amount, new_destination);
+
+                        printf("Fund Transfer Successful\n\n");
+
+                        FILE *fp = fopen(ACCOUNT_DATA, "w");
+                        if (fp == NULL)
+                        {
+                            printf("Error: Could not open file.\n");
+                            return;
+                        }
+
+                        for (int i = 0; i < count; i++)
+                        {
+                            fprintf(fp, "Name: %s\nAccount Type: %s\nAccount No: %lld\nBalance: %lld\nPhone: %lld\nNID No: %lld\nUsername: %s\n\n",
+                                    account_info[i].Name, account_info[i].AccountType, account_info[i].AccountNo,
+                                    account_info[i].Balance, account_info[i].Phone, account_info[i].NID, account_info[i].Username);
+                        }
+
+                        fclose(fp);
+                    }
+                }
+            }
+        }
+
+        free(matchingAccounts);
+    }
+
+    else if (choice_main == 2)
+    {
+    }
+
+    else
+        printf("Invalid Choice");
 }
