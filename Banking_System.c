@@ -12,6 +12,7 @@ For inputting Fixed Deposit as Account type in the text file, put a space at las
 #define USER_PASS "./username.txt"
 #define ACCOUNT_DATA "./AccountInfo.txt"
 #define TRANSACTION_HISTORY "./Transactions.txt"
+#define BENEFICIARY_INFO "./BeneficiaryInfo.txt"
 
 #define MAX_ACCOUNTS 100
 
@@ -43,6 +44,16 @@ typedef struct Username
     char Password[30];
 } Username;
 
+typedef struct BeneficiaryInfo
+{
+    char Name[30];
+    long long AccountNo;
+    long long Phone;
+    long long NID;
+    char Username[30];
+    char Beneficiary_Of[30];
+} BeneficiaryInfo;
+
 int loginverify(char *userid, char *pass);
 void mainmenu(char *usernm);
 int ReadAccountInfo();
@@ -63,6 +74,8 @@ void sort_transactions_by_date(TransactionInfo *transaction_info, int count_tran
 void CloseAccount(char *username, int count, int count_user, AccountInfo *account_info, Username *user_name);
 int compare_dates(TransactionInfo *a, TransactionInfo *b);
 void AccountSettings(char *username, int count, AccountInfo *account_info, Username *user_name, int count_user);
+void Beneficiary(char *username);
+int ShowBenificiary(char *usname, struct BeneficiaryInfo *benefeciary_info, int counter, int *matchingAccounts);
 
 int main()
 {
@@ -125,6 +138,7 @@ void mainmenu(char *usernm)
     while (menuchoice != 12)
     {
         int count = 0, count_user = 0;
+        char garbage_value;
 
         FILE *fp;
         FILE *fp5;
@@ -154,7 +168,7 @@ void mainmenu(char *usernm)
         printf("3. Cash Deposit\n");
         printf("4. Cash Withdraw\n");
         printf("5. Fund Transfer\n");
-        printf("6. Benificiary Management\n");
+        printf("6. Beneficiary Management\n");
         printf("7. Mini Statement\n");
         printf("8. Create Another Account\n");
         printf("9. Account Settings\n");
@@ -188,6 +202,8 @@ void mainmenu(char *usernm)
         case 5:
 
         case 6:
+            Beneficiary(usernm);
+            break;
 
         case 7:
             Statement(usernm, account_info, count);
@@ -1002,4 +1018,159 @@ void CloseAccount(char *username, int count, int count_user, AccountInfo *accoun
     }
 
     free(matchingAccounts);
+}
+
+int ShowBenificiary(char *usname, struct BeneficiaryInfo *benefeciary_info, int counter, int *matchingAccounts)
+{
+    int numMatchingAccounts = 0;
+    if (matchingAccounts == NULL)
+    {
+        printf("Error: Could not allocate memory\n");
+        return 0;
+    }
+
+    for (int i = 0; i < counter; i++)
+    {
+        if (strcmp(benefeciary_info[i].Beneficiary_Of, usname) == 0)
+        {
+            matchingAccounts[numMatchingAccounts] = i;
+            numMatchingAccounts++;
+        }
+    }
+
+    printf("\nBeneficiaries for %s:\n\n", usname);
+    for (int i = 0; i < numMatchingAccounts; i++)
+    {
+        int accountIndex = matchingAccounts[i];
+        printf("%d. Name: %s\n   Account No: %lld \n\n", i + 1, benefeciary_info[accountIndex].Name, benefeciary_info[accountIndex].AccountNo);
+    }
+    printf("\n");
+
+    return numMatchingAccounts;
+}
+
+void Beneficiary(char *username)
+{
+    int menu_choice, beneficiary_found = 0, count_beneficiary = 0;
+
+    FILE *fp1;
+    fp1 = fopen(BENEFICIARY_INFO, "r");
+
+    if (fp1 == NULL)
+        printf("Could not open file\n\n");
+    else
+    {
+        BeneficiaryInfo *beneficiary_info = (BeneficiaryInfo *)malloc(MAX_ACCOUNTS * sizeof(BeneficiaryInfo));
+
+        while (fscanf(fp1, "Name: %[^\n] \nAccount No: %lld\nPhone: %lld\nNID No: %lld\nUsername: %[^\n] \nBeneficiary for: %[^\n] \n", beneficiary_info[count_beneficiary].Name, &beneficiary_info[count_beneficiary].AccountNo, &beneficiary_info[count_beneficiary].Phone, &beneficiary_info[count_beneficiary].NID, beneficiary_info[count_beneficiary].Username, beneficiary_info[count_beneficiary].Beneficiary_Of) == 6)
+
+        {
+            count_beneficiary++;
+        }
+
+        fclose(fp1);
+
+        printf("1. View all Beneficiaries\n");
+        printf("2. Add new Beneficiary\n");
+        printf("3. Remove a Beneficiary\n\n");
+        printf("Choose your option: ");
+        scanf("%d", &menu_choice);
+
+        if (menu_choice == 1)
+        {
+            printf("\n");
+            for (int i = 0; i < count_beneficiary; ++i)
+            {
+                if (strcmp(username, beneficiary_info[i].Beneficiary_Of) == 0)
+                {
+                    beneficiary_found++;
+                    printf("Beneficiary %d\n", beneficiary_found);
+                    printf("Name: %s\n", beneficiary_info[i].Name);
+                    printf("Account No: %lld\n", beneficiary_info[i].AccountNo);
+                    printf("\n");
+                }
+            }
+
+            if (beneficiary_found == 0)
+                printf("No beneficiary found\n\n");
+        }
+        else if (menu_choice == 2)
+        {
+            printf("Enter Name: ");
+            scanf(" %[^\n]", beneficiary_info[count_beneficiary].Name);
+
+            printf("Enter Account No: ");
+            scanf("%lld", &beneficiary_info[count_beneficiary].AccountNo);
+
+            printf("Enter Phone No: ");
+            scanf("%lld", &beneficiary_info[count_beneficiary].Phone);
+
+            printf("Enter NID: ");
+            scanf("%lld", &beneficiary_info[count_beneficiary].NID);
+
+            printf("Enter Username: ");
+            scanf(" %[^\n]", beneficiary_info[count_beneficiary].Username);
+
+            strcpy(beneficiary_info[count_beneficiary].Beneficiary_Of, username);
+
+            count_beneficiary++;
+
+            FILE *fp2;
+            fp2 = fopen(BENEFICIARY_INFO, "w");
+
+            if (fp2 == NULL)
+                printf("Could not open file\n\n");
+
+            else
+            {
+                for (int j = 0; j < count_beneficiary; ++j)
+                {
+                    fprintf(fp2, "Name: %s\nAccount No: %lld\nPhone: %lld\nNID No: %lld\nUsername: %s\nBeneficiary for: %s\n\n", beneficiary_info[j].Name, beneficiary_info[j].AccountNo, beneficiary_info[j].Phone, beneficiary_info[j].NID, beneficiary_info[j].Username, beneficiary_info[j].Beneficiary_Of);
+                }
+                fclose(fp2);
+
+                printf("\nBeneficiary Added Successfully\n\n");
+            }
+        }
+
+        else if (menu_choice == 3)
+        {
+
+            int matchingAccounts[10];
+            ShowBenificiary(username, beneficiary_info, count_beneficiary, matchingAccounts);
+            printf("Choose the account you want to remove: ");
+            int choice_remove;
+            scanf("%d", &choice_remove);
+
+            int index_remove = matchingAccounts[choice_remove - 1];
+
+            for (int j = index_remove; j < count_beneficiary; j++)
+            {
+                beneficiary_info[j] = beneficiary_info[j + 1];
+            }
+
+            count_beneficiary--;
+
+            FILE *fp3;
+            fp3 = fopen(BENEFICIARY_INFO, "w");
+
+            if (fp3 == NULL)
+                printf("Could not open file\n\n");
+
+            else
+            {
+                for (int j = 0; j < count_beneficiary; ++j)
+                {
+                    fprintf(fp3, "Name: %s\nAccount No: %lld\nPhone: %lld\nNID No: %lld\nUsername: %s\nBeneficiary for: %s\n\n", beneficiary_info[j].Name, beneficiary_info[j].AccountNo, beneficiary_info[j].Phone, beneficiary_info[j].NID, beneficiary_info[j].Username, beneficiary_info[j].Beneficiary_Of);
+                }
+                fclose(fp3);
+
+                printf("\nAccount closed successfully.\n\n");
+            }
+        }
+        else
+            printf("Invalid Choice");
+
+        free(beneficiary_info);
+    }
 }
