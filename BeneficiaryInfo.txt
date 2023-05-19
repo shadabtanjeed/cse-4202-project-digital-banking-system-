@@ -1,154 +1,154 @@
-Name: Elizabeth Smith 
+Name: Elizabeth Smith
 Account No: 6549873214
 Phone: 8801912345678
 NID No: 124356789
 Username: ElizabethSmith
-Beneficiary for: ChristopherJones  
+Beneficiary for: ChristopherJones
 
-Name: Christopher Jones 
+Name: Christopher Jones
 Account No: 1234567898
 Phone: 8801987654321
 NID No: 234567890
 Username: ChristopherJones
-Beneficiary for: MichaelJohnson 
+Beneficiary for: MichaelJohnson
 
-Name: Sarah Williams 
+Name: Sarah Williams
 Account No: 9876543215
 Phone: 8801923456789
 NID No: 345678901
 Username: SarahWilliams
-Beneficiary for: WilliamDavis 
+Beneficiary for: WilliamDavis
 
-Name: Michael Johnson 
+Name: Michael Johnson
 Account No: 7654321987
 Phone: 8801987654321
 NID No: 456789012
 Username: MichaelJohnson
-Beneficiary for: SarahWilliams 
+Beneficiary for: SarahWilliams
 
-Name: Jessica Brown 
+Name: Jessica Brown
 Account No: 2345678901
 Phone: 8801912345678
 NID No: 567890123
 Username: JessicaBrown
-Beneficiary for: ChristopherJones 
+Beneficiary for: ChristopherJones
 
-Name: William Davis 
+Name: William Davis
 Account No: 1098765432
 Phone: 8801987654321
 NID No: 678901234
 Username: WilliamDavis
-Beneficiary for: ElizabethSmith 
+Beneficiary for: ElizabethSmith
 
-Name: Elizabeth Smith 
+Name: Elizabeth Smith
 Account No: 3456789012
 Phone: 8801912345678
 NID No: 124356789
 Username: ElizabethSmith
-Beneficiary for: DavidLee 
+Beneficiary for: DavidLee
 
-Name: David Lee 
+Name: David Lee
 Account No: 8765432109
 Phone: 8801987654321
 NID No: 890123456
 Username: DavidLee
-Beneficiary for: EmilyTaylor 
+Beneficiary for: EmilyTaylor
 
-Name: Emily Taylor 
+Name: Emily Taylor
 Account No: 2109876543
 Phone: 8801912345678
 NID No: 901234567
 Username: EmilyTaylor
-Beneficiary for: MeganAnderson 
+Beneficiary for: MeganAnderson
 
-Name: James Miller 
+Name: James Miller
 Account No: 4567890123
 Phone: 8801987654321
 NID No: 123456789
 Username: JamesMiller
-Beneficiary for: EmilyTaylor 
+Beneficiary for: EmilyTaylor
 
-Name: Megan Anderson 
+Name: Megan Anderson
 Account No: 3210987654
 Phone: 8801923456789
 NID No: 234567890
 Username: MeganAnderson
-Beneficiary for: LaurenWilson  
+Beneficiary for: LaurenWilson
 
-Name: Benjamin Martin 
+Name: Benjamin Martin
 Account No: 6543210987
 Phone: 8801987654321
 NID No: 345678901
 Username: BenjaminMartin
-Beneficiary for: MeganAnderson 
+Beneficiary for: MeganAnderson
 
-Name: Ashley Moore 
+Name: Ashley Moore
 Account No: 8901234567
 Phone: 8801912345678
 NID No: 456789012
 Username: AshleyMoore
-Beneficiary for: JamesMiller 
+Beneficiary for: JamesMiller
 
-Name: Ryan Taylor 
+Name: Ryan Taylor
 Account No: 3468712945
 Phone: 8801688945606
 NID No: 187452936
 Username: RyanTaylor
-Beneficiary for: KimberlyDavis  
+Beneficiary for: KimberlyDavis
 
-Name: Kimberly Davis 
+Name: Kimberly Davis
 Account No: 4176958023
 Phone: 8801726930395
 NID No: 921875364
 Username: KimberlyDavis
-Beneficiary for: MatthewBrown 
+Beneficiary for: MatthewBrown
 
-Name: Matthew Brown 
+Name: Matthew Brown
 Account No: 9046582731
 Phone: 8801957834311
 NID No: 671248539
 Username: MatthewBrown
-Beneficiary for: AshleyMoore 
+Beneficiary for: AshleyMoore
 
-Name: Lauren Wilson 
+Name: Lauren Wilson
 Account No: 6853794125
 Phone: 8801917469126
 NID No: 352491867
 Username: LaurenWilson
-Beneficiary for: DavidLee 
+Beneficiary for: DavidLee
 
-Name: Tyler Jackson 
+Name: Tyler Jackson
 Account No: 6437918275
 Phone: 8801936729042
 NID No: 764129385
 Username: TylerJackson
-Beneficiary for: LaurenWilson 
+Beneficiary for: LaurenWilson
 
-Name: Emily Taylor 
+Name: Emily Taylor
 Account No: 2109876543
 Phone: 8801912345678
 NID No: 901234567
 Username: EmilyTaylor
-Beneficiary for: ZubayerRuhit 
+Beneficiary for: ZubayerRuhit
 
-Name: Lauren Wilson 
+Name: Lauren Wilson
 Account No: 6853794125
 Phone: 8801917469126
 NID No: 352491867
 Username: LaurenWilson
-Beneficiary for: ZubayerRuhit 
+Beneficiary for: ZubayerRuhit
 
-Name: Shadab Tanjeed 
+Name: Shadab Tanjeed
 Account No: 1000009745
 Phone: 8801456982365
 NID No: 147364953
 Username: ShadabTanjeed
-Beneficiary for: ZubayerRuhit 
+Beneficiary for: ZubayerRuhit
 
-Name: Zubayer Ruhit 
+Name: Zubayer Ruhit
 Account No: 1000005802
 Phone: 88012365478
 NID No: 123987462
 Username: ZubayerRuhit
-Beneficiary for: shadabtanjeed 
+Beneficiary for: shadabtanjeed
 
