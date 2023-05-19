@@ -1,255 +1,263 @@
-Name: Christopher Jones           
-Account Type: Current          
+Name: Christopher Jones            
+Account Type: Current           
 Account No: 1234567898
 Balance: 56210
 Phone: 8801987654321
 NID No: 234567890
 Username: ChristopherJones
 
-Name: Sarah Williams           
-Account Type: Savings          
+Name: Sarah Williams            
+Account Type: Savings           
 Account No: 9876543215
 Balance: 8245
 Phone: 8801923456789
 NID No: 345678901
 Username: SarahWilliams
 
-Name: Michael Johnson           
-Account Type: Fixed Deposit           
+Name: Michael Johnson            
+Account Type: Fixed Deposit            
 Account No: 7654321987
 Balance: 298500
 Phone: 8801987654321
 NID No: 456789012
 Username: MichaelJohnson
 
-Name: Jessica Brown           
-Account Type: Current          
+Name: Jessica Brown            
+Account Type: Current           
 Account No: 2345678901
 Balance: 70100
 Phone: 8801912345678
 NID No: 567890123
 Username: JessicaBrown
 
-Name: William Davis           
-Account Type: Savings          
+Name: William Davis            
+Account Type: Savings           
 Account No: 1098765432
 Balance: 46890
 Phone: 8801987654321
 NID No: 678901234
 Username: WilliamDavis
 
-Name: David Lee           
-Account Type: Fixed Deposit           
+Name: David Lee            
+Account Type: Fixed Deposit            
 Account No: 8765432109
 Balance: 748000
 Phone: 8801987654321
 NID No: 890123456
 Username: DavidLee
 
-Name: Emily Taylor           
-Account Type: Savings          
+Name: Emily Taylor            
+Account Type: Savings           
 Account No: 2109876543
 Balance: 95260
 Phone: 8801912345678
 NID No: 901234567
 Username: EmilyTaylor
 
-Name: James Miller           
-Account Type: Current          
+Name: James Miller            
+Account Type: Current           
 Account No: 4567890123
 Balance: 83000
 Phone: 8801987654321
 NID No: 123456789
 Username: JamesMiller
 
-Name: Megan Anderson           
-Account Type: Savings          
+Name: Megan Anderson            
+Account Type: Savings           
 Account No: 3210987654
 Balance: 52340
 Phone: 8801923456789
 NID No: 234567890
 Username: MeganAnderson
 
-Name: Benjamin Martin           
-Account Type: Fixed Deposit           
+Name: Benjamin Martin            
+Account Type: Fixed Deposit            
 Account No: 6543210987
 Balance: 175600
 Phone: 8801987654321
 NID No: 345678901
 Username: BenjaminMartin
 
-Name: Ashley Moore           
-Account Type: Current          
+Name: Ashley Moore            
+Account Type: Current           
 Account No: 8901234567
 Balance: 94000
 Phone: 8801912345678
 NID No: 456789012
 Username: AshleyMoore
 
-Name: Ryan Taylor           
-Account Type: Savings          
+Name: Ryan Taylor            
+Account Type: Savings           
 Account No: 3468712945
 Balance: 87654
 Phone: 8801688945606
 NID No: 187452936
 Username: RyanTaylor
 
-Name: Kimberly Davis           
-Account Type: Fixed Deposit           
+Name: Kimberly Davis            
+Account Type: Fixed Deposit            
 Account No: 4176958023
 Balance: 763201
 Phone: 8801726930395
 NID No: 921875364
 Username: KimberlyDavis
 
-Name: Matthew Brown           
-Account Type: Current          
+Name: Matthew Brown            
+Account Type: Current           
 Account No: 9046582731
 Balance: 29567
 Phone: 8801957834311
 NID No: 671248539
 Username: MatthewBrown
 
-Name: Lauren Wilson           
-Account Type: Savings          
+Name: Lauren Wilson            
+Account Type: Savings           
 Account No: 6853794125
 Balance: 246831
 Phone: 8801917469126
 NID No: 352491867
 Username: LaurenWilson
 
-Name: Tyler Jackson           
-Account Type: Fixed Deposit           
+Name: Tyler Jackson            
+Account Type: Fixed Deposit            
 Account No: 6437918275
 Balance: 354670
 Phone: 8801936729042
 NID No: 764129385
 Username: TylerJackson
 
-Name: Rachel Garcia           
-Account Type: Current          
+Name: Rachel Garcia            
+Account Type: Current           
 Account No: 8302146579
 Balance: 5483
 Phone: 8801967248038
 NID No: 354618279
 Username: RachelGarcia
 
-Name: Daniel Smith           
-Account Type: Savings          
+Name: Daniel Smith            
+Account Type: Savings           
 Account No: 6319857402
 Balance: 98654
 Phone: 8801983652703
 NID No: 987512634
 Username: DanielSmith
 
-Name: Anna Johnson           
-Account Type: Fixed Deposit           
+Name: Anna Johnson            
+Account Type: Fixed Deposit            
 Account No: 8943125671
 Balance: 324567
 Phone: 8801927863950
 NID No: 357896412
 Username: AnnaJohnson
 
-Name: Jacob Hernandez           
-Account Type: Current          
+Name: Jacob Hernandez            
+Account Type: Current           
 Account No: 8642579130
 Balance: 9834
 Phone: 8801917834560
 NID No: 841296735
 Username: JacobHernandez
 
-Name: Olivia Jones           
-Account Type: Savings          
+Name: Olivia Jones            
+Account Type: Savings           
 Account No: 2598734615
 Balance: 104678
 Phone: 8801712458372
 NID No: 845672139
 Username: OliviaJones
 
-Name: Ethan Garcia           
-Account Type: Fixed Deposit           
+Name: Ethan Garcia            
+Account Type: Fixed Deposit            
 Account No: 9027458316
 Balance: 236571
 Phone: 8801934769214
 NID No: 123546789
 Username: EthanGarcia
 
-Name: Natalie Davis           
-Account Type: Current          
+Name: Natalie Davis            
+Account Type: Current           
 Account No: 4132879567
 Balance: 6512
 Phone: 8801719328651
 NID No: 396587412
 Username: NatalieDavis
 
-Name: Christopher Brown           
-Account Type: Savings          
+Name: Christopher Brown            
+Account Type: Savings           
 Account No: 7651923481
 Balance: 54631
 Phone: 8801935289743
 NID No: 729845163
 Username: ChristopherBrown
 
-Name: Shadab Tanjeed           
-Account Type: Savings          
+Name: Shadab Tanjeed            
+Account Type: Savings           
 Account No: 1000174627
 Balance: 9999999999
 Phone: 8801769420420
 NID No: 999999999
 Username: ShadabTanjeed
 
-Name: Tahsinul Islam           
-Account Type: Savings          
+Name: Tahsinul Islam            
+Account Type: Savings           
 Account No: 1000022804
 Balance: 10
 Phone: 8801769024024
 NID No: 10203040
 Username: TahsinulIslam
 
-Name: Shahran Hossain           
-Account Type: Savings          
+Name: Shahran Hossain            
+Account Type: Savings           
 Account No: 1000009514
 Balance: 500
 Phone: 8805654265846
 NID No: 259874563
 Username: ShahranHossain
 
-Name: Adnan Sami          
-Account Type: Fixed Deposit          
+Name: Adnan Sami           
+Account Type: Fixed Deposit           
 Account No: 1000010083
 Balance: 9898
 Phone: 8802654879512
 NID No: 354989654
 Username: AdnanSami
 
-Name: Nick Miller         
-Account Type: Current         
+Name: Nick Miller          
+Account Type: Current          
 Account No: 1000010468
 Balance: 9856875
 Phone: 8801559546589
 NID No: 569874569
 Username: NickMiller
 
-Name: Zubayer Haque 
-Account Type: Fixed Deposit      
+Name: Zubayer Haque  
+Account Type: Fixed Deposit       
 Account No: 1000005704
-Balance: 4000
+Balance: 1000
 Phone: 88012365478
 NID No: 123987462
 Username: ZubayerRuhit
 
-Name: Zubayer Ruhit      
-Account Type: Current     
+Name: Zubayer Ruhit       
+Account Type: Current      
 Account No: 1000005802
-Balance: 7000
+Balance: 13000
 Phone: 88012365478
 NID No: 123987462
 Username: ZubayerRuhit
 
-Name: Shadab Tanjeed 
-Account Type: Current 
+Name: Shadab Tanjeed  
+Account Type: Current  
 Account No: 1000009745
-Balance: 56000
+Balance: 38000
+Phone: 8802369874236
+NID No: 2369874563
+Username: shadabtanjeed
+
+Name: Shadab Tanjeed  
+Account Type: Savings 
+Account No: 1000021442
+Balance: 15000
 Phone: 8802369874236
 NID No: 2369874563
 Username: shadabtanjeed
