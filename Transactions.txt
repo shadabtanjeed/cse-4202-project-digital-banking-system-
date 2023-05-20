@@ -262,3 +262,35 @@ Previous Balance: 11000
 Transaction Amount: 2000
 Updated Balance: 13000
 
+Transaction ID: FRaqbC8wSA
+Account No: 1000009745
+Transaction Date: 22/05/2023
+Transaction Type: MobileRecharge
+Previous Balance: 38000
+Transaction Amount: 1000
+Updated Balance: 37000
+
+Transaction ID: 1XvpFVjCRG
+Account No: 1000009745
+Transaction Date: 22/05/2023
+Transaction Type: GasBill
+Previous Balance: 37000
+Transaction Amount: 1000
+Updated Balance: 36000
+
+Transaction ID: m8uhefOFsi
+Account No: 1000009745
+Transaction Date: 22/05/2023
+Transaction Type: MerchantBill
+Previous Balance: 36000
+Transaction Amount: 1000
+Updated Balance: 35000
+
+Transaction ID: 63IExJNY5S
+Account No: 1000009745
+Transaction Date: 22/05/2023
+Transaction Type: InternetBill
+Previous Balance: 35000
+Transaction Amount: 5000
+Updated Balance: 30000
+

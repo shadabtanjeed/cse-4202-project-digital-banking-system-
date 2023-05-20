@@ -78,6 +78,7 @@ void AccountSettings(char *username, int count, AccountInfo *account_info, Usern
 void Beneficiary(char *username);
 int ShowBenificiary(char *usname, struct BeneficiaryInfo *benefeciary_info, int counter, int *matchingAccounts);
 void FundTransfer(char *username, int count, AccountInfo *account_info);
+void BillPayment(char *username, int count, AccountInfo *account_info);
 
 int main()
 {
@@ -207,6 +208,11 @@ void mainmenu(char *usernm)
         case 5:
             FundTransfer(usernm, count, account_info);
             break;
+
+        case 6:
+            BillPayment(usernm, count, account_info);
+            break;
+
         case 7:
             Beneficiary(usernm);
             break;
@@ -1497,4 +1503,222 @@ void FundTransfer(char *username, int count, AccountInfo *account_info)
             fclose(fp);
         }
     }
+}
+
+void BillPayment(char *username, int count, AccountInfo *account_info)
+{
+    printf("\n");
+    printf("1. Mobile Recharge\n");
+    printf("2. Electricity Bill\n");
+    printf("3. Gas Bill\n");
+    printf("4. Internet Bill\n");
+    printf("5. Tution Fee\n");
+    printf("6. Merchant Payment\n\n");
+
+    int menu_choice;
+    printf("Choose your option: ");
+    scanf("%d", &menu_choice);
+
+    long long amount;
+    char transaction_type[20];
+
+    if (menu_choice == 1)
+    {
+        printf("\nSelect your operator:\n\n");
+        printf("1. Grameenphone\n");
+        printf("2. Banglalink\n");
+        printf("3. Robi\n");
+        printf("4. Airtel\n");
+        printf("5. Teletalk\n\n");
+
+        int operator_choice;
+        printf("Your choice: ");
+        scanf("%d", &operator_choice);
+
+        long long phone_no;
+        printf("Enter your phone number: ");
+        scanf("%lld", &phone_no);
+
+        printf("Enter recharge amount: ");
+        scanf("%lld", &amount);
+
+        strcpy(transaction_type, "MobileRecharge");
+
+        printf("\n\n");
+    }
+
+    else if (menu_choice == 2)
+    {
+        char customer_id[20], month[10];
+        printf("Enter your customer id: ");
+        scanf("%s", customer_id);
+
+        printf("Enter the month of payment: ");
+        scanf("%s", month);
+
+        printf("Enter bill amount: ");
+        scanf("%lld", &amount);
+
+        strcpy(transaction_type, "ElectricityBill");
+
+        printf("\n\n");
+    }
+
+    else if (menu_choice == 3)
+    {
+        char customer_id[20], month[10];
+        printf("Enter your customer id: ");
+        scanf("%s", customer_id);
+
+        printf("Enter the month of payment: ");
+        scanf("%s", month);
+
+        printf("Enter bill amount: ");
+        scanf("%lld", &amount);
+
+        strcpy(transaction_type, "GasBill");
+
+        printf("\n\n");
+    }
+
+    else if (menu_choice == 4)
+    {
+        char customer_id[20], month[10];
+        printf("Enter your customer id: ");
+        scanf("%s", customer_id);
+
+        printf("Enter the month of payment: ");
+        scanf("%s", month);
+
+        printf("Enter bill amount: ");
+        scanf("%lld", &amount);
+
+        strcpy(transaction_type, "InternetBill");
+
+        printf("\n\n");
+    }
+
+    else if (menu_choice == 5)
+    {
+        char institution_name[50];
+        char month[10];
+
+        printf("Enter Institution Name: ");
+        scanf("%s", institution_name);
+
+        printf("Enter the month of payment: ");
+        scanf("%s", month);
+
+        printf("Enter the amount of tution fee: ");
+        scanf("%lld", &amount);
+
+        strcpy(transaction_type, "TutionFee");
+
+        printf("\n\n");
+    }
+
+    else if (menu_choice == 6)
+    {
+        char merchant_id[20];
+        char month[10];
+
+        printf("Enter Merchant ID: ");
+        scanf("%s", merchant_id);
+
+        printf("Enter bill amount: ");
+        scanf("%lld", &amount);
+
+        strcpy(transaction_type, "MerchantBill");
+
+        printf("\n\n");
+    }
+
+    else
+    {
+        printf("Invalid Choice\n\n");
+        return;
+    }
+
+    printf("Select source account: \n\n");
+
+    int *matchingAccounts = malloc(count * sizeof(int));
+    int ACChoice;
+    int found = MatchAndShow(username, account_info, count, matchingAccounts);
+    if (found == 0)
+        printf("No accounts found \n\n");
+    else
+    {
+        printf("Choose the corresponding Account (1/2/3...): ");
+        scanf("%d", &ACChoice);
+        int index = matchingAccounts[ACChoice - 1];
+        if (amount > account_info[index].Balance)
+        {
+            printf("Insuffecient Balance\n\n");
+            return;
+        }
+        else
+        {
+            char date[20];
+
+            printf("Enter the date of transaction (dd/mm/yyyy): ");
+            scanf("%s", date);
+
+            // OTP Part
+            int otp;
+            srand(time(NULL));
+            otp = rand() % 9000 + 1000;
+
+            FILE *fptr;
+            fptr = fopen("OTP.txt", "w");
+
+            if (fptr == NULL)
+            {
+                printf("Error opening file!");
+                return;
+            }
+
+            fprintf(fptr, "%d", otp);
+
+            fclose(fptr);
+
+            int OTP_user;
+
+            printf("A 4 digit OTP has been sent to the OTP.txt file\n\n");
+            printf("OTP: ");
+            scanf("%d", &OTP_user);
+            printf("\n");
+
+            if (otp != OTP_user)
+            {
+                printf("OTP didn't match. \n\n");
+                return;
+            }
+
+            long long old_balance = account_info[index].Balance;
+            long long new_balance = old_balance - amount;
+            account_info[index].Balance = new_balance;
+
+            Transaction(account_info[index].AccountNo, date, transaction_type, old_balance, amount, new_balance);
+
+            FILE *fp = fopen(ACCOUNT_DATA, "w");
+            if (fp == NULL)
+            {
+                printf("Error: Could not open file.\n");
+                return;
+            }
+
+            for (int i = 0; i < count; i++)
+            {
+                fprintf(fp, "Name: %s\nAccount Type: %s\nAccount No: %lld\nBalance: %lld\nPhone: %lld\nNID No: %lld\nUsername: %s\n\n",
+                        account_info[i].Name, account_info[i].AccountType, account_info[i].AccountNo,
+                        account_info[i].Balance, account_info[i].Phone, account_info[i].NID, account_info[i].Username);
+            }
+
+            fclose(fp);
+            printf("Fund Transfer Successful\n\n");
+        }
+        printf("\n \n");
+    }
+
+    free(matchingAccounts);
 }
