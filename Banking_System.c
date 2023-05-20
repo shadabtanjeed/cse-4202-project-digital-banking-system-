@@ -170,14 +170,17 @@ void mainmenu(char *usernm)
         printf("3. Cash Deposit\n");
         printf("4. Cash Withdraw\n");
         printf("5. Fund Transfer\n");
-        printf("6. Beneficiary Management\n");
-        printf("7. Mini Statement\n");
-        printf("8. Create Another Account\n");
-        printf("9. Account Settings\n");
-        printf("10. Close Account\n");
-        printf("11. ATM/Branch Locations\n");
-        printf("12. Customer Support\n");
-        printf("13. Exit\n");
+        printf("6. Bill Payment\n");
+        printf("7. Beneficiary Management\n");
+        printf("8. Credit Card Management\n");
+        printf("9. Loan Management\n");
+        printf("10. Mini Statement\n");
+        printf("11. Create Another Account\n");
+        printf("12. Account Settings\n");
+        printf("13. Close Account\n");
+        printf("14. ATM/Branch Locations\n");
+        printf("15. Customer Support\n");
+        printf("16. Exit\n");
         printf("\n");
         printf("Choose your option: ");
         scanf("%d", &menuchoice);
@@ -204,27 +207,27 @@ void mainmenu(char *usernm)
         case 5:
             FundTransfer(usernm, count, account_info);
             break;
-        case 6:
+        case 7:
             Beneficiary(usernm);
             break;
 
-        case 7:
+        case 10:
             Statement(usernm, account_info, count);
             break;
-        case 8:
+        case 11:
             CreateAnotherAccount(usernm, count, account_info);
             break;
-        case 9:
+        case 12:
             AccountSettings(usernm, count, account_info, user_name, count_user);
             break;
-        case 10:
+        case 13:
             CloseAccount(usernm, count, count_user, account_info, user_name);
             break;
-        case 11:
+        case 14:
 
-        case 12:
+        case 15:
 
-        case 13:
+        case 16:
             free(account_info);
             return;
             break;
