@@ -14,6 +14,7 @@ For inputting Fixed Deposit as Account type in the text file, put a space at las
 #define TRANSACTION_HISTORY "./Transactions.txt"
 #define BENEFICIARY_INFO "./BeneficiaryInfo.txt"
 #define LOAN_TEXT "./Loan.txt"
+#define FEEDBACK "./Feedback.txt"
 
 #define MAX_ACCOUNTS 100
 #define ID_LENGTH 10
@@ -91,6 +92,7 @@ int ShowBenificiary(char *usname, struct BeneficiaryInfo *benefeciary_info, int 
 void FundTransfer(char *username, int count, AccountInfo *account_info);
 void BillPayment(char *username, int count, AccountInfo *account_info);
 void LoanManagement(char *username, int count, AccountInfo *account_info);
+void Feedback(char *username);
 
 int main()
 {
@@ -252,6 +254,8 @@ void mainmenu(char *usernm)
         case 14:
 
         case 15:
+            Feedback(usernm);
+            break;
 
         case 16:
             free(account_info);
@@ -2026,4 +2030,59 @@ void LoanManagement(char *username, int count, AccountInfo *account_info)
     }
 
     free(loan_info);
+}
+
+void Feedback(char *username)
+{
+    printf("1. Contact\n");
+    printf("2. E-mail\n");
+    printf("3. Send feeback/Report an issue\n\n");
+
+    printf("Your choice: ");
+    int feedback_choice;
+    scanf("%d", &feedback_choice);
+    printf("\n");
+
+    if (feedback_choice == 1)
+    {
+        printf("Customer Care (24/7): 16249\n");
+        printf("Headquarters (Sun-Thu 10 am to 4 pm): 16249\n\n");
+    }
+
+    else if (feedback_choice == 2)
+    {
+        printf("General Inquiry: info@thebestbank.org\n");
+        printf("Account Related Issues: accounts@thebestbank.org\n");
+        printf("Card Related Issues: cards@thebestbank.org\n");
+        printf("Remittance Related Inquiry: remittance@thebestbank.org\n");
+        printf("Drop your CV: jobs@thebestbank.org\n");
+        printf("Others: public-relations@thebestbank.org\n\n");
+    }
+
+    else if (feedback_choice == 3)
+    {
+
+        char *str = (char *)malloc(1000 * sizeof(char));
+
+        printf("Write your feedback within 1000 words: ");
+        scanf(" %[^\n]", str);
+        printf("\n");
+
+        FILE *fp = fopen(FEEDBACK, "a");
+        if (fp == NULL)
+        {
+            printf("Error: Could not open file\n");
+            return;
+        }
+
+        fprintf(fp, "Username: %s\nMessage: %s\n", username, str);
+
+        free(str);
+        fclose(fp);
+
+        printf("Your feedback has been recorded.\n\n");
+    }
+
+    else
+        printf("Invalid choice.\n\n");
 }
