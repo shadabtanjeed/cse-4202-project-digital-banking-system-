@@ -20,7 +20,8 @@ For inputting Fixed Deposit as Account type in the text file, put a space at las
 #define ID_LENGTH 10
 #define CARD_NUMBER_LENGTH 16
 #define CVV_LENGTH 3
-
+#define CVV_LENGTH 3
+#define EXPIRY_DATE_LENGTH 6
 
 typedef struct AccountInfo
 {
@@ -281,72 +282,64 @@ void mainmenu(char *usernm)
     }
 }
 
-
-
 void CreditCardMenu(char *username, int count, CreditCardInfo *credit_card_info)
 {
-    int menuchoice = 0;
+    int menuchoice;
 
-    while (menuchoice != 4)
+    printf("Credit Card Management:\n");
+    printf("1. View Credit Card Details\n");
+    printf("2. Apply for Credit Card\n");
+    printf("3. Suspend Credit Card\n");
+    printf("4. Card Settings\n");
+    printf("5. Go Back\n");
+    printf("\n");
+    printf("Choose your option: ");
+    scanf("%d", &menuchoice);
+    printf("\n");
+
+    switch (menuchoice)
     {
-        printf("Credit Card Management:\n");
-        printf("1. View Credit Card Details\n");
-        printf("2. Apply for Credit Card\n");
-        printf("3. Suspend Credit Card\n");
-        printf("4. Card Settings\n");
-        printf("5. Go Back\n");
-        printf("\n");
-        printf("Choose your option: ");
-        scanf("%d", &menuchoice);
-        printf("\n");
+    case 1:
+        ViewCreditCardDetails(username, count, credit_card_info);
+        break;
 
-        switch (menuchoice)
-        {
-        case 1:
-            ViewCreditCardDetails(username, count, credit_card_info);
-            break;
+    case 2:
+        ApplyForCreditCard(username, count, credit_card_info);
+        break;
 
-        case 2:
-            ApplyForCreditCard(username, count, credit_card_info);
-            break;
+    case 3:
+        RemoveCreditCard(username, count, credit_card_info);
+        break;
 
-        case 3:
-            RemoveCreditCard(username, count, credit_card_info);
-            break;
+    case 5:
+        return;
+        break;
 
-        case 5:
-            return;
-            break;
-
-        default:
-            printf("Please enter a valid choice \n \n");
-        }
+    default:
+        printf("Please enter a valid choice \n \n");
     }
 }
 
-void ApplyForCreditCard(char *username, int count, CreditCardInfo *credit_card_info) {
-
-
-    // Generate credit card number
+void ApplyForCreditCard(char *username, int count, CreditCardInfo *credit_card_info)
+{
     srand(time(NULL));
     char card_number[CARD_NUMBER_LENGTH + 1];
-    for (int i = 0; i < CARD_NUMBER_LENGTH; i++) {
+    for (int i = 0; i < CARD_NUMBER_LENGTH; i++)
+    {
         card_number[i] = (rand() % 10) + '0';
     }
     card_number[CARD_NUMBER_LENGTH] = '\0';
 
-    // Generate expiry date
     time_t now = time(NULL);
     struct tm *current_time = localtime(&now);
     int current_year = current_time->tm_year % 100;
     int current_month = current_time->tm_mon + 1;
-    int expiry_year = current_year + 2;  // Expiry after 2 years
+    int expiry_year = current_year + 2; // Expiry after 2 years
     int expiry_month = current_month;
 
-    // Generate CVV
-    srand(time(NULL));
     char cvv[CVV_LENGTH + 1];
-    for (int i = 0; i < CVV_LENGTH; i++) {
+    for (int i = 0; i < CVV_LENGTH; i++)
+    {
         cvv[i] = (rand() % 10) + '0';
     }
     cvv[CVV_LENGTH] = '\0';
@@ -356,41 +349,37 @@ void ApplyForCreditCard(char *username, int count, CreditCardInfo *credit_card_i
     printf("Enter the Card Limit you want: ");
     scanf("%lld", &credit_card_info[count].CardLimit);
 
-
-    // Assign the generated values to the credit card information
     strcpy(credit_card_info[count].CardNo, card_number);
     sprintf(credit_card_info[count].ExpiryDate, "%02d/%02d", expiry_month, expiry_year);
     strcpy(credit_card_info[count].CVV, cvv);
-    
+
     credit_card_info[count].AvailableBalance = credit_card_info[count].CardLimit;
     strcpy(credit_card_info[count].Username, username);
 
-    printf("Credit card added successfully:\n");
-
-    count++;
+    printf("Credit card added successfully\n\n");
 
     printf("Card No: %s\n", credit_card_info[count].CardNo);
     printf("Card Type: %s\n", credit_card_info[count].CardType);
     printf("Expiry Date: %s\n", credit_card_info[count].ExpiryDate);
     printf("CVV: %s\n", credit_card_info[count].CVV);
-    printf("Card Limit: %d\n", credit_card_info[count].CardLimit);
-    printf("Available Balance: %d\n", credit_card_info[count].AvailableBalance);
+    printf("Card Limit: %lld\n", credit_card_info[count].CardLimit);
+    printf("Available Balance: %lld\n\n", credit_card_info[count].AvailableBalance);
 
     FILE *fp = fopen(CREDIT_CARD_INFO, "w");
-    if(fp=NULL)
+    if (fp == NULL)
     {
-        printf("Error: Could not open file");
+        printf("Error: Could not open file\n");
         return;
     }
-    for(int i = 0;i < count; i++)
+
+    (count)++;
+
+    for (int i = 0; i < count; i++)
     {
-        fprintf(fp,"Card No: %s\nCard Type: %s\nExpiry Date: %s\nCVV: %s\nCard Limit: %lld\nAvailable Balance: %lld\nUsername: %s\n\n", credit_card_info[i].CardNo, credit_card_info[i].CardType, credit_card_info[i].ExpiryDate, credit_card_info[i].CVV, credit_card_info[i].CardLimit, credit_card_info[i].AvailableBalance, credit_card_info[i].Username);
+        fprintf(fp, "Card No: %s\nCard Type: %s\nExpiry Date: %s\nCVV: %s\nCard Limit: %lld\nAvailable Balance: %lld\nUsername: %s\n\n", credit_card_info[i].CardNo, credit_card_info[i].CardType, credit_card_info[i].ExpiryDate, credit_card_info[i].CVV, credit_card_info[i].CardLimit, credit_card_info[i].AvailableBalance, credit_card_info[i].Username);
     }
     fclose(fp);
-
 }
-
-
 
 void ViewCreditCardDetails(char *username, int count, CreditCardInfo *credit_card_info)
 {
@@ -411,7 +400,7 @@ void ViewCreditCardDetails(char *username, int count, CreditCardInfo *credit_car
 
         if (card_choice > 0 && card_choice <= num_matching_cards)
         {
-            printf("\nCard No: %s\nCard Type: %s\nExpiry Date: %s\nCVV: %s\nCard Limit: %lld\nAvailable Balance: %lld\n", credit_card_info[card_choice-1].CardNo, credit_card_info[card_choice-1].CardType, credit_card_info[card_choice-1].ExpiryDate, credit_card_info[card_choice-1].CVV, credit_card_info[card_choice-1].CardLimit, credit_card_info[card_choice-1].AvailableBalance);
+            printf("\nCard No: %s\nCard Type: %s\nExpiry Date: %s\nCVV: %s\nCard Limit: %lld\nAvailable Balance: %lld\n", credit_card_info[card_choice - 1].CardNo, credit_card_info[card_choice - 1].CardType, credit_card_info[card_choice - 1].ExpiryDate, credit_card_info[card_choice - 1].CVV, credit_card_info[card_choice - 1].CardLimit, credit_card_info[card_choice - 1].AvailableBalance);
         }
         else
         {
@@ -442,7 +431,6 @@ void RemoveCreditCard(char *username, int count, CreditCardInfo *credit_card_inf
         if (card_choice > 0 && card_choice <= num_matching_cards)
         {
             int index = matchingcards[card_choice - 1];
-            
 
             // Remove the selected credit card by shifting the remaining cards in the dynamic array
             for (int j = index; j < count - 1; j++)
@@ -469,7 +457,7 @@ void RemoveCreditCard(char *username, int count, CreditCardInfo *credit_card_inf
 
         for (int i = 0; i < count - 1; i++)
         {
-            fprintf(fp,"Card No: %s\nCard Type: %s\nExpiry Date: %s\nCVV: %s\nCard Limit: %lld\nAvailable Balance: %lld\nUsername: %s\n\n", credit_card_info[card_choice-1].CardNo, credit_card_info[card_choice-1].CardType, credit_card_info[card_choice-1].ExpiryDate, credit_card_info[card_choice-1].CVV, credit_card_info[card_choice-1].CardLimit, credit_card_info[card_choice-1].AvailableBalance, credit_card_info[card_choice-1].Username);
+            fprintf(fp, "Card No: %s\nCard Type: %s\nExpiry Date: %s\nCVV: %s\nCard Limit: %lld\nAvailable Balance: %lld\nUsername: %s\n\n", credit_card_info[card_choice - 1].CardNo, credit_card_info[card_choice - 1].CardType, credit_card_info[card_choice - 1].ExpiryDate, credit_card_info[card_choice - 1].CVV, credit_card_info[card_choice - 1].CardLimit, credit_card_info[card_choice - 1].AvailableBalance, credit_card_info[card_choice - 1].Username);
         }
         fclose(fp);
     }
@@ -553,9 +541,7 @@ void CloseAccount(char *username, int count, int count_user, AccountInfo *accoun
     free(matchingAccounts);
 }
 
-
-
-int MatchAndShowCards(char *username, CreditCardInfo *credit_card_info, int count, int* matchingcards)
+int MatchAndShowCards(char *username, CreditCardInfo *credit_card_info, int count, int *matchingcards)
 {
     int num_matching_cards = 0;
     if (matchingcards == NULL)
@@ -563,7 +549,7 @@ int MatchAndShowCards(char *username, CreditCardInfo *credit_card_info, int coun
         printf("Could not allocate memory\n");
         return 0;
     }
-    
+
     // Find and store the indices of credit cards matching the given username
     for (int i = 0; i < count; i++)
     {
@@ -588,8 +574,6 @@ int MatchAndShowCards(char *username, CreditCardInfo *credit_card_info, int coun
 
     return num_matching_cards;
 }
-
-
 
 void AccountSettings(char *username, int count, AccountInfo *account_info, Username *user_name, int count_user)
 {
@@ -1279,8 +1263,6 @@ void Statement(char *username, AccountInfo *account_info, int counter)
     }
 }
 
-
-
 int ShowBenificiary(char *usname, struct BeneficiaryInfo *benefeciary_info, int counter, int *matchingAccounts)
 {
     int numMatchingAccounts = 0;
@@ -1782,301 +1764,299 @@ void BillPayment(char *username, int count, AccountInfo *account_info, CreditCar
     int paychoice;
     printf("1.Pay from Account\n");
     printf("2.Pay from Credit Card\n");
-    scanf("%d",&paychoice);
+    scanf("%d", &paychoice);
 
     printf("\n");
-            printf("1. Mobile Recharge\n");
-            printf("2. Electricity Bill\n");
-            printf("3. Gas Bill\n");
-            printf("4. Internet Bill\n");
-            printf("5. Tution Fee\n");
-            printf("6. Merchant Payment\n\n");
+    printf("1. Mobile Recharge\n");
+    printf("2. Electricity Bill\n");
+    printf("3. Gas Bill\n");
+    printf("4. Internet Bill\n");
+    printf("5. Tution Fee\n");
+    printf("6. Merchant Payment\n\n");
 
-            int menu_choice;
-            printf("Choose your option: ");
-            scanf("%d", &menu_choice);
+    int menu_choice;
+    printf("Choose your option: ");
+    scanf("%d", &menu_choice);
 
-            long long amount;
-            char transaction_type[20];
+    long long amount;
+    char transaction_type[20];
 
-            if (menu_choice == 1)
+    if (menu_choice == 1)
+    {
+        printf("\nSelect your operator:\n\n");
+        printf("1. Grameenphone\n");
+        printf("2. Banglalink\n");
+        printf("3. Robi\n");
+        printf("4. Airtel\n");
+        printf("5. Teletalk\n\n");
+
+        int operator_choice;
+        printf("Your choice: ");
+        scanf("%d", &operator_choice);
+
+        long long phone_no;
+        printf("Enter your phone number: ");
+        scanf("%lld", &phone_no);
+
+        printf("Enter recharge amount: ");
+        scanf("%lld", &amount);
+
+        strcpy(transaction_type, "MobileRecharge");
+
+        printf("\n\n");
+    }
+
+    else if (menu_choice == 2)
+    {
+        char customer_id[20], month[10];
+        printf("Enter your customer id: ");
+        scanf("%s", customer_id);
+
+        printf("Enter the month of payment: ");
+        scanf("%s", month);
+
+        printf("Enter bill amount: ");
+        scanf("%lld", &amount);
+
+        strcpy(transaction_type, "ElectricityBill");
+
+        printf("\n\n");
+    }
+
+    else if (menu_choice == 3)
+    {
+        char customer_id[20], month[10];
+        printf("Enter your customer id: ");
+        scanf("%s", customer_id);
+
+        printf("Enter the month of payment: ");
+        scanf("%s", month);
+
+        printf("Enter bill amount: ");
+        scanf("%lld", &amount);
+
+        strcpy(transaction_type, "GasBill");
+
+        printf("\n\n");
+    }
+
+    else if (menu_choice == 4)
+    {
+        char customer_id[20], month[10];
+        printf("Enter your customer id: ");
+        scanf("%s", customer_id);
+
+        printf("Enter the month of payment: ");
+        scanf("%s", month);
+
+        printf("Enter bill amount: ");
+        scanf("%lld", &amount);
+
+        strcpy(transaction_type, "InternetBill");
+
+        printf("\n\n");
+    }
+
+    else if (menu_choice == 5)
+    {
+        char institution_name[50];
+        char month[10];
+
+        printf("Enter Institution Name: ");
+        scanf("%s", institution_name);
+
+        printf("Enter the month of payment: ");
+        scanf("%s", month);
+
+        printf("Enter the amount of tution fee: ");
+        scanf("%lld", &amount);
+
+        strcpy(transaction_type, "TutionFee");
+
+        printf("\n\n");
+    }
+
+    else if (menu_choice == 6)
+    {
+        char merchant_id[20];
+        char month[10];
+
+        printf("Enter Merchant ID: ");
+        scanf("%s", merchant_id);
+
+        printf("Enter bill amount: ");
+        scanf("%lld", &amount);
+
+        strcpy(transaction_type, "MerchantBill");
+
+        printf("\n\n");
+    }
+
+    else
+    {
+        printf("Invalid Choice\n\n");
+        return;
+    }
+
+    switch (paychoice)
+    {
+    case 1:
+        printf("Select source account: \n\n");
+
+        int *matchingAccounts = malloc(count * sizeof(int));
+        int ACChoice;
+        int found = MatchAndShow(username, account_info, count, matchingAccounts);
+        if (found == 0)
+            printf("No accounts found \n\n");
+        else
+        {
+            printf("Choose the corresponding Account (1/2/3...): ");
+            scanf("%d", &ACChoice);
+            int index = matchingAccounts[ACChoice - 1];
+            if (amount > account_info[index].Balance)
             {
-                printf("\nSelect your operator:\n\n");
-                printf("1. Grameenphone\n");
-                printf("2. Banglalink\n");
-                printf("3. Robi\n");
-                printf("4. Airtel\n");
-                printf("5. Teletalk\n\n");
-
-                int operator_choice;
-                printf("Your choice: ");
-                scanf("%d", &operator_choice);
-
-                long long phone_no;
-                printf("Enter your phone number: ");
-                scanf("%lld", &phone_no);
-
-                printf("Enter recharge amount: ");
-                scanf("%lld", &amount);
-
-                strcpy(transaction_type, "MobileRecharge");
-
-                printf("\n\n");
-            }
-
-            else if (menu_choice == 2)
-            {
-                char customer_id[20], month[10];
-                printf("Enter your customer id: ");
-                scanf("%s", customer_id);
-
-                printf("Enter the month of payment: ");
-                scanf("%s", month);
-
-                printf("Enter bill amount: ");
-                scanf("%lld", &amount);
-
-                strcpy(transaction_type, "ElectricityBill");
-
-                printf("\n\n");
-            }
-
-            else if (menu_choice == 3)
-            {
-                char customer_id[20], month[10];
-                printf("Enter your customer id: ");
-                scanf("%s", customer_id);
-
-                printf("Enter the month of payment: ");
-                scanf("%s", month);
-
-                printf("Enter bill amount: ");
-                scanf("%lld", &amount);
-
-                strcpy(transaction_type, "GasBill");
-
-                printf("\n\n");
-            }
-
-            else if (menu_choice == 4)
-            {
-                char customer_id[20], month[10];
-                printf("Enter your customer id: ");
-                scanf("%s", customer_id);
-
-                printf("Enter the month of payment: ");
-                scanf("%s", month);
-
-                printf("Enter bill amount: ");
-                scanf("%lld", &amount);
-
-                strcpy(transaction_type, "InternetBill");
-
-                printf("\n\n");
-            }
-
-            else if (menu_choice == 5)
-            {
-                char institution_name[50];
-                char month[10];
-
-                printf("Enter Institution Name: ");
-                scanf("%s", institution_name);
-
-                printf("Enter the month of payment: ");
-                scanf("%s", month);
-
-                printf("Enter the amount of tution fee: ");
-                scanf("%lld", &amount);
-
-                strcpy(transaction_type, "TutionFee");
-
-                printf("\n\n");
-            }
-
-            else if (menu_choice == 6)
-            {
-                char merchant_id[20];
-                char month[10];
-
-                printf("Enter Merchant ID: ");
-                scanf("%s", merchant_id);
-
-                printf("Enter bill amount: ");
-                scanf("%lld", &amount);
-
-                strcpy(transaction_type, "MerchantBill");
-
-                printf("\n\n");
-            }
-
-            else
-            {
-                printf("Invalid Choice\n\n");
+                printf("Insuffecient Balance\n\n");
                 return;
             }
-
-    switch(paychoice)
-    {
-        case 1: 
-            printf("Select source account: \n\n");
-
-            int *matchingAccounts = malloc(count * sizeof(int));
-            int ACChoice;
-            int found = MatchAndShow(username, account_info, count, matchingAccounts);
-            if (found == 0)
-                printf("No accounts found \n\n");
             else
             {
-                printf("Choose the corresponding Account (1/2/3...): ");
-                scanf("%d", &ACChoice);
-                int index = matchingAccounts[ACChoice - 1];
-                if (amount > account_info[index].Balance)
+                char date[20];
+
+                printf("Enter the date of transaction (dd/mm/yyyy): ");
+                scanf("%s", date);
+
+                // OTP Part
+                int otp;
+                srand(time(NULL));
+                otp = rand() % 9000 + 1000;
+
+                FILE *fptr;
+                fptr = fopen("OTP.txt", "w");
+
+                if (fptr == NULL)
                 {
-                    printf("Insuffecient Balance\n\n");
+                    printf("Error opening file!");
                     return;
                 }
-                else
+
+                fprintf(fptr, "%d", otp);
+
+                fclose(fptr);
+
+                int OTP_user;
+
+                printf("A 4 digit OTP has been sent to the OTP.txt file\n\n");
+                printf("OTP: ");
+                scanf("%d", &OTP_user);
+                printf("\n");
+
+                if (otp != OTP_user)
                 {
-                    char date[20];
-
-                    printf("Enter the date of transaction (dd/mm/yyyy): ");
-                    scanf("%s", date);
-
-                    // OTP Part
-                    int otp;
-                    srand(time(NULL));
-                    otp = rand() % 9000 + 1000;
-
-                    FILE *fptr;
-                    fptr = fopen("OTP.txt", "w");
-
-                    if (fptr == NULL)
-                    {
-                        printf("Error opening file!");
-                        return;
-                    }
-
-                    fprintf(fptr, "%d", otp);
-
-                    fclose(fptr);
-
-                    int OTP_user;
-
-                    printf("A 4 digit OTP has been sent to the OTP.txt file\n\n");
-                    printf("OTP: ");
-                    scanf("%d", &OTP_user);
-                    printf("\n");
-
-                    if (otp != OTP_user)
-                    {
-                        printf("OTP didn't match. \n\n");
-                        return;
-                    }
-
-                    long long old_balance = account_info[index].Balance;
-                    long long new_balance = old_balance - amount;
-                    account_info[index].Balance = new_balance;
-
-                    Transaction(account_info[index].AccountNo, date, transaction_type, old_balance, amount, new_balance);
-
-                    FILE *fp = fopen(ACCOUNT_DATA, "w");
-                    if (fp == NULL)
-                    {
-                        printf("Error: Could not open file.\n");
-                        return;
-                    }
-
-                    for (int i = 0; i < count; i++)
-                    {
-                        fprintf(fp, "Name: %s\nAccount Type: %s\nAccount No: %lld\nBalance: %lld\nPhone: %lld\nNID No: %lld\nUsername: %s\n\n",
-                                account_info[i].Name, account_info[i].AccountType, account_info[i].AccountNo,
-                                account_info[i].Balance, account_info[i].Phone, account_info[i].NID, account_info[i].Username);
-                    }
-
-                    fclose(fp);
-                    printf("Fund Transfer Successful\n\n");
+                    printf("OTP didn't match. \n\n");
+                    return;
                 }
-                printf("\n \n");
+
+                long long old_balance = account_info[index].Balance;
+                long long new_balance = old_balance - amount;
+                account_info[index].Balance = new_balance;
+
+                Transaction(account_info[index].AccountNo, date, transaction_type, old_balance, amount, new_balance);
+
+                FILE *fp = fopen(ACCOUNT_DATA, "w");
+                if (fp == NULL)
+                {
+                    printf("Error: Could not open file.\n");
+                    return;
+                }
+
+                for (int i = 0; i < count; i++)
+                {
+                    fprintf(fp, "Name: %s\nAccount Type: %s\nAccount No: %lld\nBalance: %lld\nPhone: %lld\nNID No: %lld\nUsername: %s\n\n",
+                            account_info[i].Name, account_info[i].AccountType, account_info[i].AccountNo,
+                            account_info[i].Balance, account_info[i].Phone, account_info[i].NID, account_info[i].Username);
+                }
+
+                fclose(fp);
+                printf("Fund Transfer Successful\n\n");
             }
+            printf("\n \n");
+        }
 
-            free(matchingAccounts);
-            break;
+        free(matchingAccounts);
+        break;
 
-        case 2: 
-            printf("Select source account: \n\n");
+    case 2:
+        printf("Select source account: \n\n");
 
-            int *matchingcards = malloc(count * sizeof(int));
-            int cardchoice;
-            found = MatchAndShowCards(username, credit_card_info, card_count, matchingcards);
-            if (found == 0)
-                printf("No accounts found \n\n");
+        int *matchingcards = malloc(count * sizeof(int));
+        int cardchoice;
+        found = MatchAndShowCards(username, credit_card_info, card_count, matchingcards);
+        if (found == 0)
+            printf("No accounts found \n\n");
+        else
+        {
+            printf("Choose the corresponding Card (1/2/3...): ");
+            scanf("%d", &cardchoice);
+            int index = matchingcards[cardchoice - 1];
+            if (amount > credit_card_info[index].AvailableBalance)
+            {
+                printf("Insuffecient Balance\n\n");
+                return;
+            }
             else
             {
-                printf("Choose the corresponding Card (1/2/3...): ");
-                scanf("%d", &cardchoice);
-                int index = matchingcards[cardchoice - 1];
-                if (amount > credit_card_info[index].AvailableBalance)
+                // OTP Part
+                int otp;
+                srand(time(NULL));
+                otp = rand() % 9000 + 1000;
+
+                FILE *fptr;
+                fptr = fopen("OTP.txt", "w");
+
+                if (fptr == NULL)
                 {
-                    printf("Insuffecient Balance\n\n");
+                    printf("Error opening file!");
                     return;
                 }
-                else
+
+                fprintf(fptr, "%d", otp);
+
+                fclose(fptr);
+
+                int OTP_user;
+
+                printf("A 4 digit OTP has been sent to the OTP.txt file\n\n");
+                printf("OTP: ");
+                scanf("%d", &OTP_user);
+                printf("\n");
+
+                if (otp != OTP_user)
                 {
-                    // OTP Part
-                    int otp;
-                    srand(time(NULL));
-                    otp = rand() % 9000 + 1000;
-
-                    FILE *fptr;
-                    fptr = fopen("OTP.txt", "w");
-
-                    if (fptr == NULL)
-                    {
-                        printf("Error opening file!");
-                        return;
-                    }
-
-                    fprintf(fptr, "%d", otp);
-
-                    fclose(fptr);
-
-                    int OTP_user;
-
-                    printf("A 4 digit OTP has been sent to the OTP.txt file\n\n");
-                    printf("OTP: ");
-                    scanf("%d", &OTP_user);
-                    printf("\n");
-
-                    if (otp != OTP_user)
-                    {
-                        printf("OTP didn't match. \n\n");
-                        return;
-                    }
-
-                    
-                    credit_card_info[index].AvailableBalance -= amount;
-
-
-                    FILE *fp = fopen(CREDIT_CARD_INFO, "w");
-                    if (fp == NULL)
-                    {
-                        printf("Error: Could not open file.\n");
-                        return;
-                    }
-
-                    for (int i = 0; i < card_count; i++)
-                    {
-                        fprintf(fp,"Card No: %s\nCard Type: %s\nExpiry Date: %s\nCVV: %s\nCard Limit: %lld\nAvailable Balance: %lld\nUsername: %s\n\n", credit_card_info[i].CardNo, credit_card_info[i].CardType, credit_card_info[i].ExpiryDate, credit_card_info[i].CVV, credit_card_info[i].CardLimit, credit_card_info[i].AvailableBalance, credit_card_info[i].Username);
-                    }
-
-                    fclose(fp);
-                    printf("Payment Successful\n\n");
+                    printf("OTP didn't match. \n\n");
+                    return;
                 }
-                printf("\n \n");
-            }
 
-            free(matchingAccounts);
-            break;
+                credit_card_info[index].AvailableBalance -= amount;
+
+                FILE *fp = fopen(CREDIT_CARD_INFO, "w");
+                if (fp == NULL)
+                {
+                    printf("Error: Could not open file.\n");
+                    return;
+                }
+
+                for (int i = 0; i < card_count; i++)
+                {
+                    fprintf(fp, "Card No: %s\nCard Type: %s\nExpiry Date: %s\nCVV: %s\nCard Limit: %lld\nAvailable Balance: %lld\nUsername: %s\n\n", credit_card_info[i].CardNo, credit_card_info[i].CardType, credit_card_info[i].ExpiryDate, credit_card_info[i].CVV, credit_card_info[i].CardLimit, credit_card_info[i].AvailableBalance, credit_card_info[i].Username);
+                }
+
+                fclose(fp);
+                printf("Payment Successful\n\n");
+            }
+            printf("\n \n");
+        }
+
+        free(matchingAccounts);
+        break;
     }
 }
