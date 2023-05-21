@@ -7,6 +7,7 @@ For inputting Fixed Deposit as Account type in the text file, put a space at las
 #include <stdio.h>
 #include <time.h>
 #include <string.h>
+#include <math.h>
 #include <stdlib.h>
 
 #define USER_PASS "./username.txt"
@@ -15,9 +16,18 @@ For inputting Fixed Deposit as Account type in the text file, put a space at las
 #define BENEFICIARY_INFO "./BeneficiaryInfo.txt"
 #define LOAN_TEXT "./Loan.txt"
 #define FEEDBACK "./Feedback.txt"
+#define CREDIT_CARD_INFO "./CreditCardInfo.txt"
+#define LOCATION_INFO "./LocationInfo.txt"
 
 #define MAX_ACCOUNTS 100
 #define ID_LENGTH 10
+#define CARD_NUMBER_LENGTH 16
+#define CVV_LENGTH 3
+#define EXPIRY_DATE_LENGTH 6
+#define MAX_REGION_LENGTH 15
+#define MAX_NAME_LENGTH 100
+#define MAX_ADDRESS_LENGTH 200
+#define MAX_LOCATIONS 30
 
 typedef struct AccountInfo
 {
@@ -67,6 +77,24 @@ typedef struct LoanInfo
     long long amount;
 } LoanInfo;
 
+typedef struct CreditCardInfo
+{
+    char CardNo[20];
+    char CardType[20];
+    char ExpiryDate[8];
+    char CVV[5];
+    long long CardLimit;
+    long long AvailableBalance;
+    char Username[30];
+} CreditCardInfo;
+
+typedef struct LocationInfo
+{
+    char BranchName[MAX_NAME_LENGTH];
+    char Address[MAX_ADDRESS_LENGTH];
+    char Region[MAX_REGION_LENGTH];
+} LocationInfo;
+
 int loginverify(char *userid, char *pass);
 void mainmenu(char *usernm);
 int ReadAccountInfo();
@@ -93,6 +121,12 @@ void FundTransfer(char *username, int count, AccountInfo *account_info);
 void BillPayment(char *username, int count, AccountInfo *account_info);
 void LoanManagement(char *username, int count, AccountInfo *account_info);
 void Feedback(char *username);
+int MatchAndShowCards(char *username, CreditCardInfo *credit_card_info, int count, int *matchingcards);
+void ApplyForCreditCard(char *username, int count, CreditCardInfo *credit_card_info);
+void RemoveCreditCard(char *username, int count, CreditCardInfo *credit_card_info);
+void ViewCreditCardDetails(char *username, int count, CreditCardInfo *credit_card_info);
+void CreditCardMenu(char *username, int count, CreditCardInfo *credit_card_info);
+void ShowLocation();
 
 int main()
 {
@@ -151,18 +185,21 @@ void mainmenu(char *usernm)
 
     AccountInfo *account_info = (AccountInfo *)malloc(MAX_ACCOUNTS * sizeof(AccountInfo));
     Username *user_name = (Username *)malloc(MAX_ACCOUNTS * sizeof(Username));
+    CreditCardInfo *credit_card_info = (CreditCardInfo *)malloc(MAX_ACCOUNTS * sizeof(CreditCardInfo));
 
     while (menuchoice != 12)
     {
-        int count = 0, count_user = 0;
+        int count = 0, count_user = 0, count_credit_cards = 0;
         char garbage_value;
 
         FILE *fp;
         FILE *fp5;
+        FILE *fp6;
 
         fp = fopen(ACCOUNT_DATA, "r");
         fp5 = fopen(USER_PASS, "r");
-        if (fp == NULL || fp5 == NULL)
+        fp6 = fopen(CREDIT_CARD_INFO, "r");
+        if (fp == NULL || fp5 == NULL || fp6 == NULL)
         {
             printf("Error: Could not open file\n");
         }
@@ -177,8 +214,14 @@ void mainmenu(char *usernm)
             count_user++;
         }
 
+        while (fscanf(fp6, "Card No: %[^\n]\nCard Type: %[^\n]\nExpiry Date: %[^\n]\nCVV: %[^\n]\nCard Limit: %lld\nAvailable Balance: %lld\nUsername: %[^\n]\n", credit_card_info[count_credit_cards].CardNo, credit_card_info[count_credit_cards].CardType, credit_card_info[count_credit_cards].ExpiryDate, credit_card_info[count_credit_cards].CVV, &credit_card_info[count_credit_cards].CardLimit, &credit_card_info[count_credit_cards].AvailableBalance, credit_card_info[count_credit_cards].Username) == 7)
+        {
+            ++count_credit_cards;
+        }
+
         fclose(fp);
         fclose(fp5);
+        fclose(fp6);
 
         printf("1. View All Accounts\n");
         printf("2. Check Balance\n");
@@ -231,6 +274,10 @@ void mainmenu(char *usernm)
             Beneficiary(usernm);
             break;
 
+        case 8:
+            CreditCardMenu(usernm, count_credit_cards, credit_card_info);
+            break;
+
         case 9:
             LoanManagement(usernm, count, account_info);
             break;
@@ -252,6 +299,8 @@ void mainmenu(char *usernm)
             break;
 
         case 14:
+            ShowLocation();
+            break;
 
         case 15:
             Feedback(usernm);
@@ -2085,4 +2134,229 @@ void Feedback(char *username)
 
     else
         printf("Invalid choice.\n\n");
+}
+
+void ShowLocation()
+{
+    char region[MAX_REGION_LENGTH];
+    int count = 0, i, found = 0;
+    printf("Enter Region: ");
+    scanf("%s", region);
+    printf("\n");
+
+    LocationInfo *location_info = malloc(MAX_LOCATIONS * sizeof(LocationInfo));
+
+    FILE *fp = fopen(LOCATION_INFO, "r");
+    if (fp == NULL)
+    {
+        printf("Failed to open file.\n");
+        return;
+    }
+
+    while (fscanf(fp, "Branch Name: %[^\n]\nAddress: %[^\n]\nRegion: %s\n", location_info[count].BranchName, location_info[count].Address, location_info[count].Region) == 3)
+    {
+        count++;
+    }
+
+    fclose(fp);
+
+    for (i = 0; i < count; i++)
+    {
+        if (strcmp(location_info[i].Region, region) == 0)
+        {
+            printf("Branch Name: %s\nAddress: %s\nRegion: %s\n\n", location_info[i].BranchName, location_info[i].Address, location_info[i].Region);
+            found++;
+        }
+    }
+
+    if (found == 0)
+    {
+        printf("No Branches in the region.\n\n");
+    }
+
+    free(location_info);
+}
+
+void CreditCardMenu(char *username, int count, CreditCardInfo *credit_card_info)
+{
+    int menuchoice;
+
+    printf("Credit Card Management:\n");
+    printf("1. View Credit Card Details\n");
+    printf("2. Apply for Credit Card\n");
+    printf("3. Suspend Credit Card\n");
+    printf("4. Go Back\n");
+    printf("\n");
+    printf("Choose your option: ");
+    scanf("%d", &menuchoice);
+    printf("\n");
+
+    switch (menuchoice)
+    {
+    case 1:
+        ViewCreditCardDetails(username, count, credit_card_info);
+        break;
+
+    case 2:
+        ApplyForCreditCard(username, count, credit_card_info);
+        break;
+
+    case 3:
+        RemoveCreditCard(username, count, credit_card_info);
+        break;
+
+    case 4:
+        return;
+        break;
+
+    default:
+        printf("Please enter a valid choice \n \n");
+    }
+}
+
+void ApplyForCreditCard(char *username, int count, CreditCardInfo *credit_card_info)
+{
+    srand(time(NULL));
+    char card_number[CARD_NUMBER_LENGTH + 1];
+    for (int i = 0; i < CARD_NUMBER_LENGTH; i++)
+    {
+        card_number[i] = (rand() % 10) + '0';
+    }
+    card_number[CARD_NUMBER_LENGTH] = '\0';
+
+    time_t now = time(NULL);
+    struct tm *current_time = localtime(&now);
+    int current_year = current_time->tm_year % 100;
+    int current_month = current_time->tm_mon + 1;
+    int expiry_year = current_year + 2; // Expiry after 2 years
+    int expiry_month = current_month;
+
+    char cvv[CVV_LENGTH + 1];
+    for (int i = 0; i < CVV_LENGTH; i++)
+    {
+        cvv[i] = (rand() % 10) + '0';
+    }
+    cvv[CVV_LENGTH] = '\0';
+
+    printf("Enter Card Type: ");
+    scanf(" %[^\n]", credit_card_info[count].CardType);
+    printf("Enter the Card Limit you want: ");
+    scanf("%lld", &credit_card_info[count].CardLimit);
+
+    strcpy(credit_card_info[count].CardNo, card_number);
+    sprintf(credit_card_info[count].ExpiryDate, "%02d/%02d", expiry_month, expiry_year);
+    strcpy(credit_card_info[count].CVV, cvv);
+
+    credit_card_info[count].AvailableBalance = credit_card_info[count].CardLimit;
+    strcpy(credit_card_info[count].Username, username);
+
+    printf("Credit card added successfully\n\n");
+
+    printf("Card No: %s\n", credit_card_info[count].CardNo);
+    printf("Card Type: %s\n", credit_card_info[count].CardType);
+    printf("Expiry Date: %s\n", credit_card_info[count].ExpiryDate);
+    printf("CVV: %s\n", credit_card_info[count].CVV);
+    printf("Card Limit: %lld\n", credit_card_info[count].CardLimit);
+    printf("Available Balance: %lld\n\n", credit_card_info[count].AvailableBalance);
+
+    FILE *fp = fopen(CREDIT_CARD_INFO, "w");
+    if (fp == NULL)
+    {
+        printf("Error: Could not open file\n");
+        return;
+    }
+
+    (count)++;
+
+    for (int i = 0; i < count; i++)
+    {
+        fprintf(fp, "Card No: %s\nCard Type: %s\nExpiry Date: %s\nCVV: %s\nCard Limit: %lld\nAvailable Balance: %lld\nUsername: %s\n\n", credit_card_info[i].CardNo, credit_card_info[i].CardType, credit_card_info[i].ExpiryDate, credit_card_info[i].CVV, credit_card_info[i].CardLimit, credit_card_info[i].AvailableBalance, credit_card_info[i].Username);
+    }
+    fclose(fp);
+}
+
+void ViewCreditCardDetails(char *username, int count, CreditCardInfo *credit_card_info)
+{
+    int *matchingcards;
+    matchingcards = malloc(count * sizeof(int));
+    int num_matching_cards = MatchAndShowCards(username, credit_card_info, count, matchingcards);
+
+    if (num_matching_cards == 0)
+    {
+        printf("No credit cards found for the given username\n");
+    }
+    else
+    {
+        int card_choice = 0;
+
+        printf("Choose a credit card to view more the details: ");
+        scanf("%d", &card_choice);
+
+        int index = matchingcards[card_choice - 1];
+
+        if (card_choice > 0 && card_choice <= num_matching_cards)
+        {
+            printf("\nCard No: %s\nCard Type: %s\nExpiry Date: %s\nCVV: %s\nCard Limit: %lld\nAvailable Balance: %lld\n", credit_card_info[index].CardNo, credit_card_info[index].CardType, credit_card_info[index].ExpiryDate, credit_card_info[index].CVV, credit_card_info[index].CardLimit, credit_card_info[index].AvailableBalance);
+        }
+        else
+        {
+            printf("Invalid credit card choice\n");
+        }
+    }
+
+    printf("\n");
+    free(matchingcards);
+}
+
+void RemoveCreditCard(char *username, int count, CreditCardInfo *credit_card_info)
+{
+    int *matchingcards = malloc(count * sizeof(int));
+    int num_matching_cards = MatchAndShowCards(username, credit_card_info, count, matchingcards);
+
+    if (num_matching_cards == 0)
+    {
+        printf("No credit cards found for the given username\n");
+    }
+    else
+    {
+        int card_choice = 0;
+
+        printf("Choose a credit card to remove: ");
+        scanf("%d", &card_choice);
+
+        if (card_choice > 0 && card_choice <= num_matching_cards)
+        {
+            int index = matchingcards[card_choice - 1];
+
+            // Remove the selected credit card by shifting the remaining cards in the dynamic array
+            for (int j = index; j < count - 1; j++)
+            {
+                credit_card_info[j] = credit_card_info[j + 1];
+            }
+
+            printf("Credit card removed successfully\n");
+        }
+        else
+        {
+            printf("Invalid credit card choice\n");
+        }
+        // Update creditcards file
+        FILE *fp;
+
+        fp = fopen(CREDIT_CARD_INFO, "w");
+
+        if (fp == NULL)
+        {
+            printf("Error: Could not open file\n");
+            return;
+        }
+
+        for (int i = 0; i < count - 1; i++)
+        {
+            fprintf(fp, "Card No: %s\nCard Type: %s\nExpiry Date: %s\nCVV: %s\nCard Limit: %lld\nAvailable Balance: %lld\nUsername: %s\n\n", credit_card_info[card_choice - 1].CardNo, credit_card_info[card_choice - 1].CardType, credit_card_info[card_choice - 1].ExpiryDate, credit_card_info[card_choice - 1].CVV, credit_card_info[card_choice - 1].CardLimit, credit_card_info[card_choice - 1].AvailableBalance, credit_card_info[card_choice - 1].Username);
+        }
+        fclose(fp);
+    }
+
+    printf("\n");
 }
