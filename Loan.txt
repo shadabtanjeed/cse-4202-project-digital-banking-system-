@@ -47,17 +47,17 @@ Date: 27/04/2023
 Interest Rate: 12
 Amount: 19270
 
-Username: shadabtanjeed
-Account No: 1000021442
-Loan Term: 14
-Date: 05/06/2022
-Interest Rate: 7
-Amount: 39650
-
 Username: AdnanSami
 Account No: 1000010083
 Loan Term: 21
 Date: 23/05/2023
 Interest Rate: 13
 Amount: 10000
+
+Username: shadabtanjeed
+Account No: 999834595
+Loan Term: 24
+Date: 23/05/2023
+Interest Rate: 13
+Amount: 50000
 

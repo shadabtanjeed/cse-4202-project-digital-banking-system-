@@ -1759,13 +1759,14 @@ void LoanManagement(char *username, int count, AccountInfo *account_info)
 
     fclose(fp1);
 
-    int user_found = 0;
+    int user_found = 0, user_index;
 
     for (int i = 0; i < count_loan_entry; ++i)
     {
         if (strcmp(username, loan_info[i].Username) == 0)
         {
             user_found = 1;
+            user_index = i;
             break;
         }
     }
@@ -1818,7 +1819,7 @@ void LoanManagement(char *username, int count, AccountInfo *account_info)
 
                 interesrrate = (rand() % (15 - 5 + 1)) + 5;
 
-                printf("Your interesr rate will be %d\n\n", interesrrate);
+                printf("Your interest rate will be %d\n\n", interesrrate);
 
                 loan_info[count_loan_entry].AccountNo = account_info[index].AccountNo;
                 loan_info[count_loan_entry].loan_term = loan_term;
@@ -1865,6 +1866,163 @@ void LoanManagement(char *username, int count, AccountInfo *account_info)
             }
             free(matchingAccounts);
         }
+    }
+
+    else if (menuchoice == 2)
+    {
+        if (user_found == 0)
+        {
+            printf("No loan details found\n\n");
+            return;
+        }
+
+        else
+        {
+            printf("Loan Amount: %lld\n", loan_info[user_index].amount);
+            printf("Account No: %lld\n", loan_info[user_index].AccountNo);
+            printf("Loan taken on: %s\n", loan_info[user_index].date);
+            printf("Interest rate: %d%%\n", loan_info[user_index].interest_rate);
+            printf("Loan Term: %d months\n\n", loan_info[user_index].loan_term);
+        }
+    }
+
+    else if (menuchoice == 3)
+    {
+        if (user_found == 0)
+        {
+            printf("No loan details found\n\n");
+            return;
+        }
+
+        else
+        {
+            printf("Your Loan Amount: %lld\n", loan_info[user_index].amount);
+            printf("Your Interest rate: %d%%\n", loan_info[user_index].interest_rate);
+
+            long long repay_amount = (loan_info[user_index].amount * (100 + loan_info[user_index].interest_rate)) / 100;
+            printf("Your payable amount: %lld\n\n", repay_amount);
+
+            printf("Do you want to proceed?\n\n");
+            printf("1. Yes\n");
+            printf("2. No\n\n");
+            printf("Your choice: ");
+
+            int repay_choice;
+            scanf("%d", &repay_choice);
+
+            if (repay_choice == 2)
+                return;
+
+            else if (repay_choice == 1)
+            {
+                int account_index;
+
+                for (int i = 0; i < count; ++i)
+                {
+                    if (account_info[i].AccountNo == loan_info[user_index].AccountNo)
+                    {
+                        account_index = i;
+                        break;
+                    }
+                }
+
+                if (account_info[account_index].AccountNo < repay_amount)
+                {
+                    printf("Insufficient Amount\n\n");
+                    return;
+                }
+
+                else
+                {
+                    long long new_balance = account_info[account_index].Balance - repay_amount;
+                    long long old_balance = account_info[account_index].Balance;
+                    account_info[account_index].Balance = new_balance;
+
+                    char date[20];
+                    printf("Enter Date(dd/mm/yyyy): ");
+                    scanf("%s", date);
+
+                    Transaction(account_info[account_index].AccountNo, date, "LoanPayment", old_balance, repay_amount, new_balance);
+
+                    for (int j = user_index; j < count_loan_entry - 1; j++)
+                    {
+                        loan_info[j] = loan_info[j + 1];
+                    }
+
+                    FILE *fp;
+
+                    fp = fopen(LOAN_TEXT, "w");
+
+                    if (fp == NULL)
+                    {
+                        printf("Error: Could not open file\n");
+                        return;
+                    }
+
+                    for (int i = 0; i < count_loan_entry - 1; i++)
+                    {
+                        fprintf(fp, "Username: %s\nAccount No: %lld\nLoan Term: %d\nDate: %s\nInterest Rate: %d\nAmount: %lld\n\n", loan_info[i].Username, loan_info[i].AccountNo, loan_info[i].loan_term, loan_info[i].date, loan_info[i].interest_rate, loan_info[i].amount);
+                    }
+                    fclose(fp);
+
+                    FILE *fp3 = fopen(ACCOUNT_DATA, "w");
+                    if (fp3 == NULL)
+                    {
+                        printf("Error: Could not open file.\n");
+                        return;
+                    }
+
+                    for (int i = 0; i < count; i++)
+                    {
+                        fprintf(fp3, "Name: %s\nAccount Type: %s\nAccount No: %lld\nBalance: %lld\nPhone: %lld\nNID No: %lld\nUsername: %s\n\n",
+                                account_info[i].Name, account_info[i].AccountType, account_info[i].AccountNo,
+                                account_info[i].Balance, account_info[i].Phone, account_info[i].NID, account_info[i].Username);
+                    }
+
+                    fclose(fp3);
+
+                    printf("\nLoan Payment Successful.\n\n");
+                }
+            }
+
+            else
+                printf("Invalid Choice\n\n");
+        }
+    }
+
+    else if (menuchoice == 4)
+    {
+        if (user_found == 0)
+        {
+            printf("No loan history found\n\n");
+            return;
+        }
+        printf("Enter your new term (in months): ");
+        scanf("%d", &loan_info[user_index].loan_term);
+
+        FILE *fp;
+
+        fp = fopen(LOAN_TEXT, "w");
+
+        if (fp == NULL)
+        {
+            printf("Error: Could not open file\n");
+            return;
+        }
+
+        for (int i = 0; i < count_loan_entry; i++)
+        {
+            fprintf(fp, "Username: %s\nAccount No: %lld\nLoan Term: %d\nDate: %s\nInterest Rate: %d\nAmount: %lld\n\n", loan_info[i].Username, loan_info[i].AccountNo, loan_info[i].loan_term, loan_info[i].date, loan_info[i].interest_rate, loan_info[i].amount);
+        }
+        fclose(fp);
+
+        printf("Loan Term Updated.\n\n");
+    }
+
+    else
+    {
+        printf("Invalid Choice\n\n");
+        return;
     }
 
     free(loan_info);
