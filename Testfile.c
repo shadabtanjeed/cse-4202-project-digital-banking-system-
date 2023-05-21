@@ -148,6 +148,7 @@ int main()
                 {
                     printf("\nLogin successful. \n");
                     printf("\n");
+                    printf("hello");
                     mainmenu(user_name);
                     break;
                 }
@@ -173,6 +174,7 @@ int main()
 
 void mainmenu(char *usernm)
 {
+
     int menuchoice = 100;
 
     AccountInfo *account_info = (AccountInfo *)malloc(MAX_ACCOUNTS * sizeof(AccountInfo));
@@ -181,6 +183,7 @@ void mainmenu(char *usernm)
 
     while (menuchoice != 17)
     {
+
         int count = 0, count_user = 0, count_credit_cards = 0;
         char garbage_value;
 
@@ -302,7 +305,6 @@ void mainmenu(char *usernm)
     }
 }
 
-
 void ShowLocation()
 {
     char region[MAX_REGION_LENGTH];
@@ -314,7 +316,8 @@ void ShowLocation()
     LocationInfo *location_info = malloc(MAX_LOCATIONS * sizeof(LocationInfo));
 
     FILE *fp = fopen(LOCATION_INFO, "r");
-    if (fp == NULL) {
+    if (fp == NULL)
+    {
         printf("Failed to open file.\n");
         return;
     }
@@ -342,8 +345,6 @@ void ShowLocation()
 
     free(location_info);
 }
-
-
 
 void CreditCardMenu(char *username, int count, CreditCardInfo *credit_card_info)
 {
@@ -373,8 +374,6 @@ void CreditCardMenu(char *username, int count, CreditCardInfo *credit_card_info)
     case 3:
         RemoveCreditCard(username, count, credit_card_info);
         break;
-
-    
 
     case 5:
         return;
@@ -431,15 +430,15 @@ void ApplyForCreditCard(char *username, int count, CreditCardInfo *credit_card_i
     credit_card_info[count].AvailableBalance = credit_card_info[count].CardLimit;
     strcpy(credit_card_info[count].Username, username);
 
-    if(credit_card_info[count].CardLimit<=100000)
+    if (credit_card_info[count].CardLimit <= 100000)
     {
         credit_card_info[count].Rank = 1;
     }
-    else if(credit_card_info[count].CardLimit>100000 && credit_card_info[count].CardLimit<=500000)
+    else if (credit_card_info[count].CardLimit > 100000 && credit_card_info[count].CardLimit <= 500000)
     {
         credit_card_info[count].Rank = 2;
     }
-    else if(credit_card_info[count].CardLimit>=100000)
+    else if (credit_card_info[count].CardLimit >= 100000)
     {
         credit_card_info[count].Rank = 3;
     }
@@ -454,24 +453,24 @@ void ApplyForCreditCard(char *username, int count, CreditCardInfo *credit_card_i
     printf("Available Balance: %lld\n\n", credit_card_info[count].AvailableBalance);
     printf("Pin: %s\n", credit_card_info[count].Pin);
 
-    if(credit_card_info[count].Rank == 1)
+    if (credit_card_info[count].Rank == 1)
     {
         printf("Rank: Silver");
     }
-    else if(credit_card_info[count].Rank == 2)
+    else if (credit_card_info[count].Rank == 2)
     {
         printf("Rank: Gold");
     }
-    else if(credit_card_info[count].Rank == 3)
+    else if (credit_card_info[count].Rank == 3)
     {
         printf("Rank: Platinum");
     }
 
-    if(credit_card_info[count].ActiveStatus == 1)
+    if (credit_card_info[count].ActiveStatus == 1)
     {
         printf("Active Status: ON");
     }
-    else if(credit_card_info[count].ActiveStatus == 0)
+    else if (credit_card_info[count].ActiveStatus == 0)
     {
         printf("Active Status: OFF");
     }
@@ -505,7 +504,6 @@ void ViewCreditCardDetails(char *username, int count, CreditCardInfo *credit_car
     else
     {
         int card_choice = 0;
-        
 
         printf("Choose a credit card to view more the details: ");
         scanf("%d", &card_choice);
@@ -515,32 +513,28 @@ void ViewCreditCardDetails(char *username, int count, CreditCardInfo *credit_car
         if (card_choice > 0 && card_choice <= num_matching_cards)
         {
             printf("\nCard No: %s\nCard Type: %s\nExpiry Date: %s\nCVV: %s\nCard Limit: %lld\nAvailable Balance: %lld\n", credit_card_info[index].CardNo, credit_card_info[index].CardType, credit_card_info[index].ExpiryDate, credit_card_info[index].CVV, credit_card_info[index].CardLimit, credit_card_info[index].AvailableBalance);
-            
 
-            if(credit_card_info[index].ActiveStatus==1)
+            if (credit_card_info[index].ActiveStatus == 1)
             {
                 printf("Active Status: ON\n");
             }
-            else if(credit_card_info[index].ActiveStatus==0)
+            else if (credit_card_info[index].ActiveStatus == 0)
             {
                 printf("Active Status: OFF\n");
             }
 
-
-            if(credit_card_info[index].Rank==1)
+            if (credit_card_info[index].Rank == 1)
             {
                 printf("Rank: Silver\n");
             }
-            else if(credit_card_info[index].Rank==2)
+            else if (credit_card_info[index].Rank == 2)
             {
                 printf("Rank: Gold\n");
             }
-            else if(credit_card_info[index].Rank==3)
+            else if (credit_card_info[index].Rank == 3)
             {
                 printf("Rank: Platinum\n");
             }
-
-
         }
         else
         {
@@ -2144,7 +2138,7 @@ void BillPayment(char *username, int count, AccountInfo *account_info, CreditCar
                 printf("Insuffecient Balance\n\n");
                 return;
             }
-            if(credit_card_info[index].ActiveStatus == 0)
+            if (credit_card_info[index].ActiveStatus == 0)
             {
                 printf("Activate your Card First!\n\n");
                 return;
@@ -2182,24 +2176,24 @@ void BillPayment(char *username, int count, AccountInfo *account_info, CreditCar
                     return;
                 }
 
-                //rewards part
+                // rewards part
 
-                if(credit_card_info[index].Rank==3)
+                if (credit_card_info[index].Rank == 3)
                 {
-                    amount -= (amount*15)/100;
+                    amount -= (amount * 15) / 100;
                 }
-                else if(credit_card_info[index].Rank==2)
+                else if (credit_card_info[index].Rank == 2)
                 {
-                    amount -= (amount*10)/100;
+                    amount -= (amount * 10) / 100;
                 }
-                else if(credit_card_info[index].Rank==1)
+                else if (credit_card_info[index].Rank == 1)
                 {
-                    amount -= (amount*5)/100;
+                    amount -= (amount * 5) / 100;
                 }
 
                 credit_card_info[index].AvailableBalance -= amount;
 
-                //Update in File
+                // Update in File
 
                 FILE *fp = fopen(CREDIT_CARD_INFO, "w");
                 if (fp == NULL)
