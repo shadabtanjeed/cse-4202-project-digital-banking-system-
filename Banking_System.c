@@ -77,7 +77,7 @@ typedef struct CreditCardInfo
     char Username[30];
 } CreditCardInfo;
 
-typedef struct
+typedef struct LocationInfo
 {
     char BranchName[MAX_NAME_LENGTH];
     char Address[MAX_ADDRESS_LENGTH];
@@ -350,8 +350,7 @@ void CreditCardMenu(char *username, int count, CreditCardInfo *credit_card_info)
     printf("1. View Credit Card Details\n");
     printf("2. Apply for Credit Card\n");
     printf("3. Suspend Credit Card\n");
-    printf("4. Card Settings\n");
-    printf("5. Go Back\n");
+    printf("4. Go Back\n");
     printf("\n");
     printf("Choose your option: ");
     scanf("%d", &menuchoice);
@@ -371,9 +370,7 @@ void CreditCardMenu(char *username, int count, CreditCardInfo *credit_card_info)
         RemoveCreditCard(username, count, credit_card_info);
         break;
 
-    
-
-    case 5:
+    case 4:
         return;
         break;
 

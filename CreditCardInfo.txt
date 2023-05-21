@@ -1,25 +1,3 @@
-Card No: 3686434684205307
-Card Type: American Express
-Expiry Date: 05/25
-CVV: 458
-Card Limit: 100000
-Available Balance: 100000
-Username: TahsinulIslam
-Pin: 1234
-Active Status: 1
-Rank: Platinum
-
-Card No: 6152113994270303
-Card Type: VISA
-Expiry Date: 05/25
-CVV: 925
-Card Limit: 50000
-Available Balance: 50000
-Username: shadabtanjeed
-Pin: 5678
-Active Status: 1
-Rank: Platinum
-
 Card No: 1234567890123456
 Card Type: Visa
 Expiry Date: 09/25
@@ -27,9 +5,6 @@ CVV: 123
 Card Limit: 10000
 Available Balance: 5000
 Username: ChristopherJones
-Pin: 2589
-Active Status: 0
-Rank: Platinum
 
 Card No: 2345678901234567
 Card Type: Mastercard
@@ -38,9 +13,6 @@ CVV: 456
 Card Limit: 8000
 Available Balance: 3000
 Username: SarahWilliams
-Pin: 8524
-Active Status: 1
-Rank: Platinum
 
 Card No: 3456789012345678
 Card Type: American Express
@@ -49,9 +21,6 @@ CVV: 789
 Card Limit: 10000
 Available Balance: 8000
 Username: MichaelJohnson
-Pin: 9632
-Active Status: 0
-Rank: Platinum
 
 Card No: 4567890123456789
 Card Type: Discover
@@ -60,9 +29,6 @@ CVV: 234
 Card Limit: 5000
 Available Balance: 2000
 Username: JessicaBrown
-Pin: 7412
-Active Status: 1
-Rank: Gold
 
 Card No: 5678901234567890
 Card Type: Visa
@@ -71,9 +37,6 @@ CVV: 567
 Card Limit: 8000
 Available Balance: 6000
 Username: WilliamDavis
-Pin: 3698
-Active Status: 1
-Rank: Platinum
 
 Card No: 6789012345678901
 Card Type: Mastercard
@@ -82,9 +45,6 @@ CVV: 890
 Card Limit: 7000
 Available Balance: 4000
 Username: SamanthaWilson
-Pin: 7852
-Active Status: 0
-Rank: Gold
 
 Card No: 7890123456789012
 Card Type: American Express
@@ -93,9 +53,6 @@ CVV: 345
 Card Limit: 15000
 Available Balance: 9000
 Username: DavidLee
-Pin: 9635
-Active Status: 1
-Rank: Platinum
 
 Card No: 8901234567890123
 Card Type: Discover
@@ -104,9 +61,6 @@ CVV: 678
 Card Limit: 2000
 Available Balance: 1500
 Username: EmilyTaylor
-Pin: 5896
-Active Status: 0
-Rank: Silver
 
 Card No: 9012345678901234
 Card Type: Visa
@@ -115,9 +69,6 @@ CVV: 901
 Card Limit: 10000
 Available Balance: 7000
 Username: JamesMiller
-Pin: 1235
-Active Status: 1
-Rank: Platinum
 
 Card No: 0123456789012345
 Card Type: Mastercard
@@ -126,9 +77,6 @@ CVV: 234
 Card Limit: 3000
 Available Balance: 2500
 Username: MeganAnderson
-Pin: 9652
-Active Status: 0
-Rank: Gold
 
 Card No: 1234567890123456
 Card Type: American Express
@@ -137,9 +85,6 @@ CVV: 567
 Card Limit: 8000
 Available Balance: 4000
 Username: BenjaminMartin
-Pin: 7894
-Active Status: 1
-Rank: Platinum
 
 Card No: 2345678901234567
 Card Type: Discover
@@ -148,9 +93,6 @@ CVV: 890
 Card Limit: 3000
 Available Balance: 1000
 Username: AshleyMoore
-Pin: 7856
-Active Status: 0
-Rank: Gold
 
 Card No: 3456789012345678
 Card Type: Visa
@@ -159,9 +101,6 @@ CVV: 123
 Card Limit: 5000
 Available Balance: 3000
 Username: RyanTaylor
-Pin: 3697
-Active Status: 1
-Rank: Gold
 
 Card No: 4567890123456789
 Card Type: Mastercard
@@ -170,9 +109,6 @@ CVV: 456
 Card Limit: 8000
 Available Balance: 6000
 Username: KimberlyDavis
-Pin: 8521
-Active Status: 1
-Rank: Platinum
 
 Card No: 5678901234567890
 Card Type: American Express
@@ -181,9 +117,6 @@ CVV: 789
 Card Limit: 10000
 Available Balance: 8000
 Username: MatthewBrown
-Pin: 7845
-Active Status: 1
-Rank: Platinum
 
 Card No: 6789012345678901
 Card Type: Discover
@@ -192,9 +125,6 @@ CVV: 234
 Card Limit: 7000
 Available Balance: 2000
 Username: LaurenWilson
-Pin: 3698
-Active Status: 1
-Rank: Platinum
 
 Card No: 7890123456789012
 Card Type: Visa
@@ -203,9 +133,6 @@ CVV: 567
 Card Limit: 8000
 Available Balance: 4000
 Username: TylerJackson
-Pin: 7853
-Active Status: 1
-Rank: Platinum
 
 Card No: 8901234567890123
 Card Type: Mastercard
@@ -214,9 +141,6 @@ CVV: 890
 Card Limit: 10000
 Available Balance: 7000
 Username: RachelGarcia
-Pin: 9631
-Active Status: 1
-Rank: Platinum
 
 Card No: 9012345678901234
 Card Type: American Express
@@ -225,9 +149,6 @@ CVV: 123
 Card Limit: 15000
 Available Balance: 12000
 Username: DanielSmith
-Pin: 7419
-Active Status: 1
-Rank: Platinum
 
 Card No: 0123456789012345
 Card Type: Discover
@@ -236,6 +157,20 @@ CVV: 456
 Card Limit: 2000
 Available Balance: 1500
 Username: AnnaJohnson
-Pin: 5894
-Active Status: 0
-Rank: Silver
+
+Card No: 3686434684205307
+Card Type: American Express
+Expiry Date: 05/25
+CVV: 458
+Card Limit: 100000
+Available Balance: 100000
+Username: TahsinulIslam
+
+Card No: 6152113994270303
+Card Type: VISA
+Expiry Date: 05/25
+CVV: 925
+Card Limit: 50000
+Available Balance: 50000
+Username: shadabtanjeed
+

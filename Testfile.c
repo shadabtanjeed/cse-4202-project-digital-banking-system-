@@ -206,7 +206,7 @@ void mainmenu(char *usernm)
             count_user++;
         }
 
-        while (fscanf(fp6, "Card No: %[^\n]\nCard Type: %[^\n]\nExpiry Date: %[^\n]\nCVV: %[^\n]\nCard Limit: %lld\nAvailable Balance: %lld\nUsername: %[^\n]\nPin: %[^\n]\nActive Status: %[^\n]\nRank: %[^\n]\n", credit_card_info[count_credit_cards].CardNo, credit_card_info[count_credit_cards].CardType, credit_card_info[count_credit_cards].ExpiryDate, credit_card_info[count_credit_cards].CVV, &credit_card_info[count_credit_cards].CardLimit, &credit_card_info[count_credit_cards].AvailableBalance, credit_card_info[count_credit_cards].Username, credit_card_info[count_credit_cards].Pin, credit_card_info[count_credit_cards].ActiveStatus, credit_card_info[count_credit_cards].Rank) == 10)
+        while (fscanf(fp6, "Card No: %[^\n]\nCard Type: %[^\n]\nExpiry Date: %[^\n]\nCVV: %[^\n]\nCard Limit: %lld\nAvailable Balance: %lld\nUsername: %[^\n]\nPin: %[^\n]\nActive Status: %[^\n]\nRank: %[^\n]\n", credit_card_info[count_credit_cards].CardNo, credit_card_info[count_credit_cards].CardType, credit_card_info[count_credit_cards].ExpiryDate, credit_card_info[count_credit_cards].CVV, &credit_card_info[count_credit_cards].CardLimit, &credit_card_info[count_credit_cards].AvailableBalance, credit_card_info[count_credit_cards].Username, credit_card_info[count_credit_cards].Pin, &credit_card_info[count_credit_cards].ActiveStatus, &credit_card_info[count_credit_cards].Rank) == 10)
         {
             ++count_credit_cards;
         }
@@ -525,7 +525,12 @@ void ViewCreditCardDetails(char *username, int count, CreditCardInfo *credit_car
             {
                 printf("Active Status: OFF\n");
             }
+            else
+            {
+                    printf("HIIIIIIII");
+            }
 
+            
 
             if(credit_card_info[index].Rank==1)
             {
@@ -538,6 +543,10 @@ void ViewCreditCardDetails(char *username, int count, CreditCardInfo *credit_car
             else if(credit_card_info[index].Rank==3)
             {
                 printf("Rank: Platinum\n");
+            }
+            else
+            {
+
             }
 
 
@@ -2195,6 +2204,10 @@ void BillPayment(char *username, int count, AccountInfo *account_info, CreditCar
                 else if(credit_card_info[index].Rank==1)
                 {
                     amount -= (amount*5)/100;
+                }
+                else
+                {
+
                 }
 
                 credit_card_info[index].AvailableBalance -= amount;
