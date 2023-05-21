@@ -414,3 +414,11 @@ Previous Balance: 143000
 Transaction Amount: 50000
 Updated Balance: 193000
 
+Transaction ID: FRaqbC8wSA
+Account No: 999834595
+Transaction Date: 25/05/2023
+Transaction Type: LoanPayment
+Previous Balance: 193000
+Transaction Amount: 56500
+Updated Balance: 136500
+

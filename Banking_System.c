@@ -2360,3 +2360,37 @@ void RemoveCreditCard(char *username, int count, CreditCardInfo *credit_card_inf
 
     printf("\n");
 }
+
+int MatchAndShowCards(char *username, CreditCardInfo *credit_card_info, int count, int *matchingcards)
+{
+    int num_matching_cards = 0;
+    if (matchingcards == NULL)
+    {
+        printf("Could not allocate memory\n");
+        return 0;
+    }
+
+    // Find and store the indices of credit cards matching the given username
+    for (int i = 0; i < count; i++)
+    {
+        if (strcmp(credit_card_info[i].Username, username) == 0)
+        {
+            matchingcards[num_matching_cards] = i;
+            num_matching_cards++;
+        }
+    }
+
+    // Show the matching credit cards
+    if (num_matching_cards > 0)
+    {
+        printf("Matching credit cards:\n");
+        for (int i = 0; i < num_matching_cards; i++)
+        {
+            int cardindex = matchingcards[i];
+            printf("%d. Card No: %s\n   Card Type: %s\n", i + 1, credit_card_info[cardindex].CardNo, credit_card_info[cardindex].CardType);
+        }
+        printf("\n");
+    }
+
+    return num_matching_cards;
+}

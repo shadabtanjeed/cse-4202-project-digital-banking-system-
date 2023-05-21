@@ -1,0 +1,80 @@
+Branch Name: Agrabad Branch
+Address: BCIC Sadan, 26, Agrabad C/A, Chattogram
+Region: Chattogram
+
+Branch Name: Anderkilla Branch
+Address: Universal Chamber (1st Floor), 7 Laldighi East, Anderkilla, Chattogram
+Region: Chattogram
+
+Branch Name: Ashuganj Branch
+Address: Kashem Plaza, Ashuganj Sadar, Brahmanbaria
+Region: Dhaka
+
+Branch Name: Austagram Branch
+Address: Mustari Bhaban, Jamtoli, Austagram Sadar, Kishoregan
+Region: Dhaka
+
+Branch Name: Bahaddarhat Branch
+Address: 4543, Bahaddarhat, Medina Hotel (1st floor), Chandgaon, Chattogram
+Region: Dhaka
+
+Branch Name: Banani Branch
+Address: R.S.R. Tower, House No. 50, Road No. 11, Block-C, Banani, Dhaka
+Region: Dhaka
+
+Branch Name: Bandura Branch
+Address: Bandura Govt. Super Market (1st floor), Hasnabad, Nawabgonj, Dhaka
+Region: Sylhet
+
+Branch Name: Banshkhali Branch
+Address: Mohammed Meah Plaza, Ramdas Munshirhat, Kokdandi, Kalipur Union, Banshkhali, Khulna
+Region: Khulna
+
+Branch Name: Boroikandi Branch
+Address: Rongdhonu Biponi Bitan, 1st Floor, Central Bus Terminal Road, Verthokhola, Sylhet
+Region: Sylhet
+
+Branch Name: Bashundhara Branch
+Address: Green Coronet, Plot No. 07, Block-A, Bashundhara Main Road, Dhaka 1229
+Region: Dhaka
+
+Branch Name: Benapole Branch
+Address: Hotel Haque International, 607, Local Bus Stand, Benapole, Jashore
+Region: Rajshahi
+
+Branch Name: Bhairab Bazar Branch
+Address: 248(W) Tin Potty, Bhairab Bazar, Bhairab, Kishoregonj
+Region: Khulna
+
+Branch Name: Bhulta Branch
+Address: Haji Shopping Complex, Bhulta, Golakandail, Rupgonj, Narayanganj
+Region: Dhaka
+
+Branch Name: Khulna Branch
+Address: Mollick Shopping Complex Limited, 99 Jashore Road, Khulna
+Region: Khulna
+
+Branch Name: CDA Avenue Branch
+Address: BMA Bhaban (Ground Floor), 1367 CDA Avenue, East Nasirabad, Chattogram
+Region: Chattogram
+
+Branch Name: Chakaria Branch
+Address: 	M. Rahman Complex (1st Floor), Ward 4, Chakaria, Cox's Bazar
+Region: Chattogram
+
+Branch Name: Boalkhali Branch
+Address: TCCA Complex, Gomdandi (East), Boalkhali, Chattogram
+Region: Chattogram
+
+Branch Name: Chapai Nawabganj Branch
+Address: 16 Godagari Road, Chapai Nawabganj
+Region: Rajshahi
+
+Branch Name: Barishal Branch
+Address: Monsur Mansion, 101 Sadar Road, Barishal
+Region: Barishal
+
+Branch Name: Jamalpur Branch
+Address: Star plaza, New Market, Jamalpur
+Region: Mymensingh
+
