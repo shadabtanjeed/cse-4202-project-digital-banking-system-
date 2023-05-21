@@ -79,6 +79,7 @@ void Beneficiary(char *username);
 int ShowBenificiary(char *usname, struct BeneficiaryInfo *benefeciary_info, int counter, int *matchingAccounts);
 void FundTransfer(char *username, int count, AccountInfo *account_info);
 void BillPayment(char *username, int count, AccountInfo *account_info);
+void LoanManagement();
 
 int main()
 {
