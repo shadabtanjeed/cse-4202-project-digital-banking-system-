@@ -15,6 +15,7 @@ For inputting Fixed Deposit as Account type in the text file, put a space at las
 #define TRANSACTION_HISTORY "./Transactions.txt"
 #define BENEFICIARY_INFO "./BeneficiaryInfo.txt"
 #define CREDIT_CARD_INFO "./CreditCardInfo.txt"
+#define LOCATION_INFO "./LocationInfo.txt"
 
 #define MAX_ACCOUNTS 100
 #define ID_LENGTH 10
@@ -22,6 +23,10 @@ For inputting Fixed Deposit as Account type in the text file, put a space at las
 #define CVV_LENGTH 3
 #define CVV_LENGTH 3
 #define EXPIRY_DATE_LENGTH 6
+#define MAX_REGION_LENGTH 15
+#define MAX_NAME_LENGTH 100
+#define MAX_ADDRESS_LENGTH 200
+#define MAX_LOCATIONS 30
 
 typedef struct AccountInfo
 {
@@ -72,6 +77,13 @@ typedef struct CreditCardInfo
     char Username[30];
 } CreditCardInfo;
 
+typedef struct
+{
+    char BranchName[MAX_NAME_LENGTH];
+    char Address[MAX_ADDRESS_LENGTH];
+    char Region[MAX_REGION_LENGTH];
+} LocationInfo;
+
 int loginverify(char *userid, char *pass);
 void mainmenu(char *usernm);
 int ReadAccountInfo();
@@ -103,6 +115,7 @@ void RemoveCreditCard(char *username, int count, CreditCardInfo *credit_card_inf
 void ViewCreditCardDetails(char *username, int count, CreditCardInfo *credit_card_info);
 void CreditCardMenu(char *username, int count, CreditCardInfo *credit_card_info);
 void BillPayment(char *username, int count, AccountInfo *account_info, CreditCardInfo *credit_card_info, int count_cards);
+void ShowLocation();
 
 int main()
 {
@@ -269,6 +282,10 @@ void mainmenu(char *usernm)
             CloseAccount(usernm, count, count_user, account_info, user_name);
             break;
 
+        case 14:
+            ShowLocation();
+            break;
+
         case 16:
             free(account_info);
             free(user_name);
@@ -281,6 +298,49 @@ void mainmenu(char *usernm)
         }
     }
 }
+
+
+void ShowLocation()
+{
+    char region[MAX_REGION_LENGTH];
+    int count = 0, i, found = 0;
+    printf("Enter Region: ");
+    scanf("%s", region);
+    printf("\n");
+
+    LocationInfo *location_info = malloc(MAX_LOCATIONS * sizeof(LocationInfo));
+
+    FILE *fp = fopen(LOCATION_INFO, "r");
+    if (fp == NULL) {
+        printf("Failed to open file.\n");
+        return;
+    }
+
+    while (fscanf(fp, "Branch Name: %[^\n]\nAddress: %[^\n]\nRegion: %s\n", location_info[count].BranchName, location_info[count].Address, location_info[count].Region) == 3)
+    {
+        count++;
+    }
+
+    fclose(fp);
+
+    for (i = 0; i < count; i++)
+    {
+        if (strcmp(location_info[i].Region, region) == 0)
+        {
+            printf("Branch Name: %s\nAddress: %s\nRegion: %s\n\n", location_info[i].BranchName, location_info[i].Address, location_info[i].Region);
+            found++;
+        }
+    }
+
+    if (found == 0)
+    {
+        printf("No Branches in the region.\n\n");
+    }
+
+    free(location_info);
+}
+
+
 
 void CreditCardMenu(char *username, int count, CreditCardInfo *credit_card_info)
 {
@@ -469,6 +529,7 @@ void RemoveCreditCard(char *username, int count, CreditCardInfo *credit_card_inf
 
     printf("\n");
 }
+
 void CloseAccount(char *username, int count, int count_user, AccountInfo *account_info, Username *user_name)
 {
     int i, j, flag = 0;
