@@ -13,6 +13,7 @@ For inputting Fixed Deposit as Account type in the text file, put a space at las
 #define ACCOUNT_DATA "./AccountInfo.txt"
 #define TRANSACTION_HISTORY "./Transactions.txt"
 #define BENEFICIARY_INFO "./BeneficiaryInfo.txt"
+#define LOAN_TEXT "./Loan.txt"
 
 #define MAX_ACCOUNTS 100
 #define ID_LENGTH 10
@@ -55,6 +56,16 @@ typedef struct BeneficiaryInfo
     char Beneficiary_Of[30];
 } BeneficiaryInfo;
 
+typedef struct LoanInfo
+{
+    char Username[30];
+    long long AccountNo;
+    int loan_term;
+    char date[20];
+    int interest_rate;
+    long long amount;
+} LoanInfo;
+
 int loginverify(char *userid, char *pass);
 void mainmenu(char *usernm);
 int ReadAccountInfo();
@@ -79,7 +90,7 @@ void Beneficiary(char *username);
 int ShowBenificiary(char *usname, struct BeneficiaryInfo *benefeciary_info, int counter, int *matchingAccounts);
 void FundTransfer(char *username, int count, AccountInfo *account_info);
 void BillPayment(char *username, int count, AccountInfo *account_info);
-void LoanManagement();
+void LoanManagement(char *username, int count, AccountInfo *account_info);
 
 int main()
 {
@@ -218,18 +229,26 @@ void mainmenu(char *usernm)
             Beneficiary(usernm);
             break;
 
+        case 9:
+            LoanManagement(usernm, count, account_info);
+            break;
+
         case 10:
             Statement(usernm, account_info, count);
             break;
+
         case 11:
             CreateAnotherAccount(usernm, count, account_info);
             break;
+
         case 12:
             AccountSettings(usernm, count, account_info, user_name, count_user);
             break;
+
         case 13:
             CloseAccount(usernm, count, count_user, account_info, user_name);
             break;
+
         case 14:
 
         case 15:
@@ -1722,4 +1741,131 @@ void BillPayment(char *username, int count, AccountInfo *account_info)
     }
 
     free(matchingAccounts);
+}
+
+void LoanManagement(char *username, int count, AccountInfo *account_info)
+{
+    LoanInfo *loan_info = malloc(MAX_ACCOUNTS * sizeof(LoanInfo));
+
+    FILE *fp1;
+    fp1 = fopen(LOAN_TEXT, "r");
+
+    int count_loan_entry = 0;
+
+    while (fscanf(fp1, "Username: %s\nAccount No: %lld\nLoan Term: %d\nDate: %s\nInterest Rate: %d\nAmount: %lld\n", loan_info[count_loan_entry].Username, &loan_info[count_loan_entry].AccountNo, &loan_info[count_loan_entry].loan_term, loan_info[count_loan_entry].date, &loan_info[count_loan_entry].interest_rate, &loan_info[count_loan_entry].amount) == 6)
+    {
+        count_loan_entry++;
+    }
+
+    fclose(fp1);
+
+    int user_found = 0;
+
+    for (int i = 0; i < count_loan_entry; ++i)
+    {
+        if (strcmp(username, loan_info[i].Username) == 0)
+        {
+            user_found = 1;
+            break;
+        }
+    }
+
+    int menuchoice;
+
+    printf("\n1. Apply for a loan\n");
+    printf("2. View Loan Details\n");
+    printf("3. Make Loan Payment\n");
+    printf("4. Modify Loan Terms\n\n");
+    printf("Select your option: ");
+    scanf("%d", &menuchoice);
+    printf("\n");
+
+    if (menuchoice == 1)
+    {
+        if (user_found == 1)
+        {
+            printf("You have already taken a loan\n\n");
+            return;
+        }
+        else
+        {
+            printf("Select against which account you want to take loan\n");
+
+            int *matchingAccounts = malloc(count * sizeof(int));
+            int ACChoice;
+            int found = MatchAndShow(username, account_info, count, matchingAccounts);
+            if (found == 0)
+            {
+                printf("No accounts found \n\n");
+                free(matchingAccounts);
+            }
+            else
+            {
+                printf("Choose the corresponding Account (1/2/3...): ");
+                scanf("%d", &ACChoice);
+                int index = matchingAccounts[ACChoice - 1];
+
+                long long loan_amount;
+                int loan_term, interesrrate;
+                char date[20];
+                printf("Enter the amount of loan: ");
+                scanf("%lld", &loan_amount);
+                printf("Enter the loan term (in months): ");
+                scanf("%d", &loan_term);
+                printf("Enter date(dd/mm/yyyy): ");
+                scanf("%s", date);
+                printf("\n");
+
+                interesrrate = (rand() % (15 - 5 + 1)) + 5;
+
+                printf("Your interesr rate will be %d\n\n", interesrrate);
+
+                loan_info[count_loan_entry].AccountNo = account_info[index].AccountNo;
+                loan_info[count_loan_entry].loan_term = loan_term;
+                loan_info[count_loan_entry].interest_rate = interesrrate;
+                loan_info[count_loan_entry].amount = loan_amount;
+                strcpy(loan_info[count_loan_entry].Username, username);
+                strcpy(loan_info[count_loan_entry].date, date);
+
+                count_loan_entry++;
+
+                FILE *fp2;
+                fp2 = fopen(LOAN_TEXT, "w");
+
+                for (int i = 0; i < count_loan_entry; ++i)
+                {
+                    fprintf(fp2, "Username: %s\nAccount No: %lld\nLoan Term: %d\nDate: %s\nInterest Rate: %d\nAmount: %lld\n\n", loan_info[i].Username, loan_info[i].AccountNo, loan_info[i].loan_term, loan_info[i].date, loan_info[i].interest_rate, loan_info[i].amount);
+                }
+
+                fclose(fp2);
+
+                int new_balance = account_info[index].Balance + loan_amount;
+                int old_balance = account_info[index].Balance;
+                account_info[index].Balance = new_balance;
+
+                Transaction(account_info[index].AccountNo, date, "Loan", old_balance, loan_amount, new_balance);
+
+                FILE *fp3 = fopen(ACCOUNT_DATA, "w");
+                if (fp3 == NULL)
+                {
+                    printf("Error: Could not open file.\n");
+                    return;
+                }
+
+                for (int i = 0; i < count; i++)
+                {
+                    fprintf(fp3, "Name: %s\nAccount Type: %s\nAccount No: %lld\nBalance: %lld\nPhone: %lld\nNID No: %lld\nUsername: %s\n\n",
+                            account_info[i].Name, account_info[i].AccountType, account_info[i].AccountNo,
+                            account_info[i].Balance, account_info[i].Phone, account_info[i].NID, account_info[i].Username);
+                }
+
+                fclose(fp3);
+
+                printf("Your loan application has been received.\n\n");
+            }
+            free(matchingAccounts);
+        }
+    }
+
+    free(loan_info);
 }

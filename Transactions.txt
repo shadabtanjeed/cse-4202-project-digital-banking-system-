@@ -294,3 +294,11 @@ Previous Balance: 35000
 Transaction Amount: 5000
 Updated Balance: 30000
 
+Transaction ID: RaqbC8wSA1
+Account No: 1000010083
+Transaction Date: 23/05/2023
+Transaction Type: Loan
+Previous Balance: 0
+Transaction Amount: 10000
+Updated Balance: 10000
+

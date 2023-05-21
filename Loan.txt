@@ -1,0 +1,63 @@
+Username: ZubayerRuhit
+Account No: 1000005802
+Loan Term: 7
+Date: 28/11/2022
+Interest Rate: 9
+Amount: 27890
+
+Username: ChristopherBrown
+Account No: 7651923481
+Loan Term: 11
+Date: 14/07/2023
+Interest Rate: 6
+Amount: 48760
+
+Username: OliviaJones
+Account No: 2598734615
+Loan Term: 19
+Date: 23/12/2022
+Interest Rate: 10
+Amount: 12320
+
+Username: JacobHernandez
+Account No: 8642579130
+Loan Term: 15
+Date: 08/05/2023
+Interest Rate: 8
+Amount: 23540
+
+Username: AnnaJohnson
+Account No: 8943125671
+Loan Term: 6
+Date: 19/10/2022
+Interest Rate: 5
+Amount: 32450
+
+Username: DanielSmith
+Account No: 6319857402
+Loan Term: 24
+Date: 03/02/2023
+Interest Rate: 15
+Amount: 42310
+
+Username: RachelGarcia
+Account No: 8302146579
+Loan Term: 13
+Date: 27/04/2023
+Interest Rate: 12
+Amount: 19270
+
+Username: shadabtanjeed
+Account No: 1000021442
+Loan Term: 14
+Date: 05/06/2022
+Interest Rate: 7
+Amount: 39650
+
+Username: AdnanSami
+Account No: 1000010083
+Loan Term: 21
+Date: 23/05/2023
+Interest Rate: 13
+Amount: 10000
+

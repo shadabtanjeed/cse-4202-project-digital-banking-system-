@@ -217,7 +217,7 @@ Username: ShahranHossain
 Name: Adnan Sami           
 Account Type: Fixed Deposit           
 Account No: 1000010083
-Balance: 9898
+Balance: 10000
 Phone: 8802654879512
 NID No: 354989654
 Username: AdnanSami
@@ -257,7 +257,7 @@ Username: shadabtanjeed
 Name: Shadab Tanjeed  
 Account Type: Savings 
 Account No: 1000021442
-Balance: 15000
+Balance: 60000
 Phone: 8802369874236
 NID No: 2369874563
 Username: shadabtanjeed
