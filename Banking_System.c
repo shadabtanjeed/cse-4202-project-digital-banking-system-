@@ -311,6 +311,8 @@ void CreditCardMenu(char *username, int count, CreditCardInfo *credit_card_info)
         RemoveCreditCard(username, count, credit_card_info);
         break;
 
+    
+
     case 5:
         return;
         break;
@@ -394,13 +396,16 @@ void ViewCreditCardDetails(char *username, int count, CreditCardInfo *credit_car
     else
     {
         int card_choice = 0;
+        
 
         printf("Choose a credit card to view more the details: ");
         scanf("%d", &card_choice);
 
+        int index = matchingcards[card_choice - 1];
+
         if (card_choice > 0 && card_choice <= num_matching_cards)
         {
-            printf("\nCard No: %s\nCard Type: %s\nExpiry Date: %s\nCVV: %s\nCard Limit: %lld\nAvailable Balance: %lld\n", credit_card_info[card_choice - 1].CardNo, credit_card_info[card_choice - 1].CardType, credit_card_info[card_choice - 1].ExpiryDate, credit_card_info[card_choice - 1].CVV, credit_card_info[card_choice - 1].CardLimit, credit_card_info[card_choice - 1].AvailableBalance);
+            printf("\nCard No: %s\nCard Type: %s\nExpiry Date: %s\nCVV: %s\nCard Limit: %lld\nAvailable Balance: %lld\n", credit_card_info[index].CardNo, credit_card_info[index].CardType, credit_card_info[index].ExpiryDate, credit_card_info[index].CVV, credit_card_info[index].CardLimit, credit_card_info[index].AvailableBalance);
         }
         else
         {
