@@ -148,7 +148,7 @@ int main()
                 {
                     printf("\nLogin successful. \n");
                     printf("\n");
-                    printf("hello");
+
                     mainmenu(user_name);
                     break;
                 }
@@ -209,11 +209,12 @@ void mainmenu(char *usernm)
             count_user++;
         }
 
+        printf("hello\n");
         while (fscanf(fp6, "Card No: %[^\n]\nCard Type: %[^\n]\nExpiry Date: %[^\n]\nCVV: %[^\n]\nCard Limit: %lld\nAvailable Balance: %lld\nUsername: %[^\n]\nPin: %[^\n]\nActive Status: %[^\n]\nRank: %[^\n]\n", credit_card_info[count_credit_cards].CardNo, credit_card_info[count_credit_cards].CardType, credit_card_info[count_credit_cards].ExpiryDate, credit_card_info[count_credit_cards].CVV, &credit_card_info[count_credit_cards].CardLimit, &credit_card_info[count_credit_cards].AvailableBalance, credit_card_info[count_credit_cards].Username, credit_card_info[count_credit_cards].Pin, credit_card_info[count_credit_cards].ActiveStatus, credit_card_info[count_credit_cards].Rank) == 10)
         {
             ++count_credit_cards;
         }
-
+        printf("hello\n");
         fclose(fp);
         fclose(fp5);
         fclose(fp6);
