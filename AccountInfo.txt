@@ -249,7 +249,7 @@ Username: ZubayerRuhit
 Name: Shadab Tanjeed  
 Account Type: Current  
 Account No: 999834595
-Balance: 136500
+Balance: 136000
 Phone: 8802369874236
 NID No: 2369874563
 Username: shadabtanjeed
