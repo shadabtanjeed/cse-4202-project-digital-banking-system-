@@ -1719,7 +1719,9 @@ void BillPayment(char *username, int count, AccountInfo *account_info, CreditCar
     int paychoice;
     printf("1.Pay from Account\n");
     printf("2.Pay from Credit Card\n");
+    printf("Enter your choice: ");
     scanf("%d", &paychoice);
+    printf("\n");
     
     switch (paychoice)
     {
