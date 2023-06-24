@@ -430,3 +430,27 @@ Previous Balance: 136500
 Transaction Amount: 500
 Updated Balance: 136000
 
+Transaction ID: QPt26qeo1P
+Account No: 1000005802
+Transaction Date: 22/06/2023
+Transaction Type: FundTransfer(OUT)
+Previous Balance: 13000
+Transaction Amount: 5000
+Updated Balance: 8000
+
+Transaction ID: P8dSh5jF49
+Account No: 1000005704
+Transaction Date: 22/06/2023
+Transaction Type: FundTransfer(IN)
+Previous Balance: 1000
+Transaction Amount: 5000
+Updated Balance: 6000
+
+Transaction ID: 28BEc8yMsD
+Account No: 1000005802
+Transaction Date: 22/06/2023
+Transaction Type: Deposit
+Previous Balance: 8000
+Transaction Amount: 2000
+Updated Balance: 10000
+

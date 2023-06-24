@@ -174,3 +174,11 @@ Card Limit: 50000
 Available Balance: 46500
 Username: shadabtanjeed
 
+Card No: 6248913035225548
+Card Type: VISA
+Expiry Date: 06/25
+CVV: 572
+Card Limit: 100000
+Available Balance: 100000
+Username: ZubayerRuhit
+

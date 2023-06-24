@@ -233,7 +233,7 @@ Username: NickMiller
 Name: Zubayer Haque  
 Account Type: Fixed Deposit       
 Account No: 1000005704
-Balance: 1000
+Balance: 6000
 Phone: 88012365478
 NID No: 123987462
 Username: ZubayerRuhit
@@ -241,7 +241,7 @@ Username: ZubayerRuhit
 Name: Zubayer Ruhit       
 Account Type: Current      
 Account No: 1000005802
-Balance: 13000
+Balance: 10000
 Phone: 88012365478
 NID No: 123987462
 Username: ZubayerRuhit
