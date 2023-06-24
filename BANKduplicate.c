@@ -219,6 +219,7 @@ void mainmenu(char *usernm)
             ++count_credit_cards;
         }
 
+
         fclose(fp);
         fclose(fp5);
         fclose(fp6);
@@ -529,7 +530,7 @@ void CreateAccount2()
     }
 
     int count = 0;
-    while (fscanf(fp, "Name: %[^\n]\nAccount Type: %[^\n]\nAccount No: %ld\nBalance: %ld\nPhone: %ld\nNID No: %ld\nUsername: %s\n",
+    while (fscanf(fp, "Name: %[^\n]\nAccount Type: %[^\n]\nAccount No: %lld\nBalance: %lld\nPhone: %lld\nNID No: %lld\nUsername: %s\n",
                   account_info[count].Name, account_info[count].AccountType, &account_info[count].AccountNo,
                   &account_info[count].Balance, &account_info[count].Phone, &account_info[count].NID, account_info[count].Username) == 7)
     {
@@ -543,11 +544,11 @@ void CreateAccount2()
     printf("Enter Account Type (Savings or Current or Fixed Deposit): ");
     scanf(" %[^\n]", account_info[count].AccountType);
     printf("Enter Initial Deposit: ");
-    scanf("%ld", &account_info[count].Balance);
+    scanf("%lld", &account_info[count].Balance);
     printf("Enter Phone number (13 digits): ");
-    scanf("%ld", &account_info[count].Phone);
+    scanf("%lld", &account_info[count].Phone);
     printf("Enter NID number (9 digits): ");
-    scanf("%ld", &account_info[count].NID);
+    scanf("%lld", &account_info[count].NID);
     printf("Enter Username: ");
     scanf("%s", account_info[count].Username);
 
@@ -580,7 +581,7 @@ void CreateAccount2()
     fclose(fp1);
 
     printf("\nAccount created successfully!\n");
-    printf("Your Account No: %ld\n\n", account_info[count].AccountNo);
+    printf("Your Account No: %lld\n\n", account_info[count].AccountNo);
 
     count++;
 
@@ -593,13 +594,12 @@ void CreateAccount2()
 
     for (int i = 0; i < count; i++)
     {
-        fprintf(fp4, "Name: %s \nAccount Type: %s \nAccount No: %ld\nBalance: %ld\nPhone: %ld\nNID No: %ld\nUsername: %s\n\n",
+        fprintf(fp4, "Name: %s \nAccount Type: %s \nAccount No: %lld\nBalance: %lld\nPhone: %lld\nNID No: %lld\nUsername: %s\n\n",
                 account_info[i].Name, account_info[i].AccountType, account_info[i].AccountNo,
                 account_info[i].Balance, account_info[i].Phone, account_info[i].NID, account_info[i].Username);
     }
 
     fclose(fp4);
-    free(account_info);
 }
 
 void CreateAnotherAccount(char *username, int count, AccountInfo *account_info)
@@ -1582,6 +1582,7 @@ void FundTransfer(char *username, int count, AccountInfo *account_info)
 void BillPayment(char *username, int count, AccountInfo *account_info, CreditCardInfo *credit_card_info, int card_count)
 {
 
+
     printf("\n");
     printf("1. Mobile Recharge\n");
     printf("2. Electricity Bill\n");
@@ -1714,13 +1715,14 @@ void BillPayment(char *username, int count, AccountInfo *account_info, CreditCar
         return;
     }
 
+
     int paychoice;
     printf("1.Pay from Account\n");
     printf("2.Pay from Credit Card\n");
     printf("Enter your choice: ");
     scanf("%d", &paychoice);
     printf("\n");
-
+    
     switch (paychoice)
     {
     case 1:
@@ -1881,6 +1883,7 @@ void BillPayment(char *username, int count, AccountInfo *account_info, CreditCar
         }
         break;
     }
+    
 }
 
 void LoanManagement(char *username, int count, AccountInfo *account_info)
