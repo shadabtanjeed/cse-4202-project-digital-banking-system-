@@ -454,3 +454,43 @@ Previous Balance: 8000
 Transaction Amount: 2000
 Updated Balance: 10000
 
+Transaction ID: FRaqbC8wSA
+Account No: 1000021442
+Transaction Date: 25/09/2023
+Transaction Type: Deposit
+Previous Balance: 60000
+Transaction Amount: 9000
+Updated Balance: 69000
+
+Transaction ID: gsLquc9FmB
+Account No: 1000021442
+Transaction Date: 25/09/2023
+Transaction Type: FundTransfer(OUT)
+Previous Balance: 69000
+Transaction Amount: 9000
+Updated Balance: 60000
+
+Transaction ID: 76cShk0Vl3
+Account No: 999834595
+Transaction Date: 25/09/2023
+Transaction Type: FundTransfer(IN)
+Previous Balance: 136000
+Transaction Amount: 9000
+Updated Balance: 145000
+
+Transaction ID: FdXdYO4xmg
+Account No: 1000021442
+Transaction Date: 26/09/2023
+Transaction Type: Loan
+Previous Balance: 60000
+Transaction Amount: 100000
+Updated Balance: 160000
+
+Transaction ID: y6uUhmxfa4
+Account No: 1000021442
+Transaction Date: 25/09/2023
+Transaction Type: LoanPayment
+Previous Balance: 160000
+Transaction Amount: 110000
+Updated Balance: 50000
+
