@@ -219,7 +219,6 @@ void mainmenu(char *usernm)
             ++count_credit_cards;
         }
 
-
         fclose(fp);
         fclose(fp5);
         fclose(fp6);
@@ -1291,6 +1290,14 @@ void FundTransfer(char *username, int count, AccountInfo *account_info)
             printf("Enter amount: ");
             scanf("%lld", &amount);
 
+            if (amount <= 0)
+            {
+                printf("Amount must be more than 0\n\n");
+                free(matchingAccounts1);
+                free(matchingAccounts2);
+                return;
+            }
+
             if (account_info[index_source].Balance < amount)
             {
                 printf("Insufficient Balance\n\n");
@@ -1497,6 +1504,12 @@ void FundTransfer(char *username, int count, AccountInfo *account_info)
             printf("\nEnter amount: ");
             scanf("%lld", &amount);
 
+            if (amount <= 0)
+            {
+                printf("Amount must be more than 0\n\n");
+                return;
+            }
+
             if (account_info[source_index].Balance < amount)
             {
                 printf("Insufficient Balance\n\n");
@@ -1581,7 +1594,6 @@ void FundTransfer(char *username, int count, AccountInfo *account_info)
 
 void BillPayment(char *username, int count, AccountInfo *account_info, CreditCardInfo *credit_card_info, int card_count)
 {
-
 
     printf("\n");
     printf("1. Mobile Recharge\n");
@@ -1715,14 +1727,13 @@ void BillPayment(char *username, int count, AccountInfo *account_info, CreditCar
         return;
     }
 
-
     int paychoice;
     printf("1.Pay from Account\n");
     printf("2.Pay from Credit Card\n");
     printf("Enter your choice: ");
     scanf("%d", &paychoice);
     printf("\n");
-    
+
     switch (paychoice)
     {
     case 1:
@@ -1883,7 +1894,6 @@ void BillPayment(char *username, int count, AccountInfo *account_info, CreditCar
         }
         break;
     }
-    
 }
 
 void LoanManagement(char *username, int count, AccountInfo *account_info)
